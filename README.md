@@ -54,6 +54,17 @@ python -m http.server 8000
 
 y abrir `http://localhost:8000` en el navegador.
 
+## Publicar la web
+
+La web es estática (`web/index.html` y `web/datos.json`) y se publica con Firebase Hosting:
+
+```bash
+npm install -g firebase-tools
+firebase login
+firebase use --add            # elegir el proyecto creado en la consola de Firebase
+firebase deploy --only hosting
+```
+
 ## Datos
 
 | Conjunto | Organismo | Uso |

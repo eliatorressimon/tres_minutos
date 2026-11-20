@@ -1,0 +1,9 @@
+{
+  "hosting": {
+    "public": "web",
+    "ignore": ["firebase.json", "**/.*"],
+    "headers": [
+      { "source": "**/*.json", "headers": [{ "key": "Cache-Control", "value": "max-age=3600" }] }
+    ]
+  }
+}
