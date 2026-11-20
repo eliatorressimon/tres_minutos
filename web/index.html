@@ -2,316 +2,859 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f3ee">
 <title>Tres minutos</title>
+<meta name="description" content="Qué parte de la Comunidad de Madrid tiene un desfibrilador abierto a menos de 200 metros, hora a hora, y dónde poner los siguientes.">
+<meta property="og:title" content="Tres minutos">
+<meta property="og:description" content="Desfibriladores abiertos, hora a hora, en la Comunidad de Madrid.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23c8102e'/%3E%3Cpath d='M3 18h7l2-5 3 10 3-14 2 9h9' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,50;1,9..144,400..700,50&family=Figtree:wght@400..750&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
 <style>
-/* Layout: cabecera con pestañas planas, mapa 3D a todo ancho que se oscurece de noche, tira de monitor cardiaco como reloj de la semana */
 :root{
-  --paper:#faf5f4; --ink:#1f0d11; --muted:#6f585c; --rule:#e8d5d8; --soft:#f2e4e6;
-  --cm:#c8102e; --cm-deep:#8f0b21; --pulse:#ff3048; --covered:#d8c3c6;
-  --monitor:#16080b; --monitor-ink:#f7dfe2; --monitor-grid:#3a1a20;
-  --f-display:"Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
-  --f-body:"Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --papel:#f7f3ee;--papel-claro:#fdfbf8;--superficie:rgba(253,251,248,.94);
+  --tinta:#24171b;--tinta-2:#5e4f55;--tinta-3:#918288;--linea:#eae1d7;--linea-2:#dacfc3;
+  --rojo:#c8102e;--rojo-hondo:#8a0a1f;--rojo-suave:#fbe9e7;--rojo-medio:#f2c4c0;
+  --pizarra:#5b6f84;--pizarra-suave:#e5ebf1;
+  --sombra:0 1px 2px rgba(36,23,27,.06),0 14px 34px -10px rgba(36,23,27,.22);
+  --serif:"Fraunces",Georgia,serif;--sans:"Figtree",system-ui,sans-serif;
+  --entrar:cubic-bezier(.22,1,.36,1);
+  --izq:520px;--der:0px;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#13090b; --ink:#f6e8ea; --muted:#b39a9e; --rule:#3a2025; --soft:#211015;
-  --cm:#ff3a52; --cm-deep:#ff7486; --pulse:#ff3048; --covered:#5a3a40; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --paper:#13090b; --ink:#f6e8ea; --muted:#b39a9e; --rule:#3a2025; --soft:#211015;
-  --cm:#ff3a52; --cm-deep:#ff7486; --pulse:#ff3048; --covered:#5a3a40; color-scheme:dark}
 *{box-sizing:border-box;border-radius:0}
 [hidden]{display:none!important}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
-.in{max-width:1240px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
-header.top{border-bottom:3px solid var(--cm)}
-header.top .in{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 28px;padding-block:18px 0}
-.brand{display:flex;align-items:center;gap:12px;padding-bottom:12px}
-.brand svg{width:44px;height:28px;flex:none}
-.brand b{font-family:var(--f-display);font-weight:800;font-size:30px;letter-spacing:.01em;text-transform:uppercase;line-height:1}
-nav{display:flex;flex-wrap:wrap;gap:0}
-nav a{font-family:var(--f-display);font-weight:700;font-size:17px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:10px 16px 12px;border-bottom:4px solid transparent;margin-bottom:-3px}
-nav a:hover{color:var(--ink)}
-nav a[aria-current="page"]{color:var(--cm);border-bottom-color:var(--cm)}
-nav a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--pulse);outline-offset:2px}
-.hero .in{padding-block:30px 22px;display:grid;gap:10px}
-h1{font-family:var(--f-display);font-weight:800;font-size:clamp(40px,7vw,86px);line-height:.92;margin:0;text-transform:uppercase;text-wrap:balance;letter-spacing:-.005em}
-h1 em{font-style:normal;color:var(--cm)}
-.lede{font-size:19px;color:var(--muted);max-width:62ch;margin:0}
-.ecg{display:block;width:100%;height:46px;margin-top:6px}
-.ecg path{fill:none;stroke:var(--cm);stroke-width:2.2;stroke-dasharray:1400;stroke-dashoffset:1400;animation:trace 3.2s ease-out .2s forwards}
-@keyframes trace{to{stroke-dashoffset:0}}
-.stage{position:relative;height:min(74vh,720px);min-height:420px;background:var(--paper);transition:background-color .5s linear;overflow:hidden;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-#deck{position:absolute;inset:0}
-.hud{position:absolute;left:max(16px, env(safe-area-inset-left, 0px));top:16px;width:320px;background:var(--monitor);color:var(--monitor-ink);padding:16px 18px;display:grid;gap:8px;z-index:2;border-left:6px solid var(--pulse)}
-.hud .when{font-family:var(--f-mono);font-weight:600;font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--pulse)}
-.hud .big{white-space:nowrap;font-family:var(--f-display);font-weight:800;font-size:66px;line-height:.85;font-variant-numeric:tabular-nums}
-.hud .cap{font-size:14px;line-height:1.35;color:#d9b9be}
-.hud dl{display:grid;grid-template-columns:1fr auto;gap:3px 12px;margin:6px 0 0;font-size:13px}
-.hud dt{color:#c9a5ab} .hud dd{margin:0;font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
-.legend{position:absolute;right:max(16px, env(safe-area-inset-right, 0px));bottom:16px;background:var(--paper);color:var(--ink);border:1px solid var(--rule);padding:10px 12px;font-size:13px;display:grid;gap:5px;z-index:2;max-width:280px}
-.legend span{display:flex;align-items:center;gap:8px}
-.sw{width:12px;height:12px;flex:none}
-.hint{position:absolute;right:max(16px, env(safe-area-inset-right, 0px));top:16px;font-family:var(--f-mono);font-size:12px;color:var(--muted);background:var(--paper);padding:4px 8px;z-index:2;border:1px solid var(--rule)}
-.monitor{background:var(--monitor);color:var(--monitor-ink)}
-.monitor .in{padding-block:14px 16px;display:grid;gap:10px}
-.mrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.monitor button{font:600 14px var(--f-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--monitor-ink);background:transparent;border:1px solid #5a2a32;padding:8px 12px;cursor:pointer}
-.monitor button:hover{border-color:var(--pulse);color:#fff}
-.monitor button[aria-pressed="true"]{background:var(--pulse);border-color:var(--pulse);color:#16080b}
-.monitor .lbl{font-family:var(--f-mono);font-size:12px;color:#b98d94;margin-left:auto}
-.strip{overflow-x:auto}
-.strip svg{display:block;width:100%;min-width:640px;height:auto;cursor:crosshair;touch-action:none}
-main .in{padding-block:40px 64px}
-section.view{display:grid;gap:28px}
-h2{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,4vw,44px);line-height:1;text-transform:uppercase;margin:0;text-wrap:balance}
-h3{font-family:var(--f-display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.03em;margin:0 0 6px}
-p{margin:0;max-width:68ch}
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px}
-.cols>*{min-width:0}
-.fact{border-top:4px solid var(--cm);padding-top:12px;display:grid;gap:8px}
-.fact .k{font-family:var(--f-display);font-weight:800;font-size:54px;line-height:.9;color:var(--cm);font-variant-numeric:tabular-nums}
-.fact p{font-size:15.5px}
-.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:start}
-@media (max-width:860px){.split{grid-template-columns:1fr}}
-.tbl{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:15px}
-th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--rule)}
-th{font-family:var(--f-mono);font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--ink)}
-td.n,th.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
-.bar{display:block;height:8px;background:var(--soft);position:relative;min-width:80px}
-.bar i{position:absolute;inset:0 auto 0 0;background:var(--cm)}
-.bar s{position:absolute;inset:0 auto 0 0;background:var(--covered);text-decoration:none}
-.tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);background:var(--ink);padding:2px 6px;white-space:nowrap}
-.big-num{font-family:var(--f-display);font-weight:800;font-size:clamp(56px,9vw,110px);line-height:.85;color:var(--cm);font-variant-numeric:tabular-nums}
-ol.steps{margin:0;padding:0;list-style:none;display:grid;gap:18px;counter-reset:s}
-ol.steps li{display:grid;grid-template-columns:44px 1fr;gap:14px;counter-increment:s}
-ol.steps li::before{content:counter(s);font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1;color:var(--cm)}
-.src{font-size:14px;color:var(--muted)}
-.src a,a{color:var(--cm)}
-footer{border-top:3px solid var(--cm)}
-footer .in{padding-block:18px 28px;font-size:14px;color:var(--muted);display:grid;gap:6px}
-@media (max-width:640px){
-  .hud{position:relative;left:auto;top:auto;width:auto;margin:0}
-  .stage{height:auto;min-height:0;display:flex;flex-direction:column}
-  #deck{position:relative;inset:auto;height:62vh;min-height:360px}
-  .legend{position:relative;right:auto;bottom:auto;max-width:none;border-left:0;border-right:0}
-  .hint{display:none}
+html,body{margin:0;height:100%;background:var(--papel)}
+body{color:var(--tinta);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,h4,p{margin:0}
+b,strong{font-weight:650}
+::selection{background:var(--rojo-medio)}
+:focus-visible{outline:2px solid var(--rojo);outline-offset:2px}
+a{color:var(--rojo);font-weight:600;text-decoration-color:var(--rojo-medio);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--rojo)}
+
+/* escenario */
+#mapa,#noche,#deck{position:fixed;inset:0}
+#noche{pointer-events:none;background:#0d1426;mix-blend-mode:multiply;opacity:0;transition:opacity .6s}
+#deck{z-index:1}
+#deck.poniendo{cursor:crosshair}
+.maplibregl-ctrl-bottom-right{display:none}
+.creditos{position:fixed;right:10px;bottom:6px;z-index:2;font-size:10.5px;color:var(--tinta-3);background:rgba(253,251,248,.8);padding:1px 8px}
+.creditos a{color:inherit;font-weight:500}
+
+/* barra de navegación */
+.nav{position:fixed;top:16px;left:16px;bottom:16px;width:72px;z-index:3;display:flex;flex-direction:column;justify-content:space-between;padding:10px 6px;background:var(--superficie);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:var(--sombra);border:1px solid rgba(255,255,255,.7);animation:izq .7s .1s var(--entrar) both}
+.nav-grupo{display:flex;flex-direction:column;gap:4px}
+.nav button{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:none;padding:9px 2px 8px;color:var(--tinta-2);font-size:10.5px;font-weight:600;line-height:1.15;text-align:center;transition:background .15s,color .15s}
+.nav button svg{width:22px;height:22px}
+.nav button:hover{background:#fff;color:var(--tinta)}
+.nav button[aria-current]{background:var(--rojo-suave);color:var(--rojo-hondo)}
+.nav button[aria-current] svg{color:var(--rojo)}
+.nav button[aria-current]::before{content:"";position:absolute;left:-6px;top:10px;bottom:10px;width:3px;background:var(--rojo)}
+
+/* panel */
+.panel{position:fixed;top:16px;left:100px;bottom:16px;width:404px;z-index:3;display:flex;flex-direction:column;background:var(--superficie);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:var(--sombra);border:1px solid rgba(255,255,255,.7);animation:izq .7s .2s var(--entrar) backwards}
+@keyframes izq{from{opacity:0;transform:translateX(-24px)}}
+@keyframes der{from{opacity:0;transform:translateX(28px)}}
+@keyframes aparecer{from{opacity:0;transform:translateY(6px)}}
+@keyframes fundido{from{opacity:0}}
+.marca{padding:22px 24px 14px;display:flex;gap:14px;align-items:center}
+.logo{flex:none;width:46px;height:46px;background:var(--rojo);display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.logo path{fill:none;stroke:#fff;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:60;animation:trazo 1.1s .5s var(--entrar) both}
+@keyframes trazo{from{stroke-dashoffset:60}}
+.marca h1{font:600 31px/1 var(--serif);letter-spacing:-.02em;font-variation-settings:"SOFT" 50}
+.marca h1 em{color:var(--rojo);font-style:italic}
+.marca p{color:var(--tinta-2);margin-top:5px;font-size:13px;line-height:1.35}
+.buscador{position:relative;margin:0 20px 12px}
+.buscador input{width:100%;border:1px solid var(--linea-2);background:#fff;padding:10px 12px 10px 36px;font:inherit;color:var(--tinta);transition:border-color .15s,box-shadow .15s}
+.buscador input:focus{outline:none;border-color:var(--rojo);box-shadow:0 0 0 3px var(--rojo-suave)}
+.buscador svg{position:absolute;left:12px;top:12px;width:16px;height:16px;color:var(--tinta-3)}
+.sugerencias{position:absolute;z-index:5;left:0;right:0;top:calc(100% + 4px);list-style:none;margin:0;padding:6px;background:#fff;box-shadow:var(--sombra);animation:aparecer .16s var(--entrar)}
+.sugerencias button{width:100%;text-align:left;border:0;background:none;padding:7px 10px;display:flex;justify-content:space-between}
+.sugerencias button small{color:var(--tinta-3)}
+.sugerencias button.activo,.sugerencias button:hover{background:var(--rojo-suave);color:var(--rojo-hondo)}
+.panel-titulo{margin:0 20px;padding:6px 0 9px;border-bottom:1px solid var(--linea);font:650 11px/1.2 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-3)}
+.desplazable{flex:1;overflow-y:auto;padding:4px 20px 22px;scrollbar-width:thin;scrollbar-color:var(--linea-2) transparent}
+.vista{animation:aparecer .35s var(--entrar)}
+.entradilla{color:var(--tinta-2);padding:14px 0 6px;line-height:1.55}
+.entradilla b{color:var(--tinta)}
+.bloque{padding:14px 0 12px;border-bottom:1px solid var(--linea)}
+.bloque:last-child{border-bottom:0}
+.bloque h3,.seccion h3{font:650 11px/1.2 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-3);margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline}
+.nota{color:var(--tinta-3);font-size:12.5px;line-height:1.45}
+.enlace{border:0;background:none;padding:0;color:var(--rojo);font-weight:600;font-size:12.5px;text-decoration:underline;text-decoration-color:var(--rojo-medio);text-underline-offset:3px;letter-spacing:0;text-transform:none}
+.enlace:hover{text-decoration-color:var(--rojo)}
+
+/* reloj */
+.segmentado{position:relative;display:grid;grid-template-columns:repeat(7,1fr);background:#efe8df;padding:3px}
+.segmentado button{position:relative;z-index:1;border:0;background:none;padding:6px 2px;font-size:12.5px;font-weight:650;color:var(--tinta-2);transition:color .2s}
+.segmentado button[aria-pressed=true]{color:var(--rojo-hondo)}
+.cursor-seg{position:absolute;top:3px;bottom:3px;left:3px;width:calc((100% - 6px)/7);transform:translateX(calc(var(--i)*100%));background:#fff;box-shadow:0 1px 2px rgba(36,23,27,.12),inset 0 -2px 0 var(--rojo);transition:transform .32s var(--entrar)}
+.hora{display:flex;align-items:center;gap:12px;margin-top:12px}
+.hora output{font:600 26px/1 var(--serif);font-variant-numeric:tabular-nums;min-width:74px}
+.hora input{flex:1;accent-color:var(--rojo)}
+.reloj-pie{display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:8px;flex-wrap:wrap}
+.chips{display:flex;gap:4px;flex-wrap:wrap}
+.chip{border:1px solid var(--linea-2);background:#fff;padding:4px 10px;font-size:12px;font-weight:600;color:var(--tinta-2);transition:border-color .15s,color .15s}
+.chip:hover{border-color:var(--rojo);color:var(--rojo-hondo)}
+.chip.ahora{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.chip.ahora::before{content:"";display:inline-block;width:7px;height:7px;background:#fff;margin-right:6px;vertical-align:1px;animation:latido 1.2s infinite}
+@keyframes latido{0%,100%{transform:scale(.6);opacity:.6}15%{transform:scale(1.15);opacity:1}30%{transform:scale(.8)}45%{transform:scale(1.05)}}
+
+/* cifra principal */
+.cifra-grande{display:flex;align-items:flex-end;gap:14px;margin:4px 0 12px}
+.cifra-grande .cifra{font:500 64px/.85 var(--serif);letter-spacing:-.04em;font-variant-numeric:tabular-nums lining-nums;color:var(--tinta)}
+.cifra-grande .cifra small{font-size:30px;letter-spacing:0}
+.cifra-grande p{font-size:13px;line-height:1.4;color:var(--tinta-2);padding-bottom:4px}
+.reparto{display:flex;height:12px;gap:2px;margin-bottom:12px}
+.reparto span{transition:flex-grow .6s var(--entrar);flex-basis:0}
+.reparto .si{background:var(--pizarra)}
+.reparto .no{background:var(--rojo)}
+.mini-cifras{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mini-cifras div{border-top:2px solid var(--tinta);padding-top:6px}
+.mini-cifras strong{display:block;font:600 21px/1.1 var(--serif);font-variant-numeric:tabular-nums}
+.mini-cifras span{font-size:11.5px;color:var(--tinta-3);line-height:1.3;display:block;margin-top:2px}
+
+/* grupos de municipios */
+.grupo{transition:background .2s;margin:0 -8px}
+.grupo:hover{background:rgba(200,16,46,.04)}
+.grupo-cab{width:100%;display:flex;align-items:center;gap:10px;border:0;background:none;padding:8px;text-align:left}
+.grupo-color{flex:none;width:12px;height:12px}
+.grupo-nombre{flex:1;font:600 15px/1.2 var(--serif)}
+.grupo-cuenta{color:var(--tinta-3);font-size:12.5px;font-variant-numeric:tabular-nums}
+.plegar{width:7px;height:7px;border:solid var(--tinta-3);border-width:0 1.5px 1.5px 0;transform:rotate(45deg) translate(-2px,-2px);transition:transform .25s var(--entrar)}
+.grupo.abierto .plegar{transform:rotate(225deg) translate(-1px,-1px)}
+.grupo-lista{list-style:none;margin:0;padding:0 8px 10px 30px;display:flex;flex-wrap:wrap;gap:4px;animation:aparecer .26s var(--entrar)}
+.pastilla{border:1px solid var(--linea);background:#fff;padding:3px 9px;font-size:12.5px;transition:border-color .15s,color .15s}
+.pastilla:hover{border-color:var(--rojo);color:var(--rojo-hondo)}
+.pastilla.activo{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+
+/* dónde actuar */
+.sitios{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.sitio{width:100%;display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:10px;text-align:left;padding:9px 12px 9px 6px;border:1px solid var(--linea);background:#fff;transition:border-color .15s,box-shadow .15s;animation:aparecer .4s var(--entrar) both}
+.sitio:hover{border-color:var(--rojo);box-shadow:inset 3px 0 0 var(--rojo)}
+.sitio .num{font:500 34px/.9 var(--serif);color:var(--rojo);text-align:center}
+.sitio strong{font:600 15px/1.2 var(--serif);display:block}
+.sitio small{color:var(--tinta-3);font-size:12px}
+.sitio .mas{font:600 15px var(--serif);color:var(--tinta);text-align:right;font-variant-numeric:tabular-nums}
+.sitio .mas small{display:block;font:400 11px var(--sans);color:var(--tinta-3)}
+.suma{display:flex;gap:16px;align-items:center;padding:14px 16px;background:var(--rojo-suave);margin-top:10px}
+.suma .cifra{font:500 40px/.9 var(--serif);letter-spacing:-.03em;color:var(--rojo-hondo)}
+.suma p{font-size:13px;line-height:1.4;color:var(--tinta-2)}
+.simulador{margin-top:4px;padding:14px;background:#fff;border:1.5px solid var(--tinta)}
+.simulador h4{font:600 16px/1.25 var(--serif);margin-bottom:4px}
+.simulador p{font-size:13px;color:var(--tinta-2);line-height:1.5}
+.simulador .acciones{display:flex;gap:12px;align-items:center;margin-top:10px}
+.boton{flex:none;border:0;background:var(--rojo);color:#fff;font-weight:650;font-size:12.5px;padding:8px 14px;transition:background .15s,transform .12s}
+.boton:hover{background:var(--rojo-hondo)}
+.boton:active{transform:scale(.97)}
+.boton[aria-pressed=true]{background:var(--tinta)}
+.resultado-sim{margin-top:10px;font-size:13px;animation:aparecer .3s var(--entrar)}
+.resultado-sim b{font:600 20px var(--serif);color:var(--rojo-hondo)}
+
+/* por qué */
+.dato-grande{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:end;padding:16px 0;border-bottom:1px solid var(--linea);animation:aparecer .45s var(--entrar) both}
+.dato-grande .cifra{font:500 46px/.9 var(--serif);letter-spacing:-.03em;color:var(--tinta);padding-bottom:6px;border-bottom:2px solid currentColor;font-variant-numeric:lining-nums}
+.dato-grande.rojo .cifra{color:var(--rojo)}
+.dato-grande p{font-size:13.5px;line-height:1.45;color:var(--tinta-2);padding-bottom:6px}
+.dato-grande p b{color:var(--tinta)}
+.dato-grande small{grid-column:1/-1;color:var(--tinta-3);font-size:11.5px;margin-top:6px}
+.cadena{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:16px 0 4px}
+.cadena div{background:var(--papel);padding:10px;font-size:12.5px;line-height:1.35;color:var(--tinta-2)}
+.cadena strong{display:block;font:600 22px/1 var(--serif);color:var(--rojo);margin-bottom:4px}
+
+/* cómo */
+.pasos{list-style:none;margin:0;padding:12px 0 0;display:flex;flex-direction:column;gap:16px}
+.pasos li{display:flex;gap:12px;animation:aparecer .4s var(--entrar) both}
+.paso-n{flex:none;width:30px;height:30px;background:var(--rojo);color:#fff;display:grid;place-items:center;font:600 15px var(--serif)}
+.pasos h4{font:600 16px/1.25 var(--serif);margin-bottom:3px}
+.pasos p{color:var(--tinta-2);font-size:13.5px;line-height:1.5}
+.fuentes{margin:6px 0 0;padding-left:18px;font-size:13px;line-height:1.5;color:var(--tinta-2)}
+.fuentes li{padding:2px 0}
+.aviso{margin-top:14px;padding:12px 14px;background:var(--papel);border-left:3px solid var(--pizarra);font-size:13px;line-height:1.5;color:var(--tinta-2)}
+
+/* ficha */
+.ficha{position:fixed;top:16px;right:16px;bottom:16px;width:420px;z-index:3;background:var(--superficie);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:var(--sombra);border:1px solid rgba(255,255,255,.7);overflow-y:auto;padding:18px 26px 28px;scrollbar-width:thin;scrollbar-color:var(--linea-2) transparent;animation:der .45s var(--entrar)}
+.ficha[hidden]{display:none}
+.ficha>*{animation:aparecer .42s var(--entrar) both}
+.ficha>*:nth-child(2){animation-delay:40ms}.ficha>*:nth-child(3){animation-delay:80ms}.ficha>*:nth-child(4){animation-delay:.12s}.ficha>*:nth-child(5){animation-delay:.17s}.ficha>*:nth-child(n+6){animation-delay:.22s}
+.foto{position:relative;margin:-18px -26px 14px;height:200px;overflow:hidden;background:var(--rojo)}
+.foto img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transform:scale(1.05);transition:opacity .5s,transform .9s var(--entrar)}
+.foto img.cargada{opacity:1;transform:none}
+.foto svg{position:absolute;inset:0;width:100%;height:100%}
+.foto::after{content:"";position:absolute;inset:auto 0 0 0;height:60px;background:linear-gradient(transparent,rgba(20,12,14,.55));pointer-events:none}
+.foto figcaption{position:absolute;left:14px;right:60px;bottom:8px;z-index:1;color:rgba(255,255,255,.85);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.foto figcaption a{color:inherit;font-weight:500}
+.cerrar{position:absolute;top:14px;right:14px;z-index:2;width:34px;height:34px;border:0;background:rgba(255,255,255,.94);display:grid;place-items:center;transition:transform .2s var(--entrar)}
+.cerrar:hover{transform:rotate(90deg)}
+.cerrar::before,.cerrar::after{content:"";position:absolute;width:2px;height:14px;background:var(--tinta)}
+.cerrar::before{transform:rotate(45deg)}.cerrar::after{transform:rotate(-45deg)}
+.miga{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--tinta-3);font-weight:650}
+.ficha-nombre{font:600 32px/1.08 var(--serif);letter-spacing:-.02em;margin-top:4px}
+.ficha-datos{color:var(--tinta-2);margin-top:6px}
+.veredicto{display:flex;gap:14px;align-items:flex-start;margin:16px 0 6px;padding:14px 16px;background:color-mix(in srgb,var(--c) 9%,#fff);border-left:4px solid var(--c)}
+.veredicto strong{font:600 20px/1.15 var(--serif);color:color-mix(in srgb,var(--c) 80%,var(--tinta))}
+.veredicto p{color:var(--tinta-2);font-size:13px;margin-top:4px;line-height:1.45}
+.seccion{padding:16px 0 4px;border-top:1px solid var(--linea);margin-top:14px}
+.huella{display:grid;grid-template-columns:22px repeat(24,1fr);gap:2px;align-items:center}
+.huella span{font-size:10px;color:var(--tinta-3);text-align:left}
+.huella button{aspect-ratio:1;border:0;padding:0;background:var(--c);transition:transform .15s}
+.huella button:hover{transform:scale(1.35);position:relative;z-index:1}
+.huella button.actual{outline:2px solid var(--tinta);outline-offset:1px;position:relative;z-index:2}
+.huella-pie{display:flex;justify-content:space-between;font-size:10px;color:var(--tinta-3);margin:4px 0 0 24px}
+.escala{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--tinta-3);margin-top:8px}
+.escala i{display:inline-block;width:80px;height:8px;background:linear-gradient(90deg,#c8102e,#ee9698 20%,#f0e2de 40%,#b2c1d0 60%,#5b6f84)}
+.barras{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.barras li{display:grid;grid-template-columns:1fr auto;gap:3px 8px;font-size:12.5px}
+.barras b{font-weight:600}
+.barras .valor{color:var(--tinta-2);font-variant-numeric:tabular-nums}
+.barras .barra{grid-column:1/-1;display:flex;height:6px;background:var(--linea)}
+.barras .barra i{display:block;height:100%;background:var(--tinta);transition:width .6s var(--entrar)}
+.barras .barra i+i{background:var(--tinta-3)}
+.leyenda-barras{display:flex;gap:14px;font-size:11px;color:var(--tinta-3);margin-top:8px}
+.leyenda-barras i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px;background:var(--tinta)}
+.leyenda-barras i.claro{background:var(--tinta-3)}
+
+/* monitor (línea temporal) */
+.monitor{position:fixed;bottom:22px;z-index:2;left:calc(var(--izq) + 20px);right:calc(var(--der) + 20px);max-width:880px;margin:0 auto;background:var(--superficie);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:var(--sombra);padding:10px 14px 8px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center;animation:fundido .6s .9s both;transition:left .45s var(--entrar),right .45s var(--entrar)}
+.play{width:40px;height:40px;border:0;background:var(--rojo);display:grid;place-items:center;transition:background .15s}
+.play:hover{background:var(--rojo-hondo)}
+.play svg{width:16px;height:16px;fill:#fff}
+#tira{width:100%;height:78px;display:block;cursor:ew-resize;touch-action:none}
+.leyenda{grid-column:1/-1;display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--tinta-2);padding-top:2px}
+.leyenda i{display:inline-block;margin-right:6px;vertical-align:-1px}
+.con-ficha .monitor .leyenda{display:none}
+.leyenda .col{width:8px;height:13px;background:var(--rojo)}
+.leyenda .pun{width:8px;height:8px;background:var(--pizarra)}
+.leyenda .dea{width:6px;height:6px;background:var(--tinta);outline:1.5px solid #fff}
+.leyenda .linea{width:16px;height:0;border-top:2px solid var(--rojo)}
+.leyenda .discont{width:16px;height:0;border-top:2px dashed #c98a92}
+
+/* controles del mapa */
+.controles{position:fixed;top:16px;right:calc(var(--der) + 16px);z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:8px;animation:aparecer .6s 1.1s var(--entrar) both;transition:right .45s var(--entrar)}
+.controles>button,.giro{background:var(--superficie);border:0;box-shadow:var(--sombra);padding:8px 12px;font-size:12.5px;font-weight:650;color:var(--tinta-2);transition:color .15s}
+.controles>button:hover{color:var(--rojo)}
+.brujula{width:52px;height:52px;padding:6px!important}
+.brujula svg{width:100%;height:100%;overflow:visible}
+.giro{display:flex;align-items:center;gap:2px;padding:2px}
+.giro button{border:0;background:none;width:30px;height:30px;display:grid;place-items:center;font-size:16px;color:var(--tinta-2)}
+.giro button:hover{background:var(--rojo-suave);color:var(--rojo-hondo)}
+.giro span{padding:0 2px}
+.pista{font-size:11px;color:var(--tinta-3);background:rgba(253,251,248,.85);padding:3px 8px;max-width:180px;text-align:right}
+
+.etiqueta{position:fixed;left:0;top:0;z-index:6;pointer-events:none;background:#fff;box-shadow:var(--sombra);padding:8px 12px;display:flex;flex-direction:column;gap:2px;min-width:160px;max-width:260px}
+.etiqueta strong{font:600 15px/1.2 var(--serif)}
+.etiqueta span{font-size:12.5px;color:var(--tinta-2)}
+.etiqueta em{font-style:normal;font-size:11px;color:var(--tinta-3)}
+
+/* diálogo */
+.velo{position:fixed;inset:0;z-index:10;background:rgba(36,23,27,.3);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:grid;place-items:center;animation:fundido .25s}
+.velo[hidden]{display:none}
+.dialogo{position:relative;width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 48px);overflow-y:auto;background:var(--papel-claro);box-shadow:0 30px 80px -20px rgba(36,23,27,.45);padding:28px 34px 30px;animation:aparecer .38s var(--entrar)}
+.dialogo h2{font:600 28px/1.1 var(--serif);letter-spacing:-.02em;margin-bottom:14px}
+.dialogo .cerrar{background:#fff;border:1px solid var(--linea)}
+.equipo{list-style:none;padding:0;margin:16px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.equipo li{display:flex;gap:12px;align-items:center;padding:12px 14px;background:#fff;border:1px solid var(--linea)}
+.inicial{flex:none;width:44px;height:44px;background:var(--rojo);color:#fff;display:grid;place-items:center;font:600 16px var(--serif)}
+.equipo strong{font:600 15px/1.25 var(--serif);display:block}
+.equipo small{color:var(--tinta-3);font-size:12.5px;line-height:1.35}
+.dialogo p{color:var(--tinta-2);font-size:14px;line-height:1.55;margin-top:10px}
+
+/* entrada */
+.intro{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 42%,var(--papel-claro) 0%,var(--papel) 62%);cursor:progress;user-select:none;transition:opacity .7s var(--entrar)}
+.intro.fuera{opacity:0;pointer-events:none}
+.intro canvas{position:absolute;inset:0;width:100%;height:100%}
+.intro-texto{position:absolute;left:0;right:0;top:calc(50% + min(190px,30vw));text-align:center}
+.intro-titulo{font:600 44px/1 var(--serif);letter-spacing:-.02em;opacity:0;transition:opacity .6s}
+.intro-titulo em{color:var(--rojo);font-style:italic}
+.intro-frase{min-height:1.5em;color:var(--tinta-3);font-size:13px;font-variant-numeric:tabular-nums;margin-top:10px}
+.intro-saltar{position:absolute;right:20px;bottom:18px;border:0;background:none;color:var(--tinta-3);font-size:12px;text-decoration:underline;text-underline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:1ms!important;transition-duration:1ms!important}}
+
+/* móvil */
+.pestanas{display:none}
+@media (max-width:767px){
+  :root{--izq:0px;--der:0px}
+  .nav,.pista,.giro,.vista-planta{display:none!important}
+  .panel{top:auto;left:0;right:0;bottom:0;width:auto;height:44dvh;border:0;border-top:1px solid var(--linea);background:var(--papel-claro);backdrop-filter:none;box-shadow:0 -10px 30px -12px rgba(36,23,27,.3);animation:subir .6s .2s var(--entrar) both;padding-bottom:env(safe-area-inset-bottom)}
+  @keyframes subir{from{transform:translateY(100%)}}
+  .marca{padding:12px 16px 8px}
+  .marca h1{font-size:24px}
+  .marca p{display:none}
+  .logo{width:36px;height:36px}
+  .buscador{margin:0 16px 6px}
+  .buscador input{min-height:44px;font-size:16px}
+  .pestanas{display:grid;grid-template-columns:repeat(4,1fr);margin:0 16px;border-bottom:1px solid var(--linea)}
+  .pestanas button{border:0;background:none;min-height:44px;font-size:12.5px;font-weight:650;color:var(--tinta-3);border-bottom:2px solid transparent}
+  .pestanas button[aria-current]{color:var(--tinta);border-bottom-color:var(--rojo)}
+  .panel-titulo{display:none}
+  .desplazable{padding:4px 16px 20px}
+  .monitor{left:8px;right:8px;bottom:calc(44dvh + 8px);padding:6px 8px;gap:2px 8px}
+  .monitor .leyenda{display:none}
+  #tira{height:52px}
+  .play{width:34px;height:34px}
+  .controles{top:10px;right:10px}
+  .brujula{width:44px;height:44px}
+  .ficha{top:auto;left:0;right:0;bottom:0;width:auto;height:72dvh;padding:16px 18px 24px;animation:subir .4s var(--entrar)}
+  .foto{margin:-16px -18px 12px;height:150px}
+  .creditos{bottom:auto;top:10px;left:10px;right:70px;font-size:9.5px}
+  .equipo{grid-template-columns:1fr}
+  .dialogo{padding:22px 20px}
+  .intro-titulo{font-size:34px}
 }
-@media (prefers-reduced-motion: reduce){.ecg path{animation:none;stroke-dashoffset:0}.stage{transition:none}}
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="in">
-    <div class="brand">
-      <svg viewBox="0 0 44 28" aria-hidden="true"><path d="M0 16h10l3-7 5 15 5-22 4 14h17" fill="none" stroke="var(--cm)" stroke-width="3" stroke-linejoin="miter"/></svg>
-      <b>Tres minutos</b>
-    </div>
-    <nav aria-label="Secciones">
-      <a href="#ahora" data-view="ahora">Ahora mismo</a>
-      <a href="#actuar" data-view="actuar">Dónde actuar</a>
-      <a href="#porque" data-view="porque">Por qué importa</a>
-      <a href="#metodo" data-view="metodo">Cómo se calcula</a>
-    </nav>
-  </div>
-</header>
+<div id="mapa" aria-hidden="true"></div>
+<div id="noche"></div>
+<div id="deck" role="img" aria-label="Mapa en 3D de la Comunidad de Madrid con los barrios sin desfibrilador abierto a la hora elegida"></div>
+<div class="creditos">Mapa: <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a>, <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>. Datos: Comunidad de Madrid, INE</div>
 
-<div class="hero">
-  <div class="in">
-    <h1>Si alguien cae al suelo ahora, ¿llega <em>a tiempo</em> un desfibrilador?</h1>
-    <p class="lede">La Comunidad de Madrid tiene 13.673 desfibriladores registrados fuera de los hospitales. Muchos están dentro de oficinas, colegios y gimnasios que cierran. Cuanto más alta y más roja es una columna, más vecinos se quedan sin uno abierto a menos de 200 metros a esa hora.</p>
-    <svg class="ecg" viewBox="0 0 1200 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30H300l10-14 10 14h40l8-26 12 40 10-28 8 14H700l10-14 10 14h40l8-26 12 40 10-28 8 14H1200"/></svg>
+<nav class="nav" aria-label="Secciones">
+  <div class="nav-grupo">
+    <button data-vista="ahora"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M2 13h4l2-5 3 10 3-13 2 8h6"/></svg>Ahora</button>
+    <button data-vista="actuar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="5" width="14" height="14"/><path d="M12 1v6M12 17v6M1 12h6M17 12h6"/><rect x="10.5" y="10.5" width="3" height="3" fill="currentColor"/></svg>Dónde actuar</button>
+    <button data-vista="porque"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-8-4.8-8-10.5A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8 2.5C20 15.2 12 20 12 20z"/><path d="M7 12h2.5l1-2 2 4 1-2H17"/></svg>Por qué importa</button>
   </div>
-</div>
+  <div class="nav-grupo">
+    <button data-vista="metodo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6h12M9 12h12M9 18h12"/><rect x="3" y="4.5" width="3" height="3"/><rect x="3" y="10.5" width="3" height="3"/><rect x="3" y="16.5" width="3" height="3"/></svg>Cómo se calcula</button>
+    <button data-abrir="acerca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7v1.5"/></svg>Acerca de</button>
+  </div>
+</nav>
 
-<div class="stage" id="stage">
-  <div id="deck" role="img" aria-label="Mapa 3D de la Comunidad de Madrid con columnas de población sin desfibrilador abierto cerca"></div>
-  <div class="hud" aria-live="polite">
-    <div class="when" id="hWhen">Martes 11:00</div>
-    <div class="big" id="hPct">45,2 %</div>
-    <div class="cap">de los vecinos tiene un desfibrilador abierto a menos de 200 m</div>
-    <dl>
-      <dt>Fuera de Madrid capital</dt><dd id="hF">30,7 %</dd>
-      <dt>Mayores de 65 años</dt><dd id="h65">49,3 %</dd>
-      <dt>Aparatos abiertos</dt><dd id="hOpen">6725</dd>
-    </dl>
+<aside class="panel" aria-label="Panel">
+  <header class="marca">
+    <div class="logo"><svg width="30" height="30" viewBox="0 0 30 30"><path d="M2 17h6l2.4-6 3.2 11 3.4-16 2.4 11H28"/></svg></div>
+    <div><h1>Tres <em>minutos</em></h1><p>Desfibriladores abiertos, hora a hora, en la Comunidad de Madrid</p></div>
+  </header>
+  <div class="buscador">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 15 15"/></svg>
+    <input id="buscar" type="search" placeholder="Busca un municipio" autocomplete="off" aria-label="Busca un municipio">
+    <ul class="sugerencias" id="sugerencias" hidden></ul>
   </div>
-  <div class="hint">Arrastra para mover, Ctrl o dos dedos para girar</div>
-  <div class="legend">
-    <span><i class="sw" style="background:var(--cm)"></i>Columna: vecinos sin desfibrilador abierto a 200 m</span>
-    <span><i class="sw" style="background:var(--covered)"></i>Barrio cubierto a esa hora</span>
-    <span id="legNew" hidden><i class="sw" style="background:var(--ink)"></i>Sitio propuesto para un aparato de 24 horas</span>
+  <div class="pestanas" role="tablist">
+    <button data-vista="ahora">Ahora</button><button data-vista="actuar">Actuar</button><button data-vista="porque">Por qué</button><button data-vista="metodo">Cómo</button>
   </div>
-</div>
+  <div class="panel-titulo" id="panelTitulo">Ahora mismo</div>
+  <div class="desplazable" id="desplazable">
 
-<div class="monitor">
-  <div class="in">
-    <div class="mrow">
-      <button id="play" type="button" aria-pressed="false">Reproducir semana</button>
-      <button class="preset" type="button" data-t="35">Mar 11:00</button>
-      <button class="preset" type="button" data-t="147">Dom 03:00</button>
-      <button class="fly" type="button" data-fly="all">Comunidad</button>
-      <button class="fly" type="button" data-fly="cap">Madrid capital</button>
-      <button class="fly" type="button" data-fly="sur">Sur metropolitano</button>
-      <span class="lbl">% de vecinos cubiertos, lunes a domingo</span>
-    </div>
-    <div class="strip"><svg id="strip" viewBox="0 0 1200 150" aria-label="Monitor de cobertura de la semana; pulsa o arrastra para cambiar la hora"></svg></div>
-  </div>
-</div>
-
-<main>
-  <div class="in">
-    <section class="view" id="v-ahora">
-      <div class="cols">
-        <div class="fact"><div class="k" id="fDay">45 %</div><p><b>Martes a las 11:00.</b> Con oficinas, colegios y polideportivos abiertos, casi la mitad de la Comunidad tiene un desfibrilador disponible a menos de 200 m.</p></div>
-        <div class="fact"><div class="k" id="fNight">26 %</div><p><b>Domingo a las 3:00.</b> Solo quedan los que constan como abiertos 24 horas. Fuera de la capital la cobertura cae al <b id="fNightF">13 %</b>.</p></div>
-        <div class="fact"><div class="k">2.206</div><p>aparatos del registro tienen como horario "autobús urbano": viajan en autobuses de Madrid capital. No cubren un barrio fijo y no los contamos.</p></div>
-        <div class="fact"><div class="k">4.543</div><p>no dicen su horario o no se entiende. Si todos abrieran de madrugada, el domingo a las 3:00 la cobertura subiría hasta el 57 %.</p></div>
+    <section class="vista" id="v-ahora">
+      <p class="entradilla">Si alguien cae al suelo con una parada cardiaca, hay unos <b>tres minutos</b> para ir a por un desfibrilador y volver. Cada <b>columna roja</b> es un barrio donde a esa hora no hay ninguno abierto a menos de 200 metros. Cuanto más alta, más vecinos.</p>
+      <div class="bloque">
+        <h3>¿Cuándo? <span id="cuandoTxt" style="text-transform:none;letter-spacing:0;font-weight:600;color:var(--tinta-2)"></span></h3>
+        <div class="segmentado" id="dias"><span class="cursor-seg" id="cursorSeg"></span></div>
+        <div class="hora"><output id="horaTxt">11:00</output><input type="range" id="hora" min="0" max="23" step="1" aria-label="Hora del día"></div>
+        <div class="reloj-pie">
+          <div class="chips">
+            <button class="chip ahora" id="chipAhora">Ahora mismo</button>
+            <button class="chip" data-t="35">Martes 11:00</button>
+            <button class="chip" data-t="147">Domingo 3:00</button>
+          </div>
+        </div>
+      </div>
+      <div class="bloque">
+        <h3>Vecinos con un aparato abierto cerca</h3>
+        <div class="cifra-grande"><span class="cifra" id="cPct">45<small>%</small></span><p id="cTexto"></p></div>
+        <div class="reparto" aria-hidden="true"><span class="si" id="rSi"></span><span class="no" id="rNo"></span></div>
+        <div class="mini-cifras">
+          <div><strong id="cFuera"></strong><span>fuera de Madrid capital</span></div>
+          <div><strong id="c65"></strong><span>de los mayores de 65</span></div>
+          <div><strong id="cAbiertos"></strong><span>aparatos abiertos</span></div>
+        </div>
+      </div>
+      <div class="bloque">
+        <h3>Municipios a esta hora</h3>
+        <div id="grupos"></div>
       </div>
     </section>
 
-    <section class="view" id="v-actuar" hidden>
-      <h2>Dónde poner los próximos diez</h2>
-      <div class="split">
-        <div style="display:grid;gap:14px">
-          <div class="big-num" id="aPers">+76.852</div>
-          <p>vecinos más tendrían un desfibrilador a menos de 200 m un domingo a las 3:00 si se instalan diez aparatos de 24 horas en estos puntos. De ellos, <b id="aMay">23.360</b> tienen más de 65 años, que es la edad en la que se concentran las paradas cardiacas.</p>
-          <p class="src">Cada punto se elige, uno detrás de otro, por ser el que más mayores añade a la cobertura de madrugada. En el prototipo final los candidatos serán sitios reales que ya abren de noche: farmacias de guardia, gasolineras, comisarías y estaciones.</p>
-          <div class="tbl"><table id="tNew"><thead><tr><th>Punto</th><th>Municipio</th><th class="n">Vecinos</th><th class="n">Mayores de 65</th></tr></thead><tbody></tbody></table></div>
-        </div>
-        <div style="display:grid;gap:14px">
-          <h3>Municipios donde más cae de noche</h3>
-          <p class="src">Más de 20.000 habitantes. Barra gris: cubiertos el martes a las 11:00. Barra roja: lo que queda el domingo a las 3:00.</p>
-          <div class="tbl"><table id="tMun"><thead><tr><th>Municipio</th><th class="n">Martes 11:00</th><th class="n">Domingo 3:00</th><th></th></tr></thead><tbody></tbody></table></div>
-          <h3 style="margin-top:12px">Sin ningún desfibrilador fijo</h3>
-          <p id="sinDea" class="src"></p>
+    <section class="vista" id="v-actuar" hidden>
+      <p class="entradilla">De madrugada casi tres de cada cuatro vecinos se quedan sin un aparato abierto cerca. Estos son los <b>diez sitios</b> donde un desfibrilador abierto <b>las 24 horas</b> cubriría a más gente, eligiendo cada uno después de colocar el anterior y dando más peso a los mayores de 65.</p>
+      <div class="bloque">
+        <h3>Los diez primeros <span class="nota" style="text-transform:none;letter-spacing:0">domingo, 3:00</span></h3>
+        <ol class="sitios" id="sitios"></ol>
+        <div class="suma"><span class="cifra" id="sumaPers"></span><p>vecinos más tendrían un desfibrilador a menos de 200 metros a cualquier hora, <b id="sumaMay"></b> de ellos mayores de 65.</p></div>
+      </div>
+      <div class="bloque">
+        <div class="simulador">
+          <h4>Pon tú un aparato</h4>
+          <p>Pulsa el botón y toca el mapa donde lo pondrías. Cuenta como abierto las 24 horas y te decimos cuántos vecinos gana a la hora que tengas elegida.</p>
+          <div class="acciones"><button class="boton" id="btnPoner" aria-pressed="false">Colocar en el mapa</button><button class="enlace" id="btnQuitar" hidden>Quitar los míos</button></div>
+          <div class="resultado-sim" id="resSim" hidden></div>
         </div>
       </div>
     </section>
 
-    <section class="view" id="v-porque" hidden>
-      <h2>Cada minuto cuenta</h2>
-      <div class="cols">
-        <div class="fact"><div class="k">1.700</div><p>paradas cardiacas al año, aproximadamente, en las que la ambulancia intenta reanimar en la Comunidad de Madrid. Sale de aplicar la tasa española del registro europeo EuReCa (24,8 por 100.000 habitantes) a sus 7 millones de vecinos.</p></div>
-        <div class="fact"><div class="k">13,2 min</div><p>tarda de media la ambulancia en España, y solo llega antes de 8 minutos en el 23,5 % de los casos. Cada minuto sin desfibrilar resta en torno a un 10 % de probabilidad de sobrevivir.</p></div>
-        <div class="fact"><div class="k">11 → 32 %</div><p>En España sobrevive al alta el 10,8 % de quienes sufren una parada fuera del hospital. Cuando un testigo conecta un desfibrilador antes de que llegue la ambulancia, la supervivencia mediana en los estudios publicados es del 32 %.</p></div>
-        <div class="fact"><div class="k">11.747</div><p>muertes en 2024 en la Comunidad por enfermedades del sistema circulatorio, la segunda causa después de los tumores (13.520), según el Portal de Datos Abiertos.</p></div>
+    <section class="vista" id="v-porque" hidden>
+      <p class="entradilla">Una parada cardiaca fuera del hospital se puede sobrevivir si alguien empieza la reanimación y usa un desfibrilador en los primeros minutos. La ambulancia casi nunca llega tan pronto. Lo que esté a 200 metros, sí.</p>
+      <div class="dato-grande rojo"><span class="cifra">1.700</span><p><b>paradas cardiacas al año</b> fuera del hospital en la Comunidad, si aplicamos la tasa española de 24,8 por 100.000 habitantes.</p><small>EuReCa THREE, registro europeo (Europa Press, 14 oct 2025)</small></div>
+      <div class="dato-grande"><span class="cifra">13,2</span><p><b>minutos</b> tarda de media en llegar la ambulancia en España. Solo en el 23,5 % de los casos llega en menos de 8.</p><small>EuReCa THREE</small></div>
+      <div class="dato-grande rojo"><span class="cifra">−10 %</span><p>de probabilidad de sobrevivir <b>por cada minuto</b> sin desfibrilación.</p><small>EuReCa THREE</small></div>
+      <div class="dato-grande"><span class="cifra">32 %</span><p>sobreviven cuando un testigo usa un desfibrilador antes de que llegue la ambulancia, frente al <b>10,8 %</b> de media en España.</p><small>Revisión de 41 estudios (NIHR); EuReCa THREE</small></div>
+      <div class="dato-grande"><span class="cifra">11.747</span><p>muertes por enfermedades del <b>sistema circulatorio</b> en la Comunidad en 2024, la segunda causa tras los tumores.</p><small>Defunciones según causa de muerte, Comunidad de Madrid</small></div>
+      <h3 class="panel-titulo" style="margin:18px 0 0;padding-left:0">Por qué 200 metros</h3>
+      <div class="cadena">
+        <div><strong>0:00</strong>Alguien cae. Un testigo llama al 112 y empieza a reanimar.</div>
+        <div><strong>1:30</strong>Otro corre al desfibrilador. 200 m a paso rápido.</div>
+        <div><strong>3:00</strong>Vuelve con el aparato y lo enciende. El aparato guía la descarga.</div>
       </div>
-      <p class="src">Fuentes: informe EuReCa THREE del Consejo Europeo de Resucitación (casos de 2022, presentado en octubre de 2025); <a href="https://evidence.nihr.ac.uk/alert/use-of-public-defibrillators-linked-to-out-of-hospital-cardiac-arrest-survival/" target="_blank" rel="noopener">revisión de 41 estudios sobre desfibriladores usados por testigos</a>; <a href="https://datos.comunidad.madrid/dataset/defunciones_por_causa_y_sexo" target="_blank" rel="noopener">defunciones por causa de muerte, Comunidad de Madrid</a>.</p>
+      <p class="nota">Ir y volver 400 metros cabe en unos tres minutos. Por eso medimos a 200 metros en línea recta desde el centro de cada sección censal.</p>
     </section>
 
-    <section class="view" id="v-metodo" hidden>
-      <h2>Cómo se calcula</h2>
-      <div class="split">
-        <ol class="steps">
-          <li><div><h3>Leer el registro</h3><p>Descargamos el registro de desfibriladores externos fuera del ámbito sanitario del Portal de Datos Abiertos de la Comunidad de Madrid: 13.673 aparatos con coordenadas, tipo de establecimiento y un horario escrito a mano.</p></div></li>
-          <li><div><h3>Traducir los horarios</h3><p>Pasamos textos como "L-V 8-20 h", "lunes a jueves de 9 a 18 y viernes de 9 a 15" u "horario escolar" a una tabla de 7 días por 24 horas. Lo que no se puede leer queda como desconocido y no cuenta como abierto.</p></div></li>
-          <li><div><h3>Situar a los vecinos</h3><p>Usamos las 4.417 secciones censales de la Comunidad y la población de cada una del Atlas de distribución de renta del INE, ajustada al total de cada municipio en 2024.</p></div></li>
-          <li><div><h3>Medir la cobertura hora a hora</h3><p>Una sección está cubierta si tiene un aparato abierto a menos de 200 m en línea recta de su centro. Lo repetimos para las 168 horas de la semana.</p></div></li>
-          <li><div><h3>Proponer sitios nuevos</h3><p>Un algoritmo voraz de máxima cobertura elige, uno a uno, el punto que más mayores de 65 años añade a la cobertura de madrugada.</p></div></li>
-        </ol>
-        <div style="display:grid;gap:14px">
-          <h3>Lo que falta hasta el 26 de noviembre</h3>
-          <p>Distancias andando por la red de calles en lugar de en línea recta, candidatos reales para los aparatos nuevos, un buscador del desfibrilador abierto más cercano y un simulador para que cada ayuntamiento pruebe dónde colocar los suyos.</p>
-          <h3>Límites</h3>
-          <p>"24 horas" no garantiza que se pueda entrar al edificio. En pueblos con secciones grandes, el centro de la sección es solo una aproximación de dónde vive la gente. El seccionado es de 2019.</p>
-          <h3>Datos</h3>
-          <p class="src"><a href="https://datos.comunidad.madrid/dataset/desfibriladores_externos_fuera_ambito_sanitario" target="_blank" rel="noopener">Desfibriladores externos fuera del ámbito sanitario</a>, <a href="https://datos.comunidad.madrid/dataset/secciones_censales" target="_blank" rel="noopener">secciones censales</a> y <a href="https://datos.comunidad.madrid/dataset/defunciones_por_causa_y_sexo" target="_blank" rel="noopener">defunciones por causa</a> (Comunidad de Madrid); <a href="https://www.ine.es/jaxiT3/Tabla.htm?t=31105" target="_blank" rel="noopener">indicadores demográficos por sección, tabla 31105</a> (INE).</p>
-        </div>
+    <section class="vista" id="v-metodo" hidden>
+      <ol class="pasos">
+        <li><span class="paso-n">1</span><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b>13.673</b> aparatos con coordenadas. Quitamos los <b>2.206</b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
+        <li><span class="paso-n">2</span><div><h4>Sus horarios</h4><p>El horario viene escrito a mano en 2.331 formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Las convertimos en una tabla de 7 días por 24 horas. <b>3.226</b> abren siempre y <b>4.543</b> no dicen horario legible: no los contamos como abiertos.</p></div></li>
+        <li><span class="paso-n">3</span><div><h4>Quién vive cerca</h4><p>Población de cada una de las <b>4.417 secciones censales</b> (INE, Atlas de distribución de renta) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a menos de 200 m de su centro. Lo calculamos para las 168 horas de la semana.</p></div></li>
+        <li><span class="paso-n">4</span><div><h4>Dónde poner los siguientes</h4><p>Elegimos de uno en uno el sitio que más vecinos sin cubrir gana de madrugada, con doble peso para los mayores de 65, y repetimos.</p></div></li>
+      </ol>
+      <div class="bloque">
+        <h3>Datos</h3>
+        <ul class="fuentes">
+          <li><a href="https://datos.comunidad.madrid/catalogo/dataset/desfibriladores_externos_fuera_ambito_sanitario" target="_blank" rel="noopener">Desfibriladores externos fuera del ámbito sanitario</a>, Comunidad de Madrid</li>
+          <li>Secciones censales y población por sección, INE</li>
+          <li>Población municipal 2024 y defunciones por causa, Comunidad de Madrid</li>
+        </ul>
       </div>
+      <div class="aviso">Es un cálculo en línea recta: en la calle hay que rodear manzanas, así que la cobertura real es algo menor. Y un aparato sin horario puede estar abierto aunque no lo contemos. Todo el código y los datos elaborados están en <a href="https://github.com/eliatorressimon/tres_minutos" target="_blank" rel="noopener">GitHub</a>.</div>
     </section>
   </div>
-</main>
+</aside>
 
-<footer>
-  <div class="in">
-    <div>Tres minutos, proyecto para DataMad 2026. Elia Torres Simón y Clara Juarros.</div>
-    <div>Herramienta no oficial, sin relación con la Comunidad de Madrid. Datos descargados el 20 de noviembre de 2026.</div>
+<aside class="ficha" id="ficha" hidden aria-label="Ficha del municipio"></aside>
+
+<div class="monitor" id="monitor">
+  <button class="play" id="play" aria-label="Reproducir la semana"><svg viewBox="0 0 16 16" id="playIco"><path d="M3 1l12 7-12 7z"/></svg></button>
+  <svg id="tira" viewBox="0 0 1000 78" preserveAspectRatio="none" aria-label="Porcentaje de vecinos cubiertos durante la semana. Arrastra para cambiar la hora"></svg>
+  <div class="leyenda">
+    <span><i class="col"></i>vecinos sin aparato abierto a 200 m</span>
+    <span><i class="pun"></i>barrio cubierto</span>
+    <span><i class="dea"></i>aparato abierto (al acercarte)</span>
+    <span><i class="linea"></i>toda la Comunidad</span>
+    <span><i class="discont"></i>fuera de la capital</span>
   </div>
-</footer>
+</div>
 
+<div class="controles" id="controles">
+  <button class="brujula" id="brujula" aria-label="Orientar al norte"><svg viewBox="-20 -20 40 40"><g id="aguja"><path d="M0-15 5 0H-5z" fill="#c8102e"/><path d="M0 15 5 0H-5z" fill="#dacfc3"/></g><text y="-16.5" text-anchor="middle" font-size="6.5" font-weight="700" fill="#5e4f55" font-family="Figtree,sans-serif">N</text></svg></button>
+  <div class="giro"><button id="girarI" aria-label="Girar a la izquierda">‹</button><span>Girar</span><button id="girarD" aria-label="Girar a la derecha">›</button></div>
+  <button class="vista-planta" id="planta">Vista en planta</button>
+  <button id="region">Toda la región</button>
+  <span class="pista">Arrastra con el botón derecho para girar e inclinar</span>
+</div>
+
+<div class="etiqueta" id="etiqueta" hidden></div>
+
+<div class="velo" id="acerca" hidden>
+  <div class="dialogo" role="dialog" aria-modal="true" aria-labelledby="acercaT">
+    <button class="cerrar" data-cerrar aria-label="Cerrar"></button>
+    <h2 id="acercaT">Acerca de</h2>
+    <p style="font-size:15px;color:var(--tinta)">Tres minutos es nuestro proyecto para <b>DataMad 2026</b>. Queríamos responder a una pregunta muy simple con los datos abiertos de la Comunidad de Madrid: si alguien se desploma en la calle ahora mismo, ¿hay un desfibrilador abierto cerca?</p>
+    <ul class="equipo">
+      <li><span class="inicial">ET</span><div><strong>Elia Torres Simón</strong><small>Matemáticas, Universidad Complutense</small></div></li>
+      <li><span class="inicial">CJ</span><div><strong>Clara Juarros</strong><small>Derecho y Economía, Universidad Rey Juan Carlos</small></div></li>
+    </ul>
+    <p>Herramienta no oficial, sin relación con la Comunidad de Madrid. Si ves una emergencia, llama al <b>112</b>.</p>
+    <p>Código, datos elaborados y método: <a href="https://github.com/eliatorressimon/tres_minutos" target="_blank" rel="noopener">github.com/eliatorressimon/tres_minutos</a>. Licencia MIT.</p>
+  </div>
+</div>
+
+<div class="intro" id="intro">
+  <canvas id="introLienzo"></canvas>
+  <div class="intro-texto"><div class="intro-titulo" id="introTitulo">Tres <em>minutos</em></div><div class="intro-frase" id="introFrase">Cargando</div></div>
+  <button class="intro-saltar" id="introSaltar">Saltar</button>
+</div>
+
+<noscript><p style="position:fixed;inset:auto 0 50% 0;text-align:center;z-index:30">Esta página necesita JavaScript para dibujar el mapa.</p></noscript>
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/deck.gl@9.0.38/dist.min.js"></script>
 <script>
-const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
-const fmt=n=>n.toLocaleString('es-ES'), pct=v=>v.toLocaleString('es-ES',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';
-const label=t=>DAYS[Math.floor(t/24)]+' '+String(t%24).padStart(2,'0')+':00';
-const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const rgb=h=>{h=h.replace('#','');return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]};
-let D=null,t=35,view='ahora',covers=[],deckgl=null,zoom=8.6;
-const VIEWS={all:{longitude:-3.72,latitude:40.47,zoom:8.5,pitch:52,bearing:-14},cap:{longitude:-3.69,latitude:40.42,zoom:11.2,pitch:55,bearing:-20},sur:{longitude:-3.80,latitude:40.32,zoom:11,pitch:55,bearing:-10}};
-function nightness(h){if(h>=22||h<6)return 1;if(h>=20)return (h-20)/2;if(h<8)return (8-h)/2;return 0}
-function decode(b64,n){const s=atob(b64);const o=new Uint8Array(n);for(let i=0;i<n;i++)o[i]=(s.charCodeAt(i>>3)>>(7-(i&7)))&1;return o}
-function isOpen(d){return d[2]===0||(d[2]===1&&D.masks[d[3]][t]==='1')}
-function mix(a,b,k){return a.map((v,i)=>Math.round(v+(b[i]-v)*k))}
-function layers(){
-  const c=covers[t], h=t%24, nk=nightness(h);
-  const cm=rgb(css('--cm')), cov=rgb(css('--covered')), ink=rgb(css('--ink'));
-  const dark=mix(rgb(css('--paper')),[22,8,11],nk);
-  document.getElementById('stage').style.backgroundColor=`rgb(${dark.join(',')})`;
-  const outline=nk>0.5||matchMedia('(prefers-color-scheme: dark)').matches&&document.documentElement.dataset.theme!=='light'?[255,210,215,70]:[...ink,60];
+'use strict';
+const $=id=>document.getElementById(id);
+const DIAS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+const fmt=n=>{const r=Math.round(n),s=String(Math.abs(r)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');return (r<0?'−':'')+s};
+const p1=v=>v.toLocaleString('es-ES',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';
+const hh=h=>String(h).padStart(2,'0')+':00';
+const etiquetaT=t=>DIAS[Math.floor(t/24)]+', '+hh(t%24);
+const ROJO=[200,16,46],ROJO_H=[138,10,31],PIZ=[91,111,132],TINTA=[36,23,27];
+const mezcla=(a,b,k)=>a.map((v,i)=>Math.round(v+(b[i]-v)*k));
+const nombreBonito=n=>{const m=n.match(/^(.*), (El|La|Los|Las)$/);return m?m[2]+' '+m[1]:n};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const movil=()=>innerWidth<768;
+
+let zoomPintado=8,cache={k:''},D=null,T=35,vista='ahora',sel=-1,hover=-1,poniendo=false,zoom=8.6,bearing=-16,pitch=50;
+let cub=[],extra=new Set(),mios=[],curvaG=[],curvaM=[],abiertosT=[],ordenM=[],MAD=-1,polis=[];
+function vista0(){const mv=movil(),izq=mv?0:520,abajo=mv?innerHeight*.44+80:160;
+  const w=innerWidth-izq-(mv?16:60),h=innerHeight-abajo-(mv?60:40);
+  const z=Math.min(Math.log2(w*360/(512*1.6)),Math.log2(h*360/(512*1.8))+.4);const ppd=512*2**z/360;
+  return {longitude:-3.80-(izq/2)/ppd,latitude:40.53-(abajo/2-20)/(ppd*1.31)*1.25,zoom:z,pitch:50,bearing:-16}}
+
+/* ---------- utilidades de datos ---------- */
+function decode(b64,n){const s=atob(b64),o=new Uint8Array(n);for(let i=0;i<n;i++)o[i]=(s.charCodeAt(i>>3)>>(7-(i&7)))&1;return o}
+const abierto=(d,t)=>d[2]===0||(d[2]===1&&D.masks[d[3]][t]==='1');
+const cubierta=(i,t)=>cub[t][i]===1||extra.has(i);
+function metros(a,b){const k=Math.cos(40.4*Math.PI/180);const dx=(a[0]-b[0])*111320*k,dy=(a[1]-b[1])*110540;return Math.hypot(dx,dy)}
+function noche(h){if(h>=22||h<6)return 1;if(h>=20)return (h-20)/2;if(h<8)return (8-h)/2;return 0}
+function ahoraT(){const p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Madrid',weekday:'short',hour:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+  const w=p.find(x=>x.type==='weekday').value,h=+p.find(x=>x.type==='hour').value;return ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].indexOf(w)*24+h}
+
+function calcular(){
+  const S=D.secs,n=S.length,nm=D.munis.length;
+  const totM=new Float64Array(nm);let tot=0,totF=0,tot65=0;
+  for(const s of S){totM[s[4]]+=s[2];tot+=s[2];tot65+=s[3];if(s[4]!==MAD)totF+=s[2]}
+  curvaG=[];curvaM=Array.from({length:nm},()=>new Float32Array(168));
+  for(let t=0;t<168;t++){const cm=new Float64Array(nm);let c=0,cf=0,c65=0;
+    for(let i=0;i<n;i++)if(cubierta(i,t)){const s=S[i];cm[s[4]]+=s[2];c+=s[2];c65+=s[3];if(s[4]!==MAD)cf+=s[2]}
+    curvaG.push([100*c/tot,100*cf/totF,100*c65/tot65,tot-c]);
+    for(let m=0;m<nm;m++)curvaM[m][t]=totM[m]?100*cm[m]/totM[m]:0}
+  D.totM=totM;
+}
+
+/* ---------- mapa ---------- */
+let mapa=null,dk=null;
+function iniciarMapa(){
+  const v0=vista0();try{mapa=new maplibregl.Map({container:'mapa',style:'https://tiles.openfreemap.org/styles/positron',center:[v0.longitude,v0.latitude],zoom:v0.zoom-.9,pitch:0,bearing:0,interactive:false,attributionControl:false,maxPitch:85})}catch(e){mapa=null}
+  dk=new deck.Deck({parent:$('deck'),initialViewState:{...vista0(),zoom:vista0().zoom-.9,pitch:0,bearing:0},controller:{dragRotate:true,touchRotate:true,doubleClickZoom:true},
+    onViewStateChange:({viewState:v})=>{sincronizar(v);return v},
+    getCursor:({isHovering,isDragging})=>poniendo?'crosshair':isDragging?'grabbing':isHovering?'pointer':'grab',
+    onHover:alPasar,onClick:alPulsar,layers:[]});
+  sincronizar({...vista0(),zoom:vista0().zoom-.9,pitch:0,bearing:0});
+}
+function sincronizar(v){if(mapa)mapa.jumpTo({center:[v.longitude,v.latitude],zoom:v.zoom,bearing:v.bearing,pitch:v.pitch});
+  const cruz=(v.zoom>12)!==(zoom>12)||Math.abs(v.zoom-zoomPintado)>.2;zoom=v.zoom;bearing=v.bearing;pitch=v.pitch;$('aguja').setAttribute('transform','rotate('+(-bearing)+')');if(cruz)pintar()}
+function volar(v,ms=1600){const cur={longitude:mapaCentro()[0],latitude:mapaCentro()[1],zoom,pitch,bearing};
+  dk.setProps({initialViewState:{...cur,...v,transitionDuration:reduce?0:ms,transitionInterpolator:new deck.FlyToInterpolator({speed:1.4}),transitionEasing:t=>1-Math.pow(1-t,3)}})}
+let centro=[-3.8,40.5];
+function mapaCentro(){const vp=dk&&dk.getViewports()[0];return vp?[vp.longitude,vp.latitude]:centro}
+
+function capas(){
+  const t=T,nk=noche(t%24),S=D.secs,clave=t+'|'+extra.size;
+  if(cache.k!==clave){const sc=[],cu=[];for(let i=0;i<S.length;i++)(cubierta(i,t)?cu:sc).push(i);cache={k:clave,sc,cu,dea:D.dea.filter(d=>abierto(d,t))}}
+  const sinCubrir=cache.sc,cubiertas=cache.cu;zoomPintado=zoom;
+  const esc=1.5*Math.pow(.55,Math.max(0,zoom-9));
+  const borde=nk>.5?[255,225,228,90]:[...TINTA,55];
   const L=[
-    new deck.PathLayer({id:'mun',data:D.contornos,getPath:d=>d,getColor:outline,widthUnits:'pixels',getWidth:1}),
-    new deck.ScatterplotLayer({id:'cub',data:D.idx,getPosition:i=>[D.secs[i][0],D.secs[i][1]],getRadius:110,radiusMinPixels:1,getFillColor:i=>c[i]?[...cov,nk>0.5?150:220]:[0,0,0,0],updateTriggers:{getFillColor:[t,nk]}}),
-    new deck.ColumnLayer({id:'col',data:D.idx.filter(i=>!c[i]),diskResolution:4,radius:230,extruded:true,elevationScale:1.1,getPosition:i=>[D.secs[i][0],D.secs[i][1]],getElevation:i=>D.secs[i][2],getFillColor:i=>{const k=Math.min(1,D.secs[i][3]/D.secs[i][2]/0.35);return [...mix(cm,[255,120,135],1-k),235]},material:{ambient:.55,diffuse:.6,shininess:20},pickable:true,updateTriggers:{getFillColor:t}}),
-    new deck.ScatterplotLayer({id:'dea',data:D.dea.filter(isOpen),visible:zoom>11.5,getPosition:d=>[d[0],d[1]],getRadius:18,radiusMinPixels:1.6,getFillColor:nk>0.5?[255,255,255,230]:[...ink,220],updateTriggers:{getFillColor:nk}})
+    new deck.PolygonLayer({id:'munis',data:polis,getPolygon:d=>d.r,filled:true,stroked:true,pickable:true,
+      getFillColor:d=>{const c=colorArr(curvaM[d.m][t]);const a=d.m===sel?150:d.m===hover?135:nk>.5?70:95;return [...c,a]},
+      getLineColor:d=>d.m===sel?[...ROJO,255]:borde,getLineWidth:d=>d.m===sel?2.5:1,lineWidthUnits:'pixels',
+      updateTriggers:{getFillColor:[t,sel,hover,nk>.5,extra.size],getLineColor:[sel,nk>.5],getLineWidth:sel}}),
+    new deck.ScatterplotLayer({id:'cub',data:cubiertas,getPosition:i=>[S[i][0],S[i][1]],getRadius:95,radiusMinPixels:1.2,
+      getFillColor:nk>.5?[150,175,205,170]:[...PIZ,190],updateTriggers:{getFillColor:nk>.5}}),
+    new deck.ColumnLayer({id:'col',data:sinCubrir,diskResolution:4,angle:45,radius:200,extruded:true,elevationScale:esc,pickable:true,
+      getPosition:i=>[S[i][0],S[i][1]],getElevation:i=>S[i][2],
+      getFillColor:i=>{const s=S[i];const k=Math.min(1,s[3]/Math.max(1,s[2])/.33);return [...mezcla([236,98,112],ROJO_H,k),245]},
+      material:{ambient:.6,diffuse:.55,shininess:24,specularColor:[255,235,235]},
+      transitions:reduce?{}:{getElevation:{duration:450,enter:()=>[0]}}}),
+    new deck.ScatterplotLayer({id:'dea',data:cache.dea,visible:zoom>12,getPosition:d=>[d[0],d[1]],getRadius:10,radiusMinPixels:2.5,
+      stroked:true,getLineColor:[255,255,255,255],lineWidthMinPixels:1,getFillColor:nk>.5?[255,214,92,255]:[...TINTA,255],updateTriggers:{getFillColor:nk>.5}})
   ];
-  if(view==='actuar'){L.push(new deck.ColumnLayer({id:'new',data:D.nuevos,diskResolution:4,radius:260,extruded:true,getPosition:d=>[d.lon,d.lat],getElevation:9000,getFillColor:nk>0.5?[255,255,255,255]:[...ink,255],pickable:true}),
-    new deck.TextLayer({id:'newt',data:D.nuevos.map((d,i)=>({...d,i:i+1})),getPosition:d=>[d.lon,d.lat,9600],getText:d=>String(d.i),getSize:16,getColor:nk>0.5?[255,255,255,255]:[...ink,255],fontFamily:'JetBrains Mono, monospace',fontWeight:600,getPixelOffset:[0,-8]}))}
+  if(vista==='actuar'){
+    L.push(new deck.ColumnLayer({id:'nuevos',data:D.nuevos,diskResolution:4,angle:45,radius:150,extruded:true,pickable:true,getPosition:d=>[d.lon,d.lat],getElevation:(d,{index})=>(5500+(index%3)*2600)*esc/1.5,
+      getFillColor:nk>.5?[255,255,255,255]:[...TINTA,255],material:{ambient:.7,diffuse:.4}}),
+      new deck.TextLayer({id:'nuevosT',data:D.nuevos.map((d,i)=>({...d,i:i+1})),getPosition:d=>[d.lon,d.lat,(6100+((d.i-1)%3)*2600)*esc/1.5],getText:d=>String(d.i),getSize:17,
+        getColor:nk>.5?[255,255,255,255]:[...TINTA,255],fontFamily:'Fraunces, Georgia, serif',fontWeight:600,getPixelOffset:[0,-10],
+        background:true,getBackgroundColor:nk>.5?[...ROJO,255]:[255,255,255,240],backgroundPadding:[5,2]}));
+  }
+  if(mios.length){
+    L.push(new deck.ScatterplotLayer({id:'radio',data:mios,getPosition:d=>d.p,getRadius:200,filled:true,stroked:true,getFillColor:[...ROJO,30],getLineColor:[...ROJO,220],lineWidthMinPixels:1.5}),
+      new deck.ColumnLayer({id:'miosC',data:mios,diskResolution:4,angle:45,radius:60,extruded:true,getPosition:d=>d.p,getElevation:2500*esc/1.5,getFillColor:[255,214,92,255],material:{ambient:.7,diffuse:.4}}));
+  }
   return L;
 }
-function render(){if(deckgl)deckgl.setProps({layers:layers()})}
-function setT(v){t=v;const c=D.curva[v];
-  hWhen.textContent=label(v);hPct.textContent=pct(c[1]);hF.textContent=pct(c[2]);h65.textContent=pct(c[3]);hOpen.textContent=fmt(c[0]);
-  const x=X(v);const cur=document.getElementById('cur');if(cur){cur.setAttribute('x1',x);cur.setAttribute('x2',x);const dot=document.getElementById('curdot');dot.setAttribute('cx',x);dot.setAttribute('cy',Y(c[1]))}
-  render()}
-const X=v=>40+v*(1140/167), Y=p=>130-p*(118/70);
-function strip(){const s=document.getElementById('strip');let g='';
-  for(let x=40;x<=1180;x+=1140/56)g+=`<line x1="${x}" x2="${x}" y1="8" y2="130" stroke="var(--monitor-grid)" stroke-width="1"/>`;
-  for(const p of [0,20,40,60])g+=`<line x1="40" x2="1180" y1="${Y(p)}" y2="${Y(p)}" stroke="var(--monitor-grid)"/><text x="34" y="${Y(p)+4}" text-anchor="end" fill="#b98d94" font-family="JetBrains Mono, monospace" font-size="11">${p}</text>`;
-  DAYS.forEach((d,i)=>{g+=`<line x1="${X(i*24)}" x2="${X(i*24)}" y1="8" y2="130" stroke="#6a2a34" stroke-width="1.5"/><text x="${X(i*24)+6}" y="146" fill="#d9b9be" font-family="JetBrains Mono, monospace" font-size="12">${d.slice(0,3).toUpperCase()}</text>`});
-  const path=k=>D.curva.map((c,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(c[k]).toFixed(1)).join('');
-  g+=`<path d="${path(2)}" fill="none" stroke="#a8505d" stroke-width="1.6" stroke-dasharray="4 4"/>`;
-  g+=`<path d="${path(1)}" fill="none" stroke="var(--pulse)" stroke-width="2.6" stroke-linejoin="round" style="filter:drop-shadow(0 0 4px rgba(255,48,72,.6))"/>`;
-  g+=`<text x="${X(126)}" y="${Y(48)}" fill="var(--pulse)" font-family="JetBrains Mono, monospace" font-size="12">TODA LA COMUNIDAD</text><text x="${X(126)}" y="${Y(4)}" fill="#c77984" font-family="JetBrains Mono, monospace" font-size="12">FUERA DE LA CAPITAL</text>`;
-  g+=`<line id="cur" x1="${X(t)}" x2="${X(t)}" y1="6" y2="132" stroke="#fff" stroke-width="1.5"/><circle id="curdot" cx="${X(t)}" cy="${Y(D.curva[t][1])}" r="5" fill="#fff"/>`;
-  s.innerHTML=g;
-  let drag=false;const pick=e=>{const r=s.getBoundingClientRect();const vx=(e.clientX-r.left)/r.width*1200;setT(Math.max(0,Math.min(167,Math.round((vx-40)/(1140/167)))))};
-  s.addEventListener('pointerdown',e=>{drag=true;s.setPointerCapture(e.pointerId);stop();pick(e)});s.addEventListener('pointermove',e=>{if(drag)pick(e)});s.addEventListener('pointerup',()=>drag=false);
-}
-function tables(){
-  document.querySelector('#tNew tbody').innerHTML=D.nuevos.map((n,i)=>`<tr><td><span class="tag">${i+1}</span></td><td>${n.muni}</td><td class="n">${fmt(n.personas)}</td><td class="n">${fmt(n.mayores)}</td></tr>`).join('');
-  aPers.textContent='+'+fmt(D.nuevos.reduce((a,n)=>a+n.personas,0));aMay.textContent=fmt(D.nuevos.reduce((a,n)=>a+n.mayores,0));
-  const big=D.municipios.filter(m=>m[1]>=20000).map(m=>[...m,m[2]-m[3]]).sort((a,b)=>b[5]-a[5]).slice(0,12);
-  document.querySelector('#tMun tbody').innerHTML=big.map(m=>`<tr><td>${m[0]}</td><td class="n">${pct(m[2])}</td><td class="n">${pct(m[3])}</td><td><span class="bar"><s style="width:${m[2]}%"></s><i style="width:${m[3]}%"></i></span></td></tr>`).join('');
-  const sin=D.municipios.filter(m=>!m[4]).sort((a,b)=>b[1]-a[1]);
-  sinDea.textContent=sin.length+' municipios, donde viven '+fmt(sin.reduce((a,m)=>a+m[1],0))+' personas: '+sin.map(m=>m[0]+' ('+fmt(m[1])+')').join(', ')+'.';
-  const a=D.curva[35],b=D.curva[147];fDay.textContent=Math.round(a[1])+' %';fNight.textContent=Math.round(b[1])+' %';fNightF.textContent=Math.round(b[2])+' %';
-}
-function route(){const v=(location.hash||'#ahora').slice(1);view=['ahora','actuar','porque','metodo'].includes(v)?v:'ahora';
-  document.querySelectorAll('nav a').forEach(a=>{if(a.dataset.view===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
-  document.querySelectorAll('section.view').forEach(s=>s.hidden=s.id!=='v-'+view);
-  legNew.hidden=view!=='actuar';
-  if(D){if(view==='actuar'&&t!==147)setT(147);else render()}}
-window.addEventListener('hashchange',route);
-function fly(k){deckgl.setProps({initialViewState:{...VIEWS[k],transitionDuration:1400,transitionInterpolator:new deck.FlyToInterpolator()}})}
-document.querySelectorAll('.fly').forEach(b=>b.onclick=()=>fly(b.dataset.fly));
-document.querySelectorAll('.preset').forEach(b=>b.onclick=()=>{stop();setT(+b.dataset.t)});
-let timer=null;
-function stop(){clearInterval(timer);timer=null;play.setAttribute('aria-pressed','false');play.textContent='Reproducir semana'}
-play.onclick=()=>{if(timer){stop();return}const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;play.setAttribute('aria-pressed','true');play.textContent='Pausa';timer=setInterval(()=>setT((t+(rm?6:1))%168),rm?700:160)};
-const reth=()=>render();matchMedia('(prefers-color-scheme: dark)').addEventListener('change',reth);
-new MutationObserver(reth).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-fetch('datos.json').then(r=>r.json()).then(d=>{D=d;D.idx=D.secs.map((_,i)=>i);covers=D.cov.map(b=>decode(b,D.secs.length));
-  strip();tables();
-  if(window.deck){deckgl=new deck.DeckGL({container:'deck',initialViewState:VIEWS.all,controller:{dragRotate:true,touchRotate:true},layers:[],
-    onViewStateChange:({viewState})=>{const z=viewState.zoom;const crossed=(z>11.5)!==(zoom>11.5);zoom=z;if(crossed)render()},
-    getTooltip:({object,layer})=>{if(!object)return null;if(layer.id==='new')return {text:object.muni+'\n+'+fmt(object.personas)+' vecinos cubiertos de madrugada'};if(layer.id==='col'){const q=D.secs[object];return {text:D.munis[q[4]]+'\n'+fmt(q[2])+' vecinos sin desfibrilador abierto a 200 m\n'+fmt(q[3])+' mayores de 65'}}return null}});}
-  else{document.getElementById('deck').textContent='No se ha podido cargar el mapa 3D.'}
-  route();setT(view==='actuar'?147:35)}).catch(()=>{document.getElementById('deck').textContent='No se han podido cargar los datos del mapa. Recarga la página.'});
-</script>
+function pintar(){if(dk&&D)dk.setProps({layers:capas()})}
 
+/* ---------- interacción con el mapa ---------- */
+const eti=$('etiqueta');
+function alPasar(info){
+  const o=info.object,id=info.layer&&info.layer.id;let m=-1,html='';
+  if(o!=null&&!poniendo){
+    if(id==='col'){const s=D.secs[o];m=s[4];html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${fmt(s[2])}</b> vecinos sin aparato abierto a 200 m</span><em>${fmt(s[3])} con más de 65 años. ${etiquetaT(T)}</em>`}
+    else if(id==='munis'){m=o.m;html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${p1(curvaM[m][T])}</b> de vecinos cubiertos</span><em>${etiquetaT(T)}. Pulsa para ver su ficha</em>`}
+    else if(id==='nuevos'){html=`<strong>${nombreBonito(o.muni)}</strong><span><b>+${fmt(o.personas)}</b> vecinos cubiertos a cualquier hora</span><em>${fmt(o.mayores)} con más de 65 años</em>`}
+  }
+  if(html){eti.innerHTML=html;eti.hidden=false;const x=Math.min(info.x+16,innerWidth-eti.offsetWidth-8),y=Math.min(info.y+16,innerHeight-eti.offsetHeight-8);eti.style.transform=`translate(${x}px,${y}px)`}else eti.hidden=true;
+  if(m!==hover){hover=m;pintar()}
+}
+function alPulsar(info){
+  if(poniendo&&info.coordinate){ponerAparato(info.coordinate);return}
+  const o=info.object,id=info.layer&&info.layer.id;
+  if(o==null){if(sel>=0&&!movil())cerrarFicha();return}
+  if(id==='col')abrirFicha(D.secs[o][4]);
+  else if(id==='munis')abrirFicha(o.m);
+  else if(id==='nuevos'){const i=D.nuevos.indexOf(o);irASitio(i)}
+}
+
+/* ---------- reloj y cifras ---------- */
+function ponerT(t,{suave}={}){
+  T=(t+168)%168;const d=Math.floor(T/24),h=T%24;
+  $('cursorSeg').style.setProperty('--i',d);
+  document.querySelectorAll('#dias button').forEach((b,i)=>b.setAttribute('aria-pressed',i===d));
+  $('hora').value=h;$('horaTxt').textContent=hh(h);
+  const esAhora=T===ahoraT();$('cuandoTxt').textContent=DIAS[d]+(esAhora?', ahora':'');
+  $('chipAhora').style.opacity=esAhora?1:.75;
+  const c=curvaG[T];
+  $('cPct').innerHTML=Math.round(c[0])+'<small>%</small>';
+  $('cTexto').innerHTML=`tiene un desfibrilador abierto a menos de 200 metros. <b>${fmt(c[3])}</b> personas, no.`;
+  $('rSi').style.flexGrow=c[0];$('rNo').style.flexGrow=100-c[0];
+  $('cFuera').textContent=p1(c[1]);$('c65').textContent=p1(c[2]);$('cAbiertos').textContent=fmt(abiertosT[T]);
+  $('noche').style.opacity=(noche(h)*.62).toFixed(2);
+  const x=X(T);$('tCur').setAttribute('x1',x);$('tCur').setAttribute('x2',x);$('tPunto').setAttribute('cx',x);$('tPunto').setAttribute('cy',Y(c[0]));
+  $('tEtiq').setAttribute('x',Math.min(x+6,TW-62));$('tEtiq').textContent=DIAS[d].slice(0,3)+' '+hh(h);
+  grupos();if(sel>=0)actualizarFicha();if(mios.length)resultadoSim();
+  pintar();
+}
+let TW=1000;const X=t=>8+t*((TW-16)/167),Y=p=>70-p*(62/70);
+function tira(){
+  const s=$('tira');TW=Math.max(200,Math.round(s.getBoundingClientRect().width)||1000);s.setAttribute('viewBox',`0 0 ${TW} 78`);let g='';
+  for(let h=0;h<168;h++){const nk=noche(h%24);if(nk>0)g+=`<rect x="${X(h)-(TW-16)/334}" y="0" width="${(TW-16)/167+.5}" height="72" fill="#1d2440" opacity="${(nk*.07).toFixed(3)}"/>`}
+  DIAS.forEach((d,i)=>{g+=`<line x1="${X(i*24)}" x2="${X(i*24)}" y1="0" y2="72" stroke="#dacfc3"/><text x="${X(i*24)+4}" y="10" font-size="9.5" font-weight="650" fill="#918288" font-family="Figtree,sans-serif" letter-spacing=".6">${d.slice(0,3).toUpperCase()}</text>`});
+  const camino=k=>curvaG.map((c,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(c[k]).toFixed(1)).join('');
+  g+=`<path d="${camino(0)}L${X(167)} 72L${X(0)} 72Z" fill="rgba(200,16,46,.07)"/>`;
+  g+=`<path d="${camino(1)}" fill="none" stroke="#c98a92" stroke-width="1.4" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/>`;
+  g+=`<path id="tLinea" d="${camino(0)}" fill="none" stroke="#c8102e" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+  g+=`<line id="tCur" y1="0" y2="72" stroke="#24171b" stroke-width="1.4" vector-effect="non-scaling-stroke"/><circle id="tPunto" r="4" fill="#fff" stroke="#c8102e" stroke-width="2" vector-effect="non-scaling-stroke"/><text id="tEtiq" y="22" font-size="10" font-weight="700" fill="#24171b" font-family="Figtree,sans-serif"></text>`;
+  s.innerHTML=g;
+}
+(()=>{const s=$('tira');
+  let arr=false;const elegir=e=>{const r=s.getBoundingClientRect();const vx=(e.clientX-r.left)/r.width*TW;ponerT(Math.max(0,Math.min(167,Math.round((vx-8)/((TW-16)/167)))))};
+  s.addEventListener('pointerdown',e=>{arr=true;s.setPointerCapture(e.pointerId);parar();elegir(e)});
+  s.addEventListener('pointermove',e=>{if(arr)elegir(e)});s.addEventListener('pointerup',()=>arr=false);
+})();
+let retiro=null;const rehacerTira=()=>{clearTimeout(retiro);retiro=setTimeout(()=>{if(D){tira();ponerT(T)}},650)};addEventListener('resize',rehacerTira);
+let reloj=null;
+function parar(){clearInterval(reloj);reloj=null;$('playIco').innerHTML='<path d="M3 1l12 7-12 7z"/>';$('play').setAttribute('aria-label','Reproducir la semana')}
+$('play').onclick=()=>{if(reloj){parar();return}$('playIco').innerHTML='<path d="M2 1h4v14H2zM10 1h4v14h-4z"/>';$('play').setAttribute('aria-label','Pausa');reloj=setInterval(()=>ponerT(T+(reduce?6:1)),reduce?700:170)};
+
+/* ---------- grupos de municipios ---------- */
+const GRUPOS=[
+  {n:'Casi todos cubiertos',d:'60 % o más',c:'#5b6f84',f:v=>v>=60},
+  {n:'Más de la mitad',d:'',c:'#9fb0c1',f:v=>v>=40&&v<60},
+  {n:'Menos de la mitad',d:'',c:'#f2a8a4',f:v=>v>=10&&v<40},
+  {n:'Casi nadie',d:'menos del 10 %',c:'#c8102e',f:v=>v<10}];
+let abiertos=new Set();
+function grupos(){
+  const cont=$('grupos');let html='';
+  const conDea=new Set(D.municipios.map((m,i)=>m[4]?i:-1));
+  const sin=[],porG=GRUPOS.map(()=>[]);
+  D.munis.forEach((n,m)=>{if(!conDea.has(m)){sin.push(m);return}const v=curvaM[m][T];porG[GRUPOS.findIndex(g=>g.f(v))].push(m)});
+  const lista=(k,ms,nom,color,des)=>{ms.sort((a,b)=>D.totM[b]-D.totM[a]);const ab=abiertos.has(k);
+    return `<div class="grupo${ab?' abierto':''}"><button class="grupo-cab" data-g="${k}" aria-expanded="${ab}"><span class="grupo-color" style="background:${color}"></span><span class="grupo-nombre">${nom}${des?` <small class="nota" style="font-family:var(--sans)">${des}</small>`:''}</span><span class="grupo-cuenta">${ms.length}</span><span class="plegar"></span></button>${ab?`<ul class="grupo-lista">${ms.map(m=>`<li><button class="pastilla${m===sel?' activo':''}" data-m="${m}">${nombreBonito(D.munis[m])}</button></li>`).join('')}</ul>`:''}</div>`};
+  GRUPOS.forEach((g,k)=>html+=lista(k,porG[k],g.n,g.c,g.d));
+  html+=lista(9,sin,'Sin ningún aparato fijo','#24171b','');
+  cont.innerHTML=html;
+}
+$('grupos').addEventListener('click',e=>{const g=e.target.closest('[data-g]'),m=e.target.closest('[data-m]');
+  if(g){const k=+g.dataset.g;abiertos.has(k)?abiertos.delete(k):abiertos.add(k);grupos()}
+  if(m)abrirFicha(+m.dataset.m)});
+
+/* ---------- ficha ---------- */
+const fotos={};
+const ESCALA=[[0,ROJO],[20,[238,150,152]],[40,[240,226,222]],[60,[178,193,208]],[100,PIZ]];
+function colorArr(v){for(let i=1;i<ESCALA.length;i++)if(v<=ESCALA[i][0]){const k=(v-ESCALA[i-1][0])/(ESCALA[i][0]-ESCALA[i-1][0]);return mezcla(ESCALA[i-1][1],ESCALA[i][1],k)}return PIZ}
+const colorV=v=>'rgb('+colorArr(v).join(',')+')';
+function abrirFicha(m){
+  sel=m;rehacerTira();document.body.classList.add('con-ficha');document.documentElement.style.setProperty('--der',movil()?'0px':'452px');
+  const ps=D.poligonos[m].flat();let x0=180,x1=-180,y0=90,y1=-90;for(const [x,y] of ps){x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y)}
+  const span=Math.max(x1-x0,(y1-y0)*1.3);const z=Math.max(9,Math.min(12,Math.log2(360/span)+(movil()?.1:.2)));
+  const ppd=512*2**z/360;volar({longitude:(x0+x1)/2-(movil()?0:(520-452)/2/ppd),latitude:(y0+y1)/2-(movil()?innerHeight*.3:70)/(ppd*1.31),zoom:z,pitch:52});
+  $('ficha').hidden=false;$('ficha').scrollTop=0;construirFicha();grupos();pintar();
+}
+function cerrarFicha(){rehacerTira();document.body.classList.remove('con-ficha');sel=-1;$('ficha').hidden=true;document.documentElement.style.setProperty('--der','0px');grupos();pintar()}
+function veredicto(m){
+  const c=curvaM[m],max=Math.max(...c),min=Math.min(...c),dia=c[35],noc=c[147];
+  if(!D.municipios[m][4])return {c:'#24171b',t:'Sin ningún aparato fijo',p:`No tiene ningún desfibrilador registrado fuera de los centros sanitarios. Sus ${fmt(D.totM[m])} vecinos dependen de la ambulancia.`};
+  if(max<10)return {c:'#c8102e',t:'Casi nadie tiene uno cerca',p:`Tiene aparatos, pero lejos de donde vive la gente: nunca pasa del ${p1(max)} de vecinos cubiertos.`};
+  if(dia-noc>15)return {c:'#c8102e',t:'Cubierto de día, a oscuras de noche',p:`Un martes a las 11 tiene cubierto al ${p1(dia)} de sus vecinos. Un domingo a las 3, al ${p1(noc)}. Sus aparatos están en sitios que cierran.`};
+  if(min>=50)return {c:'#5b6f84',t:'Bien cubierto casi siempre',p:`Incluso en su peor hora tiene cubierto al ${p1(min)} de sus vecinos.`};
+  return {c:'#9a6b2f',t:'Cobertura a medias',p:`Se mueve entre el ${p1(min)} y el ${p1(max)} de vecinos cubiertos según la hora.`};
+}
+function construirFicha(){
+  const m=sel,n=nombreBonito(D.munis[m]),mun=D.municipios[m];
+  const mios=D.dea.filter(d=>d[4]===m),fijos24=mios.filter(d=>d[2]===0).length;
+  const v=veredicto(m);
+  const porTipo=D.tipos.map((tp,k)=>({tp,n:mios.filter(d=>d[5]===k).length,s:mios.filter(d=>d[5]===k&&d[2]===0).length})).filter(x=>x.n).sort((a,b)=>b.n-a.n);
+  const maxT=Math.max(1,...porTipo.map(x=>x.n));
+  const nuevosAqui=D.nuevos.map((d,i)=>({...d,i})).filter(d=>d.muni===n||d.muni===D.munis[m]);
+  const rank=ordenM.indexOf(m)+1;
+  let huella='';for(let d=0;d<7;d++){huella+=`<span>${DIAS[d].slice(0,1)}</span>`;for(let h=0;h<24;h++){const t=d*24+h;huella+=`<button data-t="${t}" style="--c:${colorV(curvaM[m][t])}" title="${etiquetaT(t)}: ${p1(curvaM[m][t])}"${t===T?' class="actual"':''}></button>`}}
+  $('ficha').innerHTML=`
+    <figure class="foto" id="foto">${miniMapa(m)}<figcaption id="fotoPie"></figcaption><button class="cerrar" id="cerrarFicha" aria-label="Cerrar ficha"></button></figure>
+    <div class="miga">Municipio</div>
+    <h2 class="ficha-nombre">${n}</h2>
+    <p class="ficha-datos">${fmt(mun[1])} habitantes, ${fmt(mios.length)} desfibriladores fijos${mios.length?` y ${fmt(fijos24)} abiertos las 24 horas`:''}</p>
+    <div class="veredicto" style="--c:${v.c}"><div><strong>${v.t}</strong><p>${v.p}</p></div></div>
+    <div class="seccion"><h3>A esta hora <span id="fHoraTxt" style="text-transform:none;letter-spacing:0;font-weight:600;color:var(--tinta-2)"></span></h3>
+      <div class="cifra-grande" style="margin:0"><span class="cifra" id="fPct"></span><p id="fPctTxt"></p></div></div>
+    <div class="seccion"><h3>Su semana, hora a hora</h3><div class="huella" id="huella">${huella}</div>
+      <div class="huella-pie"><span>0 h</span><span>6 h</span><span>12 h</span><span>18 h</span><span>23 h</span></div>
+      <div class="escala">nadie cubierto <i></i> todos</div></div>
+    ${porTipo.length?`<div class="seccion"><h3>Dónde están sus aparatos</h3><ul class="barras">${porTipo.map(x=>`<li><b>${x.tp}</b><span class="valor">${x.n}</span><span class="barra"><i style="width:${100*x.s/maxT}%"></i><i style="width:${100*(x.n-x.s)/maxT}%"></i></span></li>`).join('')}</ul><div class="leyenda-barras"><span><i></i>abiertos 24 h</span><span><i class="claro"></i>con horario o sin él</span></div></div>`:''}
+    <div class="seccion"><h3>Lo que más ayudaría</h3>${nuevosAqui.length?`<p class="nota" style="color:var(--tinta-2);font-size:13.5px">Entre los diez mejores sitios de la Comunidad para un aparato 24 horas, ${nuevosAqui.length===1?'uno está':nuevosAqui.length+' están'} aquí:</p><ol class="sitios" style="margin-top:8px">${nuevosAqui.map(d=>sitioHTML(d,d.i)).join('')}</ol>`:`<p class="nota" style="color:var(--tinta-2);font-size:13.5px">De madrugada está en el puesto <b>${rank}</b> de 179 por vecinos cubiertos. Puedes probar a poner un aparato aquí en <button class="enlace" id="irActuar">Dónde actuar</button>.</p>`}</div>`;
+  actualizarFicha();cargarFoto(n);
+  $('cerrarFicha').onclick=cerrarFicha;
+  $('huella').onclick=e=>{const b=e.target.closest('[data-t]');if(b){parar();ponerT(+b.dataset.t)}};
+  const ir=$('irActuar');if(ir)ir.onclick=()=>{location.hash='actuar'};
+  $('ficha').querySelectorAll('.sitio').forEach(b=>b.onclick=()=>irASitio(+b.dataset.i));
+}
+function actualizarFicha(){if(sel<0||!$('fPct'))return;const v=curvaM[sel][T];
+  $('fPct').innerHTML=Math.round(v)+'<small>%</small>';$('fHoraTxt').textContent=etiquetaT(T);
+  $('fPctTxt').innerHTML=`de sus vecinos tiene un aparato abierto a menos de 200 m. En toda la Comunidad, el ${p1(curvaG[T][0])}.`;
+  $('ficha').querySelectorAll('.huella button').forEach(b=>b.classList.toggle('actual',+b.dataset.t===T))}
+function miniMapa(m){
+  const ps=D.poligonos[m];let x0=180,x1=-180,y0=90,y1=-90;for(const r of ps)for(const [x,y] of r){x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y)}
+  const k=Math.cos(40.4*Math.PI/180),W=420,H=200,pad=24,sc=Math.min((W-2*pad)/((x1-x0)*k),(H-2*pad)/(y1-y0));
+  const ox=(W-(x1-x0)*k*sc)/2,oy=(H-(y1-y0)*sc)/2,P=(x,y)=>[(ox+(x-x0)*k*sc).toFixed(1),(oy+(y1-y)*sc).toFixed(1)];
+  let g=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice"><rect width="${W}" height="${H}" fill="#c8102e"/>`;
+  for(const r of ps)g+=`<path d="M${r.map(([x,y])=>P(x,y).join(' ')).join('L')}Z" fill="#b00e28" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/>`;
+  for(const d of D.dea)if(d[4]===m){const [x,y]=P(d[0],d[1]);g+=`<rect x="${x-1.6}" y="${y-1.6}" width="3.2" height="3.2" fill="${d[2]===0?'#fff':'rgba(255,255,255,.45)'}"/>`}
+  return g+'</svg>';
+}
+async function cargarFoto(n){
+  const pon=f=>{if(sel<0||nombreBonito(D.munis[sel])!==n||!f)return;const img=new Image();img.alt='Foto de '+n;img.onload=()=>{const fig=$('foto');if(!fig)return;fig.prepend(img);requestAnimationFrame(()=>img.classList.add('cargada'));$('fotoPie').innerHTML=`Foto: <a href="${f.url}" target="_blank" rel="noopener">Wikipedia</a>`};img.src=f.src};
+  if(n in fotos){pon(fotos[n]);return}
+  const pedir=async t=>{const r=await fetch('https://es.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(t.replace(/ /g,'_')));if(!r.ok)return null;const j=await r.json();
+    if(j.type==='disambiguation'||!j.originalimage&&!j.thumbnail)return j.type==='disambiguation'?'dis':null;const im=j.originalimage&&j.originalimage.width<=1600?j.originalimage:j.thumbnail;
+    return {src:(j.thumbnail&&j.thumbnail.source||im.source).replace(/\/\d+px-/,'/640px-'),url:j.content_urls.desktop.page}};
+  try{let f=await pedir(n);if(f==='dis'||!f)f=await pedir(n+' (Madrid)');fotos[n]=f&&f!=='dis'?f:null;pon(fotos[n])}catch(e){fotos[n]=null}
+}
+
+/* ---------- dónde actuar ---------- */
+function sitioHTML(d,i){return `<li><button class="sitio" data-i="${i}" style="animation-delay:${Math.min(i,9)*40}ms"><span class="num">${i+1}</span><span><strong>${nombreBonito(d.muni)}</strong><small>abierto las 24 horas</small></span><span class="mas">+${fmt(d.personas)}<small>vecinos</small></span></button></li>`}
+function sitios(){
+  $('sitios').innerHTML=D.nuevos.map(sitioHTML).join('');
+  $('sitios').querySelectorAll('.sitio').forEach(b=>b.onclick=()=>irASitio(+b.dataset.i));
+  $('sumaPers').textContent='+'+fmt(D.nuevos.reduce((a,d)=>a+d.personas,0));$('sumaMay').textContent=fmt(D.nuevos.reduce((a,d)=>a+d.mayores,0));
+}
+function irASitio(i){const d=D.nuevos[i];if(vista!=='actuar')location.hash='actuar';if(T!==147)ponerT(147);volar({longitude:d.lon,latitude:d.lat,zoom:14.2,pitch:58})}
+function ponerAparato(c){
+  const S=D.secs,gan=[];for(let i=0;i<S.length;i++)if(!extra.has(i)&&metros(S[i],c)<=200)gan.push(i);
+  const antes=curvaG[T][0],antesSecs=gan.filter(i=>!cubierta(i,T)).reduce((a,i)=>a+S[i][2],0);
+  gan.forEach(i=>extra.add(i));mios.push({p:c,g:antesSecs,t:T});
+  calcular();tira();ponerT(T);
+  $('btnQuitar').hidden=false;resultadoSim(antes);
+}
+function resultadoSim(){const base=mios.reduce((a,d)=>a+d.g,0);$('resSim').hidden=false;
+  $('resSim').innerHTML=`Con ${mios.length===1?'tu aparato':'tus '+mios.length+' aparatos'}: <b>+${fmt(base)}</b> vecinos cubiertos en el momento de colocarlos. Ahora la Comunidad está al <b>${p1(curvaG[T][0])}</b> a esta hora.`}
+$('btnPoner').onclick=()=>{poniendo=!poniendo;$('btnPoner').setAttribute('aria-pressed',poniendo);$('btnPoner').textContent=poniendo?'Toca el mapa (pulsa para terminar)':'Colocar en el mapa';$('deck').classList.toggle('poniendo',poniendo);if(poniendo&&zoom<11)volar({zoom:12.5})};
+$('btnQuitar').onclick=()=>{extra.clear();mios=[];calcular();tira();ponerT(T);$('btnQuitar').hidden=true;$('resSim').hidden=true};
+
+/* ---------- vistas ---------- */
+const TITULOS={ahora:'Ahora mismo',actuar:'Dónde actuar',porque:'Por qué importa',metodo:'Cómo se calcula'};
+function ruta(){
+  const v=(location.hash||'#ahora').slice(1);const nueva=TITULOS[v]?v:'ahora';const antes=vista;vista=nueva;
+  document.querySelectorAll('[data-vista]').forEach(b=>b.dataset.vista===vista?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  document.querySelectorAll('.vista').forEach(s=>s.hidden=s.id!=='v-'+vista);
+  $('panelTitulo').textContent=TITULOS[vista];$('desplazable').scrollTop=0;
+  if(vista!=='actuar'&&poniendo)$('btnPoner').click();
+  if(D){if(vista==='actuar'&&antes!=='actuar'){ponerT(147);if(sel<0){const v=vista0();volar({...v,zoom:v.zoom+.8,latitude:40.38,longitude:-3.74-(movil()?0:260)/(512*2**(v.zoom+.8)/360)})}}else pintar()}
+}
+document.querySelectorAll('[data-vista]').forEach(b=>b.onclick=()=>{location.hash=b.dataset.vista});
+addEventListener('hashchange',ruta);
+
+/* ---------- controles ---------- */
+$('brujula').onclick=()=>volar({bearing:0},700);
+$('girarI').onclick=()=>volar({bearing:bearing-35},700);
+$('girarD').onclick=()=>volar({bearing:bearing+35},700);
+$('planta').onclick=()=>{const p=pitch>5?0:50;$('planta').textContent=p?'Vista en planta':'Vista en 3D';volar({pitch:p},800)};
+$('region').onclick=()=>{if(sel>=0)cerrarFicha();volar(vista0())};
+$('chipAhora').onclick=()=>{parar();ponerT(ahoraT())};
+document.querySelectorAll('.chip[data-t]').forEach(b=>b.onclick=()=>{parar();ponerT(+b.dataset.t)});
+$('hora').oninput=e=>{parar();ponerT(Math.floor(T/24)*24+ +e.target.value)};
+$('dias').innerHTML+=DIAS.map((d,i)=>`<button data-d="${i}" aria-label="${d}">${d[0]==='M'&&i===2?'X':d[0]}</button>`).join('');
+$('dias').onclick=e=>{const b=e.target.closest('[data-d]');if(b){parar();ponerT(+b.dataset.d*24+T%24)}};
+document.querySelector('[data-abrir=acerca]').onclick=()=>{$('acerca').hidden=false;$('acerca').querySelector('.cerrar').focus()};
+$('acerca').onclick=e=>{if(e.target===$('acerca')||e.target.closest('[data-cerrar]'))$('acerca').hidden=true};
+addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('acerca').hidden)$('acerca').hidden=true;else if(poniendo)$('btnPoner').click();else if(sel>=0)cerrarFicha()}
+  if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight'){parar();ponerT(T+1)}if(e.key==='ArrowLeft'){parar();ponerT(T-1)}if(e.key===' '&&!document.getElementById('intro')){e.preventDefault();$('play').click()}});
+
+/* buscador */
+let sug=[],sugI=0;
+const sinTildes=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+$('buscar').oninput=e=>{const q=sinTildes(e.target.value.trim());const ul=$('sugerencias');if(!q){ul.hidden=true;return}
+  sug=D.munis.map((n,m)=>({m,n:nombreBonito(n)})).filter(x=>sinTildes(x.n).includes(q)).sort((a,b)=>sinTildes(a.n).indexOf(q)-sinTildes(b.n).indexOf(q)||D.totM[b.m]-D.totM[a.m]).slice(0,7);sugI=0;
+  ul.innerHTML=sug.length?sug.map((x,i)=>`<li><button data-m="${x.m}"${i===0?' class="activo"':''}>${x.n}<small>${fmt(D.totM[x.m])} hab.</small></button></li>`).join(''):'<li class="nota" style="padding:6px 10px">Ningún municipio con ese nombre</li>';ul.hidden=false};
+$('buscar').onkeydown=e=>{const ul=$('sugerencias');if(ul.hidden||!sug.length)return;
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();sugI=(sugI+(e.key==='ArrowDown'?1:-1)+sug.length)%sug.length;ul.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('activo',i===sugI))}
+  if(e.key==='Enter'){elegirSug(sug[sugI].m)}};
+$('sugerencias').onclick=e=>{const b=e.target.closest('[data-m]');if(b)elegirSug(+b.dataset.m)};
+function elegirSug(m){$('sugerencias').hidden=true;$('buscar').value='';$('buscar').blur();abrirFicha(m)}
+document.addEventListener('click',e=>{if(!e.target.closest('.buscador'))$('sugerencias').hidden=true});
+
+/* ---------- entrada animada ---------- */
+const intro=(()=>{
+  const cv=$('introLienzo'),cx=cv.getContext('2d'),frase=$('introFrase'),titulo=$('introTitulo');
+  let W,H,dpr,pts=[],t0=0,listo=false,fin=false,datosListos=false,raf;
+  function tam(){dpr=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+  tam();addEventListener('resize',tam);
+  const lado=()=>Math.min(380,W*.74);
+  function corazon(){for(;;){const x=Math.random()*2.6-1.3,y=Math.random()*2.6-1.25;const a=x*x+y*y-1;if(a*a*a-x*x*y*y*y<=0)return [x,y]}}
+  function preparar(dea){
+    const k=Math.cos(40.4*Math.PI/180),x0=-4.58,x1=-3.05,y0=39.88,y1=41.17;
+    const muestra=[];const paso=Math.max(1,Math.floor(dea.length/1800));for(let i=0;i<dea.length;i+=paso)muestra.push(dea[i]);
+    pts=muestra.map(d=>({gx:(d[0]-x0)*k/((x1-x0)*k),gy:(y1-d[1])/(y1-y0),h:corazon(),r:Math.random(),c:d[2]===0}));
+    datosListos=true;t0=performance.now();
+  }
+  function dibujar(now){
+    raf=requestAnimationFrame(dibujar);
+    cx.clearRect(0,0,W,H);
+    const L=lado(),cxm=W/2,cym=H/2-30,t=datosListos?(now-t0)/1000:0;
+    if(!datosListos){const s=1+.25*Math.max(0,Math.sin(now/180))**8;cx.fillStyle='#c8102e';cx.fillRect(cxm-3*s,cym-3*s,6*s,6*s);return}
+    // fase 1: aparecen los aparatos sobre el mapa (0-1.7 s)
+    const vis=Math.min(1,t/1.5);
+    if(t<1.7)frase.textContent=fmt(vis*13673)+' de 13.673 desfibriladores';
+    else if(t<2.9)frase.textContent='Leyendo sus horarios';
+    else frase.textContent='Preparando el mapa';
+    // fase 2: se juntan en un corazón (1.7-2.7 s)
+    const m=Math.max(0,Math.min(1,(t-1.7)/1));const e=m<.5?4*m*m*m:1-Math.pow(-2*m+2,3)/2;
+    // latido (2.7-3.9 s)
+    let lat=1;if(t>2.7){const b=((t-2.7)%0.9)/0.9;lat=1+.09*Math.exp(-Math.pow((b-.08)/.05,2))+.05*Math.exp(-Math.pow((b-.28)/.05,2))}
+    // salida: se abren hacia el mapa
+    const s=fin?Math.min(1,(now-fin)/700):0;const es=1-Math.pow(1-s,3);
+    const R=L*.36*lat;
+    for(const p of pts){if(p.r>vis)continue;
+      const gx=cxm-L/2+p.gx*L,gy=cym-L*.42+p.gy*L*.84,hx=cxm+p.h[0]*R,hy=cym-p.h[1]*R;
+      let x=gx+(hx-gx)*e,y=gy+(hy-gy)*e;
+      if(s>0){x=hx+(hx-cxm)*es*3;y=hy+(hy-cym)*es*3}
+      const tamP=p.c?2.6:1.8;cx.globalAlpha=(p.c?1:.55)*(1-es);cx.fillStyle='#c8102e';cx.fillRect(x-tamP/2,y-tamP/2,tamP,tamP)}
+    cx.globalAlpha=1;
+    // línea de electrocardiograma bajo el corazón
+    if(t>2.5){const a=Math.min(1,(t-2.5)/1.2);const y=cym+L*.47,x0=cxm-L*.7,w=L*1.4;cx.strokeStyle='rgba(200,16,46,'+(.85*(1-es))+')';cx.lineWidth=1.6;cx.lineJoin='round';cx.beginPath();
+      const f=u=>{const b=(u*2)%1;return -(b>.42&&b<.46?(b-.42)*250:b>=.46&&b<.5?(.5-b)*250-18:b>=.5&&b<.53?-(b-.5)*120:0)};
+      for(let i=0;i<=200*a;i++){const u=i/200;const X=x0+u*w,Y=y+f(u);i?cx.lineTo(X,Y):cx.moveTo(X,Y)}cx.stroke()}
+    if(t>2.9)titulo.style.opacity=1;
+    if(!fin&&listo&&t>3.9)salir();
+    if(s>=1){cancelAnimationFrame(raf);$('intro').remove()}
+  }
+  function salir(){if(fin)return;fin=performance.now();$('intro').classList.add('fuera');entrar()}
+  raf=requestAnimationFrame(dibujar);
+  $('introSaltar').onclick=()=>{if(!datosListos)return;listo=true;t0=performance.now()-4000;salir()};
+  return {preparar,listo:()=>{listo=true},salir};
+})();
+let entrado=false;
+function entrar(){if(entrado)return;entrado=true;
+  setTimeout(()=>volar(vista0(),reduce?0:2600),60);
+}
+
+/* ---------- arranque ---------- */
+fetch('datos.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(d=>{
+  D=d;intro.preparar(D.dea);
+  MAD=D.munis.indexOf('Madrid');
+  cub=D.cov.map(b=>decode(b,D.secs.length));
+  polis=[];D.poligonos.forEach((ps,m)=>ps.forEach(r=>polis.push({m,r})));
+  abiertosT=Array.from({length:168},(_,t)=>D.dea.reduce((a,x)=>a+(abierto(x,t)?1:0),0));
+  calcular();
+  ordenM=D.munis.map((_,m)=>m).sort((a,b)=>curvaM[b][147]-curvaM[a][147]);
+  if(!window.deck){throw new Error('deck')}
+  iniciarMapa();tira();sitios();ruta();
+  ponerT(vista==='actuar'?147:ahoraT());
+  const ok=()=>intro.listo();
+  if(mapa){let hecho=false;const f=()=>{if(!hecho){hecho=true;ok()}};mapa.once('load',f);setTimeout(f,5000)}else ok();
+}).catch(e=>{console.error(e);$('introFrase').textContent='No se han podido cargar los datos. Recarga la página.';});
+</script>
 </body>
 </html>

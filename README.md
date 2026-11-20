@@ -78,7 +78,7 @@ Las cifras sobre paradas cardiacas (incidencia, tiempos de llegada de la ambulan
 
 ## Herramientas
 
-Python con pandas, NumPy y SciPy (búsquedas por cercanía con `cKDTree`), pyproj (cambio de coordenadas), pyshp y Shapely (lectura del shapefile y contornos municipales) y requests (descargas). La web es un único HTML con deck.gl para el mapa 3D.
+Python con pandas, NumPy y SciPy (búsquedas por cercanía con `cKDTree`), pyproj (cambio de coordenadas), pyshp y Shapely (lectura del shapefile y contornos municipales) y requests (descargas). La web es un único HTML: MapLibre GL con el mapa base de OpenFreeMap (datos de OpenStreetMap) y deck.gl para las columnas en 3D. Las fotos de cada municipio se piden a Wikipedia al abrir su ficha.
 
 ## Licencia
 

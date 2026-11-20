@@ -1,7 +1,7 @@
 """Paso 6. Prepara web/datos.json, el único fichero que lee la web.
 
-Incluye: centros de sección con población, desfibriladores fijos con su horario, qué secciones están
-cubiertas en cada una de las 168 horas (comprimido en bits), la curva de la semana, los contornos
+Incluye: centros de sección con población, desfibriladores fijos con su horario, municipio y tipo de sitio, qué secciones están
+cubiertas en cada una de las 168 horas (comprimido en bits), la curva de la semana, los polígonos
 municipales (uniendo las secciones de cada municipio), los sitios propuestos y el resumen por municipio.
 """
 import base64, json, zipfile, tempfile
@@ -30,6 +30,16 @@ nombres = sec.drop_duplicates('cod_ine_muni').set_index('cod_ine_muni')['municip
 fijos = dea['fijo'].eq('True').values
 dea, tablas = dea[fijos].reset_index(drop=True), tablas[fijos]
 codigo_estado = {'24h': 0, 'horario': 1, 'desconocido': 2, 'eventos': 3}
+TIPOS = {  # nombres cortos para la ficha de cada municipio
+    'Otros': 'Otros sitios', 'Centro educativo': 'Colegios e institutos',
+    'Establecimiento dependiente de una Administración Pública': 'Edificios públicos',
+    'Centro de trabajo con más de 250 trabajadores': 'Empresas grandes',
+    'Instalación, centro o complejo deportivo con más de 500 usuarios diarios': 'Polideportivos',
+    'Instalaciones de transporte': 'Transporte', 'Establecimiento hotelero con más de 100 plazas': 'Hoteles',
+    'Grandes establecimientos comerciales con una superficie superior a 2500 m2': 'Centros comerciales',
+    'Aeropuertos': 'Aeropuertos', 'Establecimiento público con aforo igual o superior a 2000 personas': 'Grandes aforos',
+    'Centros residenciales de mayores con 200 plazas': 'Residencias de mayores'}
+tipos = sorted(set(TIPOS.values()))
 horarios, pos, filas_dea = [], {}, []
 for (_, d), tabla in zip(dea.iterrows(), tablas):
     k = -1
@@ -38,7 +48,15 @@ for (_, d), tabla in zip(dea.iterrows(), tablas):
         k = pos.setdefault(clave, len(horarios))
         if k == len(horarios):
             horarios.append(clave)
-    filas_dea.append([round(float(d['lon']), 5), round(float(d['lat']), 5), codigo_estado[d['estado_horario']], k])
+    filas_dea.append([round(float(d['lon']), 5), round(float(d['lat']), 5), codigo_estado[d['estado_horario']], k,
+                      idx.get('28' + str(d['municipio_codigo']), -1), tipos.index(TIPOS.get(d['tipo_establecimiento'], 'Otros sitios'))])
+
+# si un aparato no trae municipio, se le asigna el de la sección más cercana
+from scipy.spatial import cKDTree
+arbol = cKDTree(sec[['lon', 'lat']].values)
+for fila in filas_dea:
+    if fila[4] == -1:
+        fila[4] = idx[sec['cod_ine_muni'].iloc[arbol.query(fila[:2])[1]]]
 
 # contornos municipales a partir de las secciones
 a_grados = Transformer.from_crs(CRS_METROS, 4326, always_xy=True)
@@ -47,13 +65,14 @@ with tempfile.TemporaryDirectory() as tmp:
     lector = shapefile.Reader(str(next(Path(tmp).glob('*.shp'))), encoding='latin1')
     por_muni = {}
     for reg in lector.iterShapeRecords():
-        por_muni.setdefault(reg.record['CDMUNI'], []).append(shape(reg.shape.__geo_interface__).buffer(0))
-contornos = []
-for geoms in por_muni.values():
+        por_muni.setdefault(reg.record['CDGSECCION'][:3], []).append(shape(reg.shape.__geo_interface__).buffer(0))
+# polígonos de cada municipio, en el mismo orden que 'munis'
+poligonos = [[] for _ in codigos]
+for cdmuni, geoms in por_muni.items():
     g = unary_union(geoms).simplify(80)
     for p in ([g] if g.geom_type == 'Polygon' else g.geoms):
         x, y = a_grados.transform(*p.exterior.xy)
-        contornos.append([[round(a, 4), round(b, 4)] for a, b in zip(x, y)])
+        poligonos[idx['28' + cdmuni]].append([[round(a, 4), round(b, 4)] for a, b in zip(x, y)])
 
 datos = {
     'munis': [nombres[m] for m in codigos],
@@ -63,7 +82,8 @@ datos = {
     'masks': horarios,
     'cov': [base64.b64encode(np.packbits(c).tobytes()).decode() for c in cubiertas],
     'curva': semana[['aparatos_abiertos', 'pct_poblacion', 'pct_poblacion_fuera_capital', 'pct_mayores_65']].values.tolist(),
-    'contornos': contornos,
+    'poligonos': poligonos,
+    'tipos': tipos,
     'nuevos': [{'lon': r.lon, 'lat': r.lat, 'muni': r.municipio, 'personas': int(r.vecinos_nuevos), 'mayores': int(r.mayores_65_nuevos)}
                for r in nuevos.itertuples()],
     'municipios': [[r.municipio, int(r.poblacion), r.pct_martes_11h, r.pct_domingo_3h, int(r.tiene_desfibrilador_fijo)]
