@@ -46,19 +46,37 @@ Para cada grupo elegimos los diez mejores y calculamos también qué pasaría si
 - Cuando un testigo conecta un desfibrilador antes de que llegue la ambulancia, la supervivencia mediana es del 32 % (revisión de 41 estudios: https://evidence.nihr.ac.uk/alert/use-of-public-defibrillators-linked-to-out-of-hospital-cardiac-arrest-survival/).
 - En 2024 murieron en la Comunidad de Madrid 11.747 personas por enfermedades del sistema circulatorio, la segunda causa de muerte después de los tumores (Portal de Datos Abiertos, defunciones por causa de muerte).
 
+## 6. Andando por la calle
+
+En línea recta, 200 m pueden ser mucho más andando: hay que rodear manzanas, cruzar por un paso de peatones o buscar el puente sobre una vía. `src/08_distancias_calle.py` toma cada pareja de sección y aparato (fijo y con horario conocido) que está a menos de 300 m en línea recta, unas 13.600, y pide su distancia a pie por la red de calles y caminos de OpenStreetMap al servidor OSRM de routing.openstreetmap.de (servicio `table`, perfil a pie). A esa distancia se le suma lo que hay desde el centro de la sección y desde el aparato hasta la calle más cercana. Se agrupan secciones vecinas para hacer unas 90 peticiones de 100 puntos como mucho.
+
+Solo 4.878 parejas quedan a 300 m o menos andando. La mediana de la distancia andando es 1,5 veces la distancia en línea recta.
+
+`src/09_cobertura_calle.py` repite el cálculo de cobertura con 100, 200 y 300 m, en línea recta y andando:
+
+| | 100 m | 200 m | 300 m |
+|---|---|---|---|
+| Martes 11:00, línea recta | 17,6 % | 45,2 % | 65,9 % |
+| Martes 11:00, andando | 5,0 % | 20,5 % | 38,8 % |
+| Domingo 3:00, línea recta | 7,9 % | 25,9 % | 42,7 % |
+| Domingo 3:00, andando | 2,0 % | 9,6 % | 22,3 % |
+
+Los sitios propuestos (pasos 5 y 7) siguen calculados en línea recta con 200 m.
+
 ## Ruta al más cercano
 
 La web busca los tres aparatos abiertos más cercanos a un punto (la ubicación del móvil o un punto del mapa), pide la ruta a pie de cada uno al servidor OSRM de routing.openstreetmap.de y se queda con la más corta. Calcula el tiempo de ida y vuelta corriendo (2,8 m/s) y andando (1,35 m/s). Si el servidor no responde, usa la línea recta.
 
 ## Límites
 
-- Distancias en línea recta. El siguiente paso es calcularlas andando por la red de calles.
+- Las cifras principales usan la línea recta; andando (apartado 6) son bastante peores.
+- Andando, el punto de partida es el centro de la sección. En una manzana cerrada ese centro cae dentro de los edificios, y lo que hay hasta la calle se suma a la distancia. Para quien vive en la fachada, la distancia real es algo menor.
+- OpenStreetMap no recoge todos los pasos interiores, como patios o galerías comerciales.
 - "24 horas" no garantiza que se pueda entrar al edificio de madrugada.
 - En pueblos con secciones grandes, el centro de la sección es solo una aproximación de dónde vive la gente.
 - El seccionado es de 2019; las secciones creadas después no aparecen por separado.
 
 ## Próximos pasos
 
-- Distancias andando con la red peatonal de OpenStreetMap.
 - Más candidatos reales: farmacias de guardia, comisarías y estaciones.
 - Simulador para que cada ayuntamiento pruebe dónde colocar los suyos.

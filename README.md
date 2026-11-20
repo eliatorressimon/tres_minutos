@@ -8,7 +8,8 @@ Equipo: Elia Torres Simón y Clara Juarros.
 
 ## Qué hemos encontrado
 
-- Un martes a las 11:00, el 45,2 % de la población tiene un desfibrilador abierto a menos de 200 m. Un domingo a las 3:00, el 25,9 %. Fuera de Madrid capital, la cifra pasa del 30,7 % al 13,4 %.
+- Un martes a las 11:00, el 45,2 % de la población tiene un desfibrilador abierto a menos de 200 m en línea recta. Un domingo a las 3:00, el 25,9 %. Fuera de Madrid capital, la cifra pasa del 30,7 % al 13,4 %.
+- Medido andando por la calle, la cobertura se queda en menos de la mitad: el 20,5 % un martes a las 11:00 y el 9,6 % un domingo a las 3:00. Con 300 m andando, el 38,8 % y el 22,3 %.
 - De los 13.673 aparatos del registro, 2.206 tienen como horario "autobús urbano": van en autobuses de Madrid capital y no cubren un barrio fijo.
 - 4.543 aparatos no indican su horario o lo indican de una forma que no se puede interpretar.
 - 15 municipios no tienen ningún desfibrilador fijo registrado. El mayor es El Molar, con 9.805 habitantes.
@@ -23,7 +24,7 @@ datos/
   originales/     datos tal y como se descargan (no se suben; se obtienen con el paso 1)
   elaborados/     datos limpios y calculados por nosotros (ver docs/DATOS.md)
 src/              código, un fichero por paso
-web/              la web: index.html y datos.json
+web/              la web: index.html, datos.json y variantes.json (otras distancias, se carga al usar el selector)
 docs/
   DATOS.md        fuentes y diccionario de cada fichero elaborado
   METODO.md       cómo se calcula todo y qué límites tiene
@@ -45,6 +46,8 @@ python 03_poblacion_secciones.py       # centro y población de cada sección ce
 python 04_cobertura.py                 # cobertura en las 168 horas de la semana
 python 05_nuevos_sitios.py             # dónde poner los próximos aparatos
 python 07_sitios_reales.py             # las mejores farmacias y gasolineras 24 h
+python 08_distancias_calle.py          # distancias andando por la calle (pide unas 90 rutas a OSRM)
+python 09_cobertura_calle.py           # cobertura con 100, 200 y 300 m, en línea recta y andando
 python 06_exportar_web.py              # genera web/datos.json
 ```
 
@@ -83,7 +86,7 @@ Las cifras sobre paradas cardiacas (incidencia, tiempos de llegada de la ambulan
 
 ## Herramientas
 
-Python con pandas, NumPy y SciPy (búsquedas por cercanía con `cKDTree`), pyproj (cambio de coordenadas), pyshp y Shapely (lectura del shapefile y contornos municipales) y requests (descargas). La web es un único HTML: MapLibre GL con el mapa base de OpenFreeMap (datos de OpenStreetMap) y deck.gl para las columnas en 3D. Las fotos de cada municipio se piden a Wikipedia al abrir su ficha.
+Python con pandas, NumPy y SciPy (búsquedas por cercanía con `cKDTree`), pyproj (cambio de coordenadas), pyshp y Shapely (lectura del shapefile y contornos municipales) y requests (descargas). Las distancias andando se piden al servidor OSRM de routing.openstreetmap.de, que usa la red de calles de OpenStreetMap. La web es un único HTML: MapLibre GL con el mapa base de OpenFreeMap (datos de OpenStreetMap) y deck.gl para las columnas en 3D. Las fotos de cada municipio se piden a Wikipedia al abrir su ficha.
 
 ## Licencia
 

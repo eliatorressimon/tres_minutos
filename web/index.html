@@ -106,6 +106,15 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 .dias button:hover{background:var(--rosa)}
 .dias button[aria-pressed=true]{background:var(--rojo);color:#fff;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%)}
 .hora{display:flex;align-items:center;gap:12px;margin-top:10px}
+.medir{border-top:1px solid var(--linea);margin:12px -14px 0;padding:10px 14px 0;display:grid;gap:7px}
+.medir-fila{display:grid;grid-template-columns:70px 1fr;align-items:center;gap:8px}
+.medir-fila>span{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--gris-2)}
+.seg{display:flex;gap:4px}
+.seg button{flex:1;border:0;background:var(--hueso);padding:7px 6px;font:600 12.5px var(--sans);color:var(--gris-1);transition:background .15s}
+.seg button:hover{background:var(--rosa)}
+.seg button[aria-pressed=true]{background:var(--vino);color:#fff;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%)}
+.medir .nota{font-size:12px;line-height:1.45;color:var(--gris-2)}
+.medir .nota b{color:var(--negro)}
 .hora output{font:700 22px/1 var(--mono);min-width:72px}
 .hora input{flex:1;accent-color:var(--rojo)}
 .boton-ahora{border:1px solid var(--rojo);background:#fff;color:var(--rojo);padding:5px 10px;font:600 12px var(--mono);white-space:nowrap}
@@ -322,7 +331,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
     <section class="vista" id="v-ahora">
       <div class="antetitulo">13.673 desfibriladores en 168 horas</div>
       <h1 class="titular">Si alguien cae ahora, ¿llega <span>a tiempo</span> un desfibrilador?</h1>
-      <p class="entradilla">Hay unos <b>tres minutos</b> para ir a por uno y volver. Muchos están en oficinas, colegios o gimnasios que cierran, así que la respuesta cambia con la hora. Cada <b>marca roja</b> del mapa es un barrio donde ahora no hay ninguno abierto a menos de 200 metros.</p>
+      <p class="entradilla">Hay unos <b>tres minutos</b> para ir a por uno y volver. Muchos están en oficinas, colegios o gimnasios que cierran, así que la respuesta cambia con la hora. Cada <b>marca roja</b> del mapa es un barrio donde ahora no hay ninguno abierto <span class="dist">a menos de 200 metros</span>.</p>
       <div class="caja">
         <div class="caja-cab"><span id="cajaT">MARTES 11:00</span><b id="cajaVivo"></b></div>
         <div class="caja-cuerpo">
@@ -334,6 +343,11 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
           <div class="reloj">
             <div class="dias" id="dias"></div>
             <div class="hora"><output id="horaTxt">11:00</output><input type="range" id="hora" min="0" max="23" step="1" aria-label="Hora del día"><button class="boton-ahora" id="btnAhora">Ahora</button></div>
+            <div class="medir" id="medir">
+              <div class="medir-fila"><span>Distancia</span><div class="seg" id="segR"><button data-r="100" aria-pressed="false">100 m</button><button data-r="200" aria-pressed="true">200 m</button><button data-r="300" aria-pressed="false">300 m</button></div></div>
+              <div class="medir-fila"><span>Medida</span><div class="seg" id="segM"><button data-m="recta" aria-pressed="true">En línea recta</button><button data-m="andando" aria-pressed="false">Andando por la calle</button></div></div>
+              <p class="nota" id="medirNota"></p>
+            </div>
           </div>
         </div>
       </div>
@@ -394,7 +408,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
         <div><strong>1:30</strong>Otro corre al desfibrilador más cercano: 200 metros.</div>
         <div><strong>3:00</strong>Vuelve con él y lo enciende. El aparato guía la descarga.</div>
       </div>
-      <p class="nota" style="margin-top:10px">Ir y volver 400 metros a paso rápido cabe en unos tres minutos. Por eso medimos a 200 metros en línea recta desde el centro de cada sección censal.</p>
+      <p class="nota" style="margin-top:10px">Ir y volver 400 metros a paso rápido cabe en unos tres minutos. Por eso medimos a 200 metros desde el centro de cada sección censal. En el reloj de "Ahora" puedes probar con 100 o 300 metros, y medir en línea recta o andando por las calles.</p>
     </section>
 
     <section class="vista" id="v-metodo" hidden>
@@ -404,6 +418,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
         <li><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b>13.673</b>, todos con coordenadas. Quitamos los <b>2.206</b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
         <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de 2.331 formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Lo convertimos en una tabla de 7 días por 24 horas. <b>3.226</b> abren siempre y <b>4.543</b> no tienen un horario que se pueda leer, así que no los contamos como abiertos.</p></div></li>
         <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a menos de 200 metros de su centro. Lo calculamos para las 168 horas de la semana.</p></div></li>
+        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a menos de 300 metros pedimos la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y le sumamos lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b>20,5 %</b> de los vecinos tiene uno abierto (en línea recta salía el 45,2 %) y un domingo a las 3, el <b>9,6 %</b> (frente al 25,9 %). Las cifras de "Dónde actuar" siguen calculadas en línea recta.</p></div></li>
         <li><div><h4>Dónde poner los siguientes</h4><p>Elegimos de uno en uno el sitio que más vecinos sin cubrir gana de madrugada, con doble peso para los mayores de 65, y repetimos.</p></div></li>
       </ol>
       <h2 class="seccion">Fuentes</h2>
@@ -429,7 +444,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
     <div id="noche"></div>
     <div id="deck" role="img" aria-label="Mapa de la Comunidad de Madrid con los barrios sin desfibrilador abierto a la hora elegida"></div>
     <div class="leyenda" id="leyenda">
-      <div><i></i><span>Barrio sin aparato abierto a 200 m. En 3D, la altura son sus vecinos</span></div>
+      <div><i></i><span>Barrio sin aparato abierto <span class="dist-c">a 200 m</span>. En 3D, la altura son sus vecinos</span></div>
       <div><i class="dea"></i><span>Aparato abierto (al acercarte)</span></div>
       <div id="leyNuevo" hidden><i class="nuevo"></i><span>Sitio propuesto</span></div>
     </div>
@@ -476,13 +491,38 @@ const movil=()=>innerWidth<=820;
 
 let D=null,T=35,vista='ahora',sel=-1,hover=-1,poniendo=false,en3d=true;
 let zoom=8,bearing=0,pitch=0,zoomPintado=8,cache={k:''};
-let camRuta=null,buscandoPunto=false,cub=[],extra=new Set(),mios=[],curvaG=[],curvaM=[],abiertosT=[],MAD=-1,polis=[];
+let RADIO=200,MEDIDA='recta',VARS=null,VDEC={},camRuta=null,buscandoPunto=false,cub=[],extra=new Set(),mios=[],curvaG=[],curvaM=[],abiertosT=[],MAD=-1,polis=[];
 
 /* ---------- datos ---------- */
 function decode(b64,n){const s=atob(b64),o=new Uint8Array(n);for(let i=0;i<n;i++)o[i]=(s.charCodeAt(i>>3)>>(7-(i&7)))&1;return o}
 const abierto=(d,t)=>d[2]===0||(d[2]===1&&D.masks[d[3]][t]==='1');
 const cubierta=(i,t)=>cub[t][i]===1||extra.has(i);
 function metros(a,b){const k=Math.cos(40.4*Math.PI/180);return Math.hypot((a[0]-b[0])*111320*k,(a[1]-b[1])*110540)}
+const distL=()=>MEDIDA==='recta'?`a menos de ${RADIO} metros`:`a ${RADIO} metros o menos andando`;
+const distC=()=>MEDIDA==='recta'?`a ${RADIO} m`:`a ${RADIO} m andando`;
+const NOTA_MEDIDA={recta:'Distancia en línea recta desde el centro de cada sección censal, como si se pudieran atravesar los edificios.',
+  andando:'Distancia andando por las calles y caminos de OpenStreetMap, rodeando edificios, vías y autopistas. Es lo que de verdad tendría que recorrer alguien.'};
+async function cambiarMedida(r,m){
+  if(r===RADIO&&m===MEDIDA)return;
+  const k=m+'-'+r;
+  if(k!=='recta-200'&&!VARS){$('medirNota').textContent='Cargando las distancias…';
+    try{VARS=await fetch('variantes.json').then(x=>{if(!x.ok)throw new Error(x.status);return x.json()})}
+    catch(e){console.error(e);$('medirNota').textContent='No se han podido cargar. Recarga la página.';return}}
+  if(!VDEC[k])VDEC[k]=VARS[k].cov.map(b=>decode(b,D.secs.length));
+  RADIO=r;MEDIDA=m;cub=VDEC[k];cache={k:''};
+  if(mios.length){extra.clear();mios=[];$('btnQuitar').hidden=true;$('resSim').hidden=true;$('simCab').textContent=''}
+  document.querySelectorAll('#segR button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.r===r));
+  document.querySelectorAll('#segM button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
+  document.querySelectorAll('.dist').forEach(e=>e.textContent=distL());
+  document.querySelectorAll('.dist-c').forEach(e=>e.textContent=distC());
+  calcular();gMin=Math.min(...curvaG.map(c=>c[0]));gMax=Math.max(...curvaG.map(c=>c[0]));
+  tira();casos();ponerT(T);
+}
+function notaMedida(){const k=MEDIDA+'-'+RADIO;
+  $('medirNota').innerHTML=NOTA_MEDIDA[MEDIDA]+(k==='recta-200'?'':` Con 200 m en línea recta, a esta hora, serían el <b>${p1(cobDe(VDEC['recta-200'],T))}</b>.`)}
+function cobDe(c,t){let a=0,b=0;D.secs.forEach((s,i)=>{b+=s[2];if(c[t][i])a+=s[2]});return 100*a/b}
+document.getElementById('segR').onclick=e=>{const b=e.target.closest('[data-r]');if(b&&D)cambiarMedida(+b.dataset.r,MEDIDA)};
+document.getElementById('segM').onclick=e=>{const b=e.target.closest('[data-m]');if(b&&D)cambiarMedida(RADIO,b.dataset.m)};
 function noche(h){if(h>=22||h<6)return 1;if(h>=20)return (h-20)/2;if(h<8)return (8-h)/2;return 0}
 function ahoraT(){const p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Madrid',weekday:'short',hour:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
   return ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].indexOf(p.find(x=>x.type==='weekday').value)*24+ +p.find(x=>x.type==='hour').value}
@@ -545,7 +585,7 @@ function capas(){
       new deck.ScatterplotLayer({id:'rutaPuntos',data:[{p:camRuta.desde,t:0},{p:camRuta.hasta,t:1}],getPosition:d=>d.p,getRadius:8,radiusUnits:'pixels',getFillColor:d=>d.t?[...ROJO,255]:[...NEGRO,255],stroked:true,getLineColor:[255,255,255,255],lineWidthUnits:'pixels',getLineWidth:2.5,parameters:{depthTest:false,depthCompare:'always'}}));
   }
   if(mios.length){
-    L.push(new deck.ScatterplotLayer({id:'radio',data:mios,getPosition:d=>d.p,getRadius:200,stroked:true,getFillColor:[...NEGRO,25],getLineColor:[...NEGRO,230],lineWidthMinPixels:1.5}),
+    L.push(new deck.ScatterplotLayer({id:'radio',data:mios,getPosition:d=>d.p,getRadius:RADIO,stroked:true,getFillColor:[...NEGRO,25],getLineColor:[...NEGRO,230],lineWidthMinPixels:1.5}),
       new deck.ScatterplotLayer({id:'miosP',data:mios,getPosition:d=>d.p,getRadius:30,radiusMinPixels:5,getFillColor:[...NEGRO,255],stroked:true,getLineColor:[255,255,255,255],lineWidthMinPixels:1.5}));
   }
   return L;
@@ -556,7 +596,7 @@ const eti=$('etiqueta');
 function alPasar(info){
   const o=info.object,id=info.layer&&info.layer.id;let m=-1,html='';
   if(o!=null&&!poniendo){
-    if(id==='col'){const s=D.secs[o];m=s[4];html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${fmt(s[2])}</b> vecinos sin aparato abierto a 200 m</span><em>${fmt(s[3])} con más de 65 años. ${corto(T)}</em>`}
+    if(id==='col'){const s=D.secs[o];m=s[4];html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${fmt(s[2])}</b> vecinos sin aparato abierto ${distC()}</span><em>${fmt(s[3])} con más de 65 años. ${corto(T)}</em>`}
     else if(id==='munis'){m=o.m;html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${p1(curvaM[m][T])}</b> de sus vecinos cubiertos</span><em>${corto(T)}. Pulsa para ver el municipio</em>`}
     else if(id==='nuevos'){html=`<strong>${o.i}. ${o.tipo?(o.tipo==='Farmacia'?'Farmacia':o.nombre)+', ':''}${nombreBonito(o.muni)}</strong><span><b>+${fmt(o.personas)}</b> vecinos cubiertos${o.direccion?'<br>'+o.direccion:''}</span><em>${fmt(o.mayores)} con más de 65 años</em>`}
   }
@@ -579,13 +619,13 @@ function ponerT(t){
   $('cajaT').textContent=DIAS[d].toUpperCase()+' '+hh(h);$('cajaVivo').textContent=esAhora?'AHORA':'';
   $('lecturaT').textContent=corto(T);$('lecturaP').textContent=Math.round(c[0])+' %';
   esfera(d,h);
-  $('cTexto').innerHTML=`de los vecinos tiene un desfibrilador abierto a menos de 200 metros. <b>${fmt(c[3])}</b> personas, no. Las horas más rojas del reloj son las peores del día.`;
+  $('cTexto').innerHTML=`de los vecinos tiene un desfibrilador abierto ${distL()}. <b>${fmt(c[3])}</b> personas, no. Las horas más rojas del reloj son las peores del día.`;
   $('cFuera').textContent=p1(c[1]);$('c65').textContent=p1(c[2]);$('cAbiertos').textContent=fmt(abiertosT[T]);
   $('noche').style.opacity=(noche(h)*.42).toFixed(2);
   const x=X(T);$('tCur').setAttribute('x1',x);$('tCur').setAttribute('x2',x);$('tPunto').setAttribute('cx',x);$('tPunto').setAttribute('cy',Y(c[0]));
   const tx=Math.min(x+7,TW-92);$('tEtiq').setAttribute('x',tx);$('tEtiq').textContent=corto(T)+'  '+Math.round(c[0])+' %';
   if(vista==='ahora')rankings();if(sel>=0)actualizarMunicipio();if(mios.length)resultadoSim();
-  pintar();
+  notaMedida();pintar();
 }
 let gMin=0,gMax=100;
 function esfera(d,h){
@@ -646,7 +686,7 @@ function rankings(){
   const b=ms.filter(m=>D.totM[m]>=5000).sort((x,y)=>curvaM[x][T]-curvaM[y][T]);
   const c=ms.filter(m=>D.totM[m]>=5000).sort((x,y)=>curvaM[y][T]-curvaM[x][T]);
   $('rankings').innerHTML=`
-    <div class="ranking"><h3>Más vecinos sin aparato cerca</h3><p class="nota">Personas sin desfibrilador abierto a 200 m, sin contar Madrid capital (${fmt(D.sinM[MAD][T])})</p><ol>${top(a,m=>D.sinM[m][T],m=>fmt(D.sinM[m][T]))}</ol></div>
+    <div class="ranking"><h3>Más vecinos sin aparato cerca</h3><p class="nota">Personas sin desfibrilador abierto ${distC()}, sin contar Madrid capital (${fmt(D.sinM[MAD][T])})</p><ol>${top(a,m=>D.sinM[m][T],m=>fmt(D.sinM[m][T]))}</ol></div>
     <div class="ranking"><h3>Peor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes</p><ol>${top(b,m=>100-curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>
     <div class="ranking bien"><h3>Mejor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes</p><ol>${top(c,m=>curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>`;
 }
@@ -702,7 +742,7 @@ function construirMunicipio(){
 function actualizarMunicipio(){if(sel<0||!$('mPct'))return;const v=curvaM[sel][T];
   $('mT').textContent=DIAS[Math.floor(T/24)].toUpperCase()+' '+hh(T%24);$('mVivo').textContent=T===ahoraT()?'AHORA':'';
   $('mPct').innerHTML=Math.round(v)+'<small>%</small>';
-  $('mTxt').innerHTML=`de sus vecinos tiene un aparato abierto a menos de 200 m. <b>${fmt(D.sinM[sel][T])}</b> personas, no.`;
+  $('mTxt').innerHTML=`de sus vecinos tiene un aparato abierto ${distC()}. <b>${fmt(D.sinM[sel][T])}</b> personas, no.`;
   $('v-municipio').querySelectorAll('.huella button').forEach(b=>b.classList.toggle('actual',+b.dataset.t===T))}
 
 /* ---------- dónde actuar ---------- */
@@ -718,8 +758,8 @@ function sitios(){
   $('tituloLista').textContent=modoAct==='dia'?'Las diez mejores farmacias':modoAct==='noche'?'Las diez mejores gasolineras 24 h':'Los diez mejores puntos';
   $('sitios').innerHTML=L.map(sitioHTML).join('');
   $('sumaPers').textContent='+'+fmt(pers);
-  $('sumaTxt').innerHTML=modoAct==='dia'?`vecinos más tendrían uno a menos de 200 metros un martes por la mañana. <b>${fmt(may)}</b> tienen más de 65 años.`
-    :`vecinos más tendrían uno a menos de 200 metros de madrugada. <b>${fmt(may)}</b> tienen más de 65 años.`;
+  $('sumaTxt').innerHTML=modoAct==='dia'?`vecinos más tendrían uno a menos de 200 metros en línea recta un martes por la mañana. <b>${fmt(may)}</b> tienen más de 65 años.`
+    :`vecinos más tendrían uno a menos de 200 metros en línea recta de madrugada. <b>${fmt(may)}</b> tienen más de 65 años.`;
   const st=D.si_todos||[],g=st.find(x=>/gasolineras/.test(x.caso)),f=st.find(x=>/farmacias/.test(x.caso));
   const ideal=D.nuevos.reduce((a,d)=>a+d.personas,0),gas=D.reales.filter(r=>r.momento==='noche').reduce((a,d)=>a+d.personas,0);
   $('hallazgo').innerHTML=modoAct==='dia'&&f?`<div class="flecha"><span>${Math.round(f.pct_antes)} %</span><i>→</i><span class="despues">${Math.round(f.pct_despues)} %</span></div><p>Si <b>cada una de las ${fmt(f.locales)} farmacias</b> de la Comunidad tuviera un desfibrilador, un martes a las 11 la cobertura pasaría del ${p1(f.pct_antes)} al ${p1(f.pct_despues)}: <b>${fmt(f.vecinos_nuevos)} vecinos más</b>. Están en todos los barrios y abren de día.</p>`
@@ -730,7 +770,7 @@ $('modos').onclick=e=>{const b=e.target.closest('[data-modo]');if(!b)return;modo
 $('sitios').onclick=e=>{const b=e.target.closest('[data-i]');if(b)irASitio(+b.dataset.i)};
 function irASitio(i){const d=listaAct()[i];if(vista!=='actuar')irA('actuar');if(T!==horaAct())ponerT(horaAct());volar({longitude:d.lon,latitude:d.lat,zoom:14.5,pitch:en3d?50:0})}
 function ponerAparato(c){
-  const S=D.secs,gan=[];for(let i=0;i<S.length;i++)if(!extra.has(i)&&metros(S[i],c)<=200)gan.push(i);
+  const S=D.secs,gan=[];for(let i=0;i<S.length;i++)if(!extra.has(i)&&metros(S[i],c)<=RADIO)gan.push(i);
   const g=gan.filter(i=>!cubierta(i,T)).reduce((a,i)=>a+S[i][2],0);
   gan.forEach(i=>extra.add(i));mios.push({p:c,g});calcular();tira();ponerT(T);$('btnQuitar').hidden=false;
 }
@@ -866,7 +906,7 @@ function entrar(){
 /* ---------- arranque ---------- */
 fetch('datos.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(d=>{
   D=d;intro.preparar(D.dea);MAD=D.munis.indexOf('Madrid');
-  cub=D.cov.map(b=>decode(b,D.secs.length));
+  cub=D.cov.map(b=>decode(b,D.secs.length));VDEC['recta-200']=cub;
   D.poligonos.forEach((ps,m)=>ps.forEach(r=>polis.push({m,r})));
   abiertosT=Array.from({length:168},(_,t)=>D.dea.reduce((a,x)=>a+(abierto(x,t)?1:0),0));
   calcular();gMin=Math.min(...curvaG.map(c=>c[0]));gMax=Math.max(...curvaG.map(c=>c[0]));

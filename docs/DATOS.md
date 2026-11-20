@@ -73,5 +73,18 @@ Las diez mejores farmacias (martes 11:00) y las diez mejores gasolineras 24 h (d
 ### `sitios_reales_resumen.csv`
 Qué pasaría si todos los locales de cada grupo tuvieran un aparato: número de locales, % cubierto antes y después y vecinos nuevos.
 
+### `distancias_calle.csv`
+Una fila por pareja de sección y aparato que están a 300 m o menos andando (4.878).
+
+| Columna | Significado |
+|---|---|
+| `cod_ine_seccion` | Sección censal |
+| `fila_dea`, `codigo_dea` | Aparato: fila en `desfibriladores.csv` (un código del registro está repetido) y su código |
+| `metros_linea_recta` | Distancia en línea recta entre el centro de la sección y el aparato |
+| `metros_andando` | Distancia a pie por la red de calles de OpenStreetMap, más lo que hay hasta la calle desde cada punto |
+
+### `cobertura_variantes.csv`
+Una fila por hora de la semana para cada forma de medir (`medida`: `recta` o `andando`) y cada distancia (`radio_m`: 100, 200 o 300), con las mismas columnas de porcentaje que `cobertura_semana.csv`.
+
 ### `municipios.csv`
 Código, nombre y población de 2024 de los 179 municipios.
