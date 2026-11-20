@@ -1,0 +1,60 @@
+# Datos
+
+## Originales (`datos/originales/`)
+
+Se descargan con `src/01_descargar.py`. No se suben al repositorio.
+
+| Fichero | Fuente | Notas |
+|---|---|---|
+| `desfibriladores.csv` | Registro de desfibriladores externos fuera del ámbito sanitario, Portal de Datos Abiertos de la Comunidad de Madrid | Separador `;`, coordenadas con coma decimal. El horario (`horario_acceso`) es texto libre. |
+| `secciones_censales.zip` | Secciones censales, Portal de Datos Abiertos de la Comunidad de Madrid | Shapefile del seccionado de 2019 en ETRS89 / UTM 30N. En Collado Villalba, Majadahonda y Pinto el campo `CDTSECCION` viene vacío, por eso usamos `CDGSECCION`. |
+| `ine_31105.csv` | INE, Atlas de distribución de renta de los hogares, indicadores demográficos | Números con punto de miles y coma decimal. En secciones de pueblos muy pequeños el valor de 2019 es 0. |
+| `defunciones_causa.csv` | Defunciones por causa de muerte y sexo, Portal de Datos Abiertos de la Comunidad de Madrid | Solo se usa como contexto. |
+
+## Elaborados (`datos/elaborados/`)
+
+### `desfibriladores.csv`
+Una fila por aparato del registro.
+
+| Columna | Significado |
+|---|---|
+| `codigo_dea` | Código del aparato en el registro |
+| `tipo_establecimiento`, `tipo_titularidad` | Tal y como vienen en el registro |
+| `municipio_codigo`, `municipio_nombre` | Municipio (código de 3 cifras) |
+| `lon`, `lat` | Coordenadas en grados (WGS84) |
+| `horario_acceso` | Texto original del horario |
+| `estado_horario` | `24h`, `horario` (se ha podido leer), `desconocido`, `movil` (va en un autobús) o `eventos` (solo en partidos o actos) |
+| `abierto_martes_11h`, `abierto_domingo_3h` | Si consta como abierto a esa hora |
+| `fijo` | Falso para los que van en autobús o no tienen coordenadas |
+
+### `secciones.csv`
+Una fila por sección censal (4.417).
+
+| Columna | Significado |
+|---|---|
+| `cod_ine_seccion` | Código de 10 cifras (provincia, municipio, distrito, sección) |
+| `cod_ine_muni`, `municipio` | Municipio |
+| `x`, `y` | Centro de la sección en metros (ETRS89 / UTM 30N) |
+| `lon`, `lat` | El mismo centro en grados |
+| `poblacion` | Habitantes estimados en 2024 |
+| `mayores_65` | Habitantes de 65 o más años estimados |
+
+### `cobertura_semana.csv`
+Una fila por hora de la semana (168).
+
+| Columna | Significado |
+|---|---|
+| `dia`, `hora` | Día de la semana y hora de inicio |
+| `aparatos_abiertos` | Aparatos fijos que constan como abiertos |
+| `pct_poblacion` | % de habitantes con uno abierto a menos de 200 m |
+| `pct_poblacion_fuera_capital` | Lo mismo sin contar Madrid capital |
+| `pct_mayores_65` | Lo mismo para mayores de 65 |
+
+### `cobertura_municipios.csv`
+Una fila por municipio: población, % cubierto el martes a las 11:00 y el domingo a las 3:00, y si tiene algún desfibrilador fijo.
+
+### `nuevos_sitios.csv`
+Los diez puntos propuestos, en orden de elección, con los vecinos y mayores de 65 que añaden a la cobertura del domingo a las 3:00.
+
+### `municipios.csv`
+Código, nombre y población de 2024 de los 179 municipios.

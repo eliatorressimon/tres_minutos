@@ -1,0 +1,6 @@
+datos/originales/*
+!datos/originales/.gitkeep
+datos/elaborados/*.npy
+__pycache__/
+.venv/
+.DS_Store

@@ -1,0 +1,180 @@
+cod_ine_muni,municipio,poblacion,pct_martes_11h,pct_domingo_3h,tiene_desfibrilador_fijo
+28001,"Acebeda, La",70,0.0,0.0,False
+28002,Ajalvir,4591,0.0,0.0,True
+28003,Alameda del Valle,236,0.0,0.0,True
+28004,"Álamo, El",10163,0.0,0.0,True
+28005,Alcalá de Henares,200154,32.0,7.8,True
+28006,Alcobendas,121324,66.9,16.4,True
+28007,Alcorcón,174474,49.7,24.3,True
+28008,Aldea del Fresno,3396,0.0,0.0,True
+28009,Algete,20938,0.0,0.0,True
+28010,Alpedrete,15413,0.0,0.0,True
+28011,Ambite,725,0.0,0.0,True
+28012,Anchuelo,1402,0.0,0.0,True
+28013,Aranjuez,62708,22.3,10.7,True
+28014,Arganda del Rey,59251,17.1,8.0,True
+28015,Arroyomolinos,37886,5.2,0.0,True
+28016,"Atazar, El",110,0.0,0.0,True
+28017,Batres,1928,0.0,0.0,True
+28018,Becerril de la Sierra,6411,0.0,0.0,True
+28019,Belmonte de Tajo,1935,0.0,0.0,True
+28020,Berzosa del Lozoya,171,0.0,0.0,False
+28021,"Berrueco, El",726,0.0,0.0,True
+28022,Boadilla del Monte,65472,25.4,7.4,True
+28023,"Boalo, El",8668,0.0,0.0,True
+28024,Braojos,233,0.0,0.0,True
+28025,Brea de Tajo,544,0.0,0.0,True
+28026,Brunete,11022,17.5,17.5,True
+28027,Buitrago del Lozoya,1919,0.0,0.0,True
+28028,Bustarviejo,2833,0.0,0.0,True
+28029,Cabanillas de la Sierra,928,0.0,0.0,True
+28030,"Cabrera, La",2889,100.0,0.0,True
+28031,Cadalso de los Vidrios,3314,0.0,0.0,True
+28032,Camarma de Esteruelas,8266,39.0,39.0,True
+28033,Campo Real,6851,0.0,0.0,True
+28034,Canencia,479,0.0,0.0,True
+28035,Carabaña,2459,0.0,0.0,True
+28036,Casarrubuelos,4321,0.0,0.0,True
+28037,Cenicientos,2096,0.0,0.0,True
+28038,Cercedilla,7688,0.0,0.0,True
+28039,Cervera de Buitrago,165,0.0,0.0,True
+28040,Ciempozuelos,24157,13.4,6.9,True
+28041,Cobeña,7522,0.0,0.0,True
+28042,Colmenar del Arroyo,1983,0.0,0.0,True
+28043,Colmenar de Oreja,9100,0.0,0.0,False
+28044,Colmenarejo,9594,0.0,0.0,True
+28045,Colmenar Viejo,57110,26.5,9.5,True
+28046,Collado Mediano,7677,0.0,0.0,True
+28047,Collado Villalba,67037,30.8,11.6,True
+28048,Corpa,835,0.0,0.0,True
+28049,Coslada,79351,47.0,19.5,True
+28050,Cubas de la Sagra,6980,0.0,0.0,True
+28051,Chapinería,2661,0.0,0.0,True
+28052,Chinchón,5743,0.0,0.0,True
+28053,Daganzo de Arriba,10758,42.1,18.6,True
+28054,"Escorial, El",16954,0.0,0.0,True
+28055,Estremera,1385,0.0,0.0,True
+28056,Fresnedillas de la Oliva,1895,0.0,0.0,True
+28057,Fresno de Torote,2558,0.0,0.0,True
+28058,Fuenlabrada,188482,55.8,15.1,True
+28059,Fuente el Saz de Jarama,7239,0.0,0.0,True
+28060,Fuentidueña de Tajo,2304,0.0,0.0,True
+28061,Galapagar,36073,10.4,10.4,True
+28062,Garganta de los Montes,442,0.0,0.0,True
+28063,Gargantilla del Lozoya y Pinilla de Buitrago,405,0.0,0.0,True
+28064,Gascones,250,0.0,0.0,True
+28065,Getafe,193797,38.9,22.1,True
+28066,Griñón,10524,16.2,16.2,True
+28067,Guadalix de la Sierra,6942,0.0,0.0,True
+28068,Guadarrama,17144,0.0,0.0,True
+28069,"Hiruela, La",88,0.0,0.0,True
+28070,Horcajo de la Sierra-Aoslos,221,0.0,0.0,True
+28071,Horcajuelo de la Sierra,106,0.0,0.0,False
+28072,Hoyo de Manzanares,9048,0.0,0.0,True
+28073,Humanes de Madrid,20131,0.0,0.0,True
+28074,Leganés,193278,27.2,12.8,True
+28075,Loeches,9223,16.5,0.0,True
+28076,Lozoya,600,0.0,0.0,True
+28078,Madarcos,69,0.0,0.0,True
+28079,Madrid,3414244,60.5,39.0,True
+28080,Majadahonda,72704,36.2,16.9,True
+28082,Manzanares el Real,9594,0.0,0.0,True
+28083,Meco,15811,0.0,0.0,True
+28084,Mejorada del Campo,24571,20.2,20.2,True
+28085,Miraflores de la Sierra,7276,0.0,0.0,True
+28086,"Molar, El",9805,0.0,0.0,False
+28087,"Molinos, Los",4719,0.0,0.0,True
+28088,Montejo de la Sierra,344,0.0,0.0,True
+28089,Moraleja de Enmedio,5564,0.0,0.0,True
+28090,Moralzarzal,14460,0.0,0.0,True
+28091,Morata de Tajuña,8086,0.0,0.0,True
+28092,Móstoles,211596,36.5,15.9,True
+28093,Navacerrada,3256,0.0,0.0,True
+28094,Navalafuente,1722,0.0,0.0,True
+28095,Navalagamella,3170,0.0,0.0,True
+28096,Navalcarnero,32654,43.5,14.2,True
+28097,Navarredonda y San Mamés,165,0.0,0.0,False
+28099,Navas del Rey,3363,0.0,0.0,True
+28100,Nuevo Baztán,7339,0.0,0.0,True
+28101,Olmeda de las Fuentes,434,0.0,0.0,True
+28102,Orusco de Tajuña,1480,0.0,0.0,True
+28104,Paracuellos de Jarama,27035,14.3,0.0,True
+28106,Parla,135647,22.1,3.5,True
+28107,Patones,536,0.0,0.0,True
+28108,Pedrezuela,6509,0.0,0.0,True
+28109,Pelayos de la Presa,3135,0.0,0.0,True
+28110,Perales de Tajuña,3235,0.0,0.0,True
+28111,Pezuela de las Torres,1003,0.0,0.0,True
+28112,Pinilla del Valle,200,0.0,0.0,True
+28113,Pinto,56058,51.0,30.5,True
+28114,Piñuécar-Gandullas,184,0.0,0.0,True
+28115,Pozuelo de Alarcón,87666,29.0,18.5,True
+28116,Pozuelo del Rey,1312,0.0,0.0,True
+28117,Prádena del Rincón,146,0.0,0.0,False
+28118,Puebla de la Sierra,88,0.0,0.0,True
+28119,Quijorna,3907,0.0,0.0,True
+28120,Rascafría,1698,0.0,0.0,True
+28121,Redueña,287,0.0,0.0,True
+28122,Ribatejada,890,0.0,0.0,True
+28123,Rivas-Vaciamadrid,101436,36.7,18.0,True
+28124,Robledillo de la Jara,119,0.0,0.0,True
+28125,Robledo de Chavela,4697,0.0,0.0,False
+28126,Robregordo,79,0.0,0.0,True
+28127,"Rozas de Madrid, Las",98244,13.9,3.9,True
+28128,Rozas de Puerto Real,561,0.0,0.0,True
+28129,San Agustín del Guadalix,13792,0.0,0.0,True
+28130,San Fernando de Henares,38789,62.5,26.1,True
+28131,San Lorenzo de El Escorial,18578,13.3,0.0,True
+28132,San Martín de la Vega,20547,0.0,0.0,True
+28133,San Martín de Valdeiglesias,8986,0.0,0.0,True
+28134,San Sebastián de los Reyes,96232,32.6,15.4,True
+28135,Santa María de la Alameda,1585,0.0,0.0,True
+28136,Santorcaz,979,0.0,0.0,True
+28137,"Santos de la Humosa, Los",2845,0.0,0.0,False
+28138,"Serna del Monte, La",110,0.0,0.0,False
+28140,Serranillos del Valle,4577,0.0,0.0,True
+28141,Sevilla la Nueva,9506,0.0,0.0,True
+28143,Somosierra,93,0.0,0.0,True
+28144,Soto del Real,9311,0.0,0.0,True
+28145,Talamanca de Jarama,4439,0.0,0.0,True
+28146,Tielmes,2879,0.0,0.0,True
+28147,Titulcia,1398,0.0,0.0,True
+28148,Torrejón de Ardoz,142399,66.0,48.6,True
+28149,Torrejón de la Calzada,10504,25.7,25.7,True
+28150,Torrejón de Velasco,4895,0.0,0.0,True
+28151,Torrelaguna,4896,0.0,0.0,True
+28152,Torrelodones,24622,31.6,0.0,True
+28153,Torremocha de Jarama,1023,0.0,0.0,True
+28154,Torres de la Alameda,7595,0.0,0.0,True
+28155,Valdaracete,664,0.0,0.0,False
+28156,Valdeavero,1881,0.0,0.0,True
+28157,Valdelaguna,1109,0.0,0.0,True
+28158,Valdemanco,1119,0.0,0.0,False
+28159,Valdemaqueda,871,0.0,0.0,True
+28160,Valdemorillo,14261,20.8,0.0,True
+28161,Valdemoro,85195,24.4,8.9,True
+28162,Valdeolmos-Alalpardo,4555,0.0,0.0,True
+28163,Valdepiélagos,615,0.0,0.0,True
+28164,Valdetorres de Jarama,5095,0.0,0.0,False
+28165,Valdilecha,3240,0.0,0.0,True
+28166,Valverde de Alcalá,556,0.0,0.0,True
+28167,Velilla de San Antonio,14370,0.0,0.0,True
+28168,"Vellón, El",2261,0.0,0.0,True
+28169,Venturada,2622,0.0,0.0,True
+28170,Villaconejos,3541,0.0,0.0,True
+28171,Villa del Prado,7461,0.0,0.0,False
+28172,Villalbilla,18496,19.9,0.0,True
+28173,Villamanrique de Tajo,863,0.0,0.0,True
+28174,Villamanta,2754,0.0,0.0,True
+28175,Villamantilla,1674,0.0,0.0,True
+28176,Villanueva de la Cañada,23158,0.0,0.0,True
+28177,Villanueva del Pardillo,17967,0.0,0.0,True
+28178,Villanueva de Perales,1751,0.0,0.0,False
+28179,Villar del Olmo,2333,0.0,0.0,True
+28180,Villarejo de Salvanés,7981,0.0,0.0,True
+28181,Villaviciosa de Odón,29245,17.1,17.1,True
+28182,Villavieja del Lozoya,335,0.0,0.0,True
+28183,Zarzalejo,1860,0.0,0.0,True
+28901,Lozoyuela-Navas-Sieteiglesias,1444,0.0,0.0,True
+28902,Puentes Viejas,762,0.0,0.0,True
+28903,Tres Cantos,53842,71.5,42.2,True

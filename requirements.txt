@@ -1,0 +1,7 @@
+pandas>=2.0
+numpy>=1.24
+scipy>=1.10
+pyproj>=3.5
+pyshp>=2.3
+shapely>=2.0
+requests>=2.31
