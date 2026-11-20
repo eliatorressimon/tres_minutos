@@ -19,7 +19,7 @@
   --rojo:#d6142f;--rojo-oscuro:#9e0d22;--rojo-claro:#fde8eb;
   --sans:"Archivo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
   --entrar:cubic-bezier(.22,1,.36,1);
-  --cab:56px;--lado:448px;--monitor:92px;
+  --cab:56px;--lado:min(560px,46vw);--monitor:0px;
 }
 *{box-sizing:border-box;border-radius:0}
 [hidden]{display:none!important}
@@ -120,6 +120,31 @@ h2.seccion{font:750 18px/1.2 var(--sans);font-variation-settings:"wdth" 104;marg
 h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(--linea),var(--linea)) left center/100% 1px no-repeat}
 .nota{color:var(--gris-2);font-size:13px;line-height:1.45}
 
+/* barras de 24 horas */
+.hora-dato{display:flex;align-items:flex-end;gap:14px}
+.hora-dato strong{font:800 64px/.82 var(--sans);font-variation-settings:"wdth" 118;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:var(--negro);white-space:nowrap}
+.hora-dato p{font-size:14.5px;line-height:1.4;color:var(--gris-1);padding-bottom:2px}
+.hora-dato p b{color:var(--negro)}
+.barras-tit{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--gris-2);margin:18px 0 6px}
+#esfera{width:100%;height:auto;display:block;overflow:visible}
+#esfera [data-h]{cursor:pointer}
+#esfera g:hover .b{opacity:.75}
+.semana{display:flex;align-items:center;gap:8px;margin-top:10px;border:0;background:none;padding:4px 0;font:600 13px var(--sans);color:var(--rojo)}
+.semana svg{width:12px;height:12px;fill:currentColor}
+.semana:hover{text-decoration:underline}
+/* bloques desplegables */
+details.bloque{margin-top:12px;background:#fff;box-shadow:inset 3px 0 0 var(--rojo);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)}
+details.bloque>summary{list-style:none;cursor:pointer;padding:14px 46px 14px 18px;font:750 16px/1.25 var(--sans);font-variation-settings:"wdth" 104;position:relative}
+details.bloque>summary::-webkit-details-marker{display:none}
+details.bloque>summary small{display:block;font:500 13px/1.35 var(--sans);color:var(--gris-2);margin-top:3px;font-variation-settings:normal}
+details.bloque>summary::after{content:"+";position:absolute;right:16px;top:12px;font:500 22px var(--mono);color:var(--rojo)}
+details.bloque[open]>summary::after{content:"−"}
+details.bloque>summary:hover{background:var(--hueso)}
+details.bloque>.bloque-cuerpo{padding:2px 18px 18px}
+details.bloque .medir{border-top:0;margin:0;padding:0}
+details.bloque .caja,details.bloque .simulador{margin-top:0}
+details.bloque .pasos{margin-top:4px}
+details.bloque h2.seccion:first-child{margin-top:6px}
 /* caja monitor */
 .caja{background:#fff;margin-top:24px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);box-shadow:inset 3px 0 0 var(--rojo)}
 .caja-cab{background:var(--vino);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:9px 14px;font:500 12.5px var(--mono);letter-spacing:.02em}
@@ -130,11 +155,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 .cifra-fila{display:flex;align-items:flex-end;gap:14px}
 .cifra-fila p{font-size:14px;line-height:1.4;color:var(--gris-1);padding-bottom:4px}
 .celdas{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--linea);margin:16px -14px 0}
-  .esfera-fila{display:grid;grid-template-columns:196px 1fr;gap:14px;align-items:center}
 #esfera{width:100%;height:auto;display:block;overflow:visible}
-#esfera path{cursor:pointer;transition:opacity .15s}
-#esfera path:hover{opacity:.75}
-.esfera-datos p{font-size:14px;line-height:1.4;color:var(--gris-1)}
 .apilado{list-style:none;margin:12px 0 0;padding:0}
 .apilado li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:6px 0;border-top:1px solid var(--linea);font-size:12.5px;color:var(--gris-2)}
 .apilado strong{font:750 17px var(--sans);font-variation-settings:"wdth" 110;color:var(--negro);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -313,12 +334,6 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 .controles button:hover{background:var(--rosa)}
 .controles button[aria-pressed=true]{background:var(--vino);color:#fff}
 .controles svg{width:18px;height:18px}
-.monitor{position:absolute;left:0;right:0;bottom:0;height:var(--monitor);z-index:3;background:var(--vino);color:#fff;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:14px;padding:10px 16px 10px 14px;animation:monitor .7s .3s var(--entrar) both}
-@keyframes monitor{from{transform:translateY(100%)}}
-.play{width:44px;height:44px;border:0;background:var(--rojo);display:grid;place-items:center;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
-.play:hover{background:#ff3a52}
-.play svg{width:16px;height:16px;fill:#fff}
-#tira{width:100%;height:72px;display:block;cursor:ew-resize;touch-action:none}
 .creditos{position:absolute;right:8px;bottom:calc(var(--monitor) + 6px);z-index:3;font-size:10.5px;color:var(--gris-2);background:rgba(255,255,255,.85);padding:1px 7px}
 .creditos a{color:inherit}
 .etiqueta{position:fixed;left:0;top:0;z-index:8;pointer-events:none;background:#fff;box-shadow:inset 3px 0 0 var(--rojo),0 10px 26px -8px rgba(58,12,21,.35);padding:8px 11px;display:flex;flex-direction:column;gap:2px;min-width:170px;max-width:270px}
@@ -404,7 +419,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 
 /* móvil */
 @media (max-width:820px){
-  :root{--cab:52px;--monitor:64px}
+  :root{--cab:52px;--monitor:0px}
   body{overflow:auto}
   .marca{width:auto;padding:0 12px}
   .marca strong{display:none}
@@ -417,18 +432,14 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
   .subnav{padding:0 10px}
   .subnav button{padding:12px 8px 10px;font-size:12.5px}
   .cuerpo{position:static;display:flex;flex-direction:column;padding-top:var(--cab)}
-  .escena{position:sticky;top:var(--cab);height:50dvh;z-index:1;order:-1;flex:none}
+  .escena{position:sticky;top:var(--cab);height:38dvh;z-index:1;order:-1;flex:none}
   .lado{overflow:visible;border-right:0;position:relative;z-index:2}
   .vista{padding:22px 16px 40px}
   h1.titular{font-size:27px}
   .cifra{font-size:62px}
   .leyenda{display:none}
   .controles button{width:36px;height:36px}
-  .monitor{padding:6px 10px;gap:8px}
-  .play{width:36px;height:36px}
-  #tira{height:50px}
-  .casos{grid-template-columns:1fr}
-  .esfera-fila{grid-template-columns:150px 1fr}
+    .casos{grid-template-columns:1fr}
   .equipo{grid-template-columns:1fr}
   .intro-titulo{font-size:32px}
 }
@@ -442,7 +453,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
     <button data-tab="admin"><span class="largo">Administraciones</span><span class="corto">Administración</span></button>
     <button data-tab="info"><span class="largo">Información</span><span class="corto">Info</span></button>
   </nav>
-  <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><div class="lectura" aria-live="polite" title="Hora que estás viendo y vecinos con un desfibrilador abierto cerca"><span class="pulso"></span><span id="lecturaT">MAR 11:00</span><b id="lecturaP">45 %</b><small>cubiertos</small></div>
+  <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><div class="lectura" aria-live="polite" title="Hora que estás viendo en el mapa y vecinos con un desfibrilador abierto cerca"><span class="pulso"></span><small id="lecturaE">AHORA</small><span id="lecturaT">MAR 11:00</span><b id="lecturaP">45 %</b><small>cubiertos</small></div>
 </header>
 
 <div class="cuerpo">
@@ -456,42 +467,48 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
     <section class="vista" id="v-ahora">
       <div class="antetitulo">Para administraciones: 13.673 aparatos, 168 horas</div>
       <h1 class="titular">Si alguien cae ahora, ¿llega <span>a tiempo</span> un desfibrilador?</h1>
-      <p class="entradilla">Hay unos <b>tres minutos</b> para ir a por uno y volver. Muchos están en oficinas, colegios o gimnasios que cierran, así que la respuesta cambia con la hora. Cada <b>marca roja</b> del mapa es un barrio donde ahora no hay ninguno abierto <span class="dist">a menos de 200 metros</span>.</p>
+      <p class="entradilla">Hay unos <b>tres minutos</b> para ir a por uno y volver. Cada <b>marca roja</b> del mapa es un barrio donde a esta hora no hay ninguno abierto <span class="dist">a menos de 200 metros</span>.</p>
       <div class="caja">
         <div class="caja-cab"><span id="cajaT">MARTES 11:00</span><b id="cajaVivo"></b></div>
         <div class="caja-cuerpo">
-          <div class="esfera-fila">
-            <svg id="esfera" viewBox="-122 -122 244 244" role="img" aria-label="Reloj de 24 horas con la cobertura de cada hora del día elegido"></svg>
-            <div class="esfera-datos"><p id="cTexto"></p>
-              <ul class="apilado"><li><span>Fuera de la capital</span><strong id="cFuera"></strong></li><li><span>Mayores de 65</span><strong id="c65"></strong></li><li><span>Aparatos abiertos</span><strong id="cAbiertos"></strong></li></ul></div>
-          </div>
+          <div class="hora-dato"><strong id="cPct">45 %</strong><p id="cTexto"></p></div>
+          <div class="barras-tit">Cada hora del <span id="barrasDia">martes</span>. Pulsa una barra para verla</div>
+          <svg id="esfera" viewBox="0 0 480 116" role="img" aria-label="Barras con el porcentaje de vecinos cubiertos en cada hora del día elegido"></svg>
           <div class="reloj">
             <div class="dias" id="dias"></div>
             <div class="hora"><output id="horaTxt">11:00</output><input type="range" id="hora" min="0" max="23" step="1" aria-label="Hora del día"><button class="boton-ahora" id="btnAhora">Ahora</button></div>
+            <button class="semana" id="play" aria-label="Ver pasar la semana hora a hora"><svg viewBox="0 0 16 16" id="playIco"><path d="M3 1l12 7-12 7z"/></svg><span id="playTxt">Ver pasar la semana hora a hora</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="buscador">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 15 15"/></svg>
+        <input id="buscar" type="search" placeholder="Busca un municipio" autocomplete="off" aria-label="Busca un municipio">
+        <ul class="sugerencias" id="sugerencias" hidden></ul>
+      </div>
+      <details class="bloque"><summary>Más cifras de esta hora<small>Fuera de la capital, mayores de 65 y aparatos abiertos</small></summary><div class="bloque-cuerpo">
+        <ul class="apilado"><li><span>Fuera de Madrid capital</span><strong id="cFuera"></strong></li><li><span>Mayores de 65 cubiertos</span><strong id="c65"></strong></li><li><span>Aparatos abiertos</span><strong id="cAbiertos"></strong></li></ul>
+      </div></details>
+      <details class="bloque"><summary>Cambiar la distancia<small>100, 200 o 300 metros, andando o en línea recta</small></summary><div class="bloque-cuerpo">
             <div class="medir" id="medir">
               <div class="medir-fila"><span>Distancia</span><div class="seg" id="segR"><button data-r="100" aria-pressed="false">100 m</button><button data-r="200" aria-pressed="true">200 m</button><button data-r="300" aria-pressed="false">300 m</button></div></div>
               <div class="medir-fila"><span>Medida</span><div class="seg" id="segM"><button data-m="recta" aria-pressed="true">En línea recta</button><button data-m="andando" aria-pressed="false">Andando por la calle</button></div></div>
               <p class="nota" id="medirNota"></p>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="mas" style="margin-top:14px"><details><summary>¿Qué es cada cosa de esta pantalla?</summary><div class="guia">
-        <div><em class="util">Sirve</em><span><b>El reloj redondo:</b> las 24 horas del día elegido. Cuanto más roja la porción, menos vecinos cubiertos. Pulsa una para ir a esa hora.</span></div>
-        <div><em class="util">Sirve</em><span><b>La línea de abajo:</b> la cobertura de toda la semana, hora a hora. La línea discontinua es fuera de Madrid capital. Arrástrala o pulsa el triángulo.</span></div>
-        <div><em class="util">Sirve</em><span><b>Las columnas rojas:</b> barrios sin aparato abierto cerca. Su altura es el número de vecinos.</span></div>
-        <div><em class="util">Sirve</em><span><b>Distancia y medida:</b> cambia entre 100, 200 y 300 metros, andando o en línea recta, y todo se recalcula.</span></div>
+      </div></details>
+      <details class="bloque"><summary>Cuatro casos que llaman la atención<small>La peor hora, la mejor, un pueblo que cambia mucho y los que no tienen ninguno</small></summary><div class="bloque-cuerpo">
+        <div class="casos" id="casos"></div>
+      </div></details>
+      <details class="bloque"><summary>Municipios mejor y peor cubiertos<small>Se actualiza con la hora que elijas</small></summary><div class="bloque-cuerpo">
+        <div id="rankings"></div>
+      </div></details>
+      <details class="bloque"><summary>¿Qué es cada cosa de esta pantalla?<small>Lo que sirve y lo que es solo adorno</small></summary><div class="bloque-cuerpo guia">
+        <div><em class="util">Sirve</em><span><b>Las barras:</b> cada una es una hora del día elegido. Cuanto más alta, más vecinos tienen un aparato abierto cerca. La roja es la hora que ves en el mapa. Pulsa otra para cambiar.</span></div>
+        <div><em class="util">Sirve</em><span><b>Los días y la barra deslizante:</b> eligen la hora. "Ahora" vuelve a la hora real.</span></div>
+        <div><em class="util">Sirve</em><span><b>Las marcas rojas del mapa:</b> barrios sin aparato abierto cerca. En 3D, su altura es el número de vecinos.</span></div>
+        <div><em class="util">Sirve</em><span><b>"Ver pasar la semana":</b> el mapa avanza solo, hora a hora, para ver cómo se vacía de noche.</span></div>
         <div><em class="deco">Adorno</em><span><b>El mapa se oscurece</b> de noche para que se note la hora, y <b>el latido de la cabecera</b> es la marca de la web.</span></div>
-      </div></details></div>
-      <div class="buscador">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 15 15"/></svg>
-        <input id="buscar" type="search" placeholder="Busca tu municipio" autocomplete="off" aria-label="Busca tu municipio">
-        <ul class="sugerencias" id="sugerencias" hidden></ul>
-      </div>
-      <h2 class="seccion">Mira estos casos</h2>
-      <div class="casos" id="casos"></div>
-      <h2 class="seccion">A esta hora</h2>
-      <div id="rankings"></div>
+      </div></details>
     </section>
 
     <section class="vista" id="v-municipio" hidden></section>
@@ -499,7 +516,8 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
     <section class="vista" id="v-info" hidden>
       <div class="antetitulo">Para vecinos, familias y mayores</div>
       <h1 class="titular">¿Cómo de protegida está <span>tu calle</span>?</h1>
-      <p class="entradilla">Si alguien se desploma, cada minuto sin desfibrilador cuenta. Aquí puedes ver si tienes uno cerca a cualquier hora, y te contamos lo básico para estar preparado.</p>
+      <p class="entradilla">Si alguien se desploma, cada minuto sin desfibrilador cuenta. Mira si tienes uno cerca, de día y de noche.</p>
+      <button class="letra" id="btnLetra" aria-pressed="false">Aa  Letra más grande</button>
       <div class="cercano" id="cercano">
         <h3>Mira tu calle</h3>
         <p>Usa tu ubicación o toca cualquier punto del mapa: tu casa, el colegio, la casa de tus padres. Te decimos a qué distancia andando está el desfibrilador abierto más cercano, de día y de noche.</p>
@@ -512,10 +530,10 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
           <div class="aviso-cfg" id="avisoCfg" hidden></div>
         </div>
       </div>
-      <div class="consejo"><strong>Si vas a dejar esta web a una persona mayor</strong>Guárdale un contacto en "Avisar a un contacto" y déjale la web abierta en Emergencia. Con un solo botón sabrá dónde está el desfibrilador, oirá las instrucciones en voz alta y podrá avisarte con su ubicación.</div>
-      <button class="letra" id="btnLetra" aria-pressed="false">Aa  Letra más grande</button>
       <h2 class="seccion">Lo que conviene saber</h2>
       <div class="mas">
+        <details><summary>Si vas a dejar esta web a una persona mayor</summary><div>
+          <p>Guárdale un contacto en "Avisar a un contacto" y déjale la web abierta en Emergencia. Con un solo botón sabrá dónde está el desfibrilador, oirá las instrucciones en voz alta y podrá avisarte con su ubicación.</p></div></details>
         <details><summary>¿Qué hago si alguien se desploma?</summary><div>
           <ul><li><b>Llama al 112</b> y pon el altavoz. Te guían por teléfono.</li>
           <li><b>Empieza a apretar el pecho</b>: manos en el centro, brazos rectos, fuerte y rápido (unas dos veces por segundo). En la pestaña Emergencia hay un metrónomo que marca el ritmo.</li>
@@ -536,8 +554,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
         <details><summary>¿Qué es cada cosa del mapa?</summary><div class="guia">
           <div><em class="util">Sirve</em><span><b>Marcas rojas:</b> barrios sin ningún desfibrilador abierto a 200 m andando a esa hora. En 3D, cuanto más alta, más vecinos.</span></div>
           <div><em class="util">Sirve</em><span><b>Cuadrados negros</b> (al acercarte): los desfibriladores abiertos a esa hora.</span></div>
-          <div><em class="util">Sirve</em><span><b>La línea de abajo</b>: cuántos vecinos están cubiertos cada hora de la semana. Arrástrala para cambiar de hora, o pulsa el triángulo para verla correr.</span></div>
-          <div><em class="util">Sirve</em><span><b>El reloj redondo</b> (en Administraciones): las 24 horas del día. Cuanto más roja la porción, menos vecinos cubiertos. Pulsa una para ir a esa hora.</span></div>
+          <div><em class="util">Sirve</em><span><b>La tabla de "Mira tu calle":</b> a cuántos metros andando queda el aparato abierto más cercano a tres horas distintas. Verde si está a 200 metros o menos, rojo si está lejos.</span></div>
           <div><em class="deco">Adorno</em><span><b>El mapa se oscurece</b> de noche para que se note la hora, y <b>el latido de la cabecera</b> es solo la marca de la web.</span></div>
         </div></details>
         <details><summary>¿De dónde salen estos datos?</summary><div>
@@ -550,45 +567,53 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
     <section class="vista" id="v-actuar" hidden>
       <div class="antetitulo" id="antAct">Domingo, 3:00</div>
       <h1 class="titular">Diez aparatos más, <span>bien puestos</span>.</h1>
-      <p class="entradilla">Hemos buscado dónde un aparato nuevo cubriría a más vecinos que hoy no tienen ninguno abierto cerca. Los elegimos de uno en uno, después de colocar el anterior, y los mayores de 65 cuentan doble. Puedes verlo de tres maneras:</p>
+      <p class="entradilla">Dónde un aparato nuevo cubriría a más vecinos que hoy no tienen ninguno abierto cerca. Las farmacias se miran <b>un martes a las 11</b>, una hora normal de día. Las gasolineras y el sitio ideal, <b>un domingo a las 3</b>, la peor hora de la semana.</p>
       <div class="modos" id="modos">
         <button data-modo="dia" aria-pressed="true"><b>Farmacias</b><span>de día</span></button>
         <button data-modo="noche"><b>Gasolineras 24 h</b><span>de madrugada</span></button>
         <button data-modo="ideal"><b>Sitio ideal</b><span>de madrugada</span></button>
       </div>
       <div class="hallazgo" id="hallazgo"></div>
-      <div class="simulador">
-        <div class="caja-cab"><span>PON TÚ UN APARATO</span><b id="simCab"></b></div>
+      <details class="bloque" open><summary>Pon tú un aparato<small>Tócalo en el mapa y mira cuántos vecinos gana</small></summary><div class="bloque-cuerpo">
+        <div class="simulador">
+        <div class="caja-cab"><span>SIMULADOR</span><b id="simCab"></b></div>
         <div class="caja-cuerpo">
           <p>Para decidir dónde poner el próximo: pulsa el botón y toca el mapa donde lo pondrías. Cuenta como abierto las 24 horas y te decimos cuántos vecinos sin cobertura gana a la hora elegida, midiendo andando por la calle. Puedes poner varios.</p>
           <div class="acciones"><button class="boton" id="btnPoner" aria-pressed="false">Colocar en el mapa</button><button class="enlace" id="btnQuitar" hidden>Quitar los míos</button></div>
           <div class="resultado-sim" id="resSim" hidden></div>
         </div>
       </div>
-      <h2 class="seccion" id="tituloLista">Los diez primeros</h2>
-      <ol class="sitios" id="sitios"></ol>
-      <div class="suma"><span class="cifra" id="sumaPers"></span><p id="sumaTxt"></p></div>
+      </div></details>
+      <details class="bloque"><summary id="tituloLista">Los diez primeros</summary><div class="bloque-cuerpo">
+        <ol class="sitios" id="sitios"></ol>
+        <div class="suma"><span class="cifra" id="sumaPers"></span><p id="sumaTxt"></p></div>
+      </div></details>
+      <details class="bloque"><summary>Cómo los elegimos</summary><div class="bloque-cuerpo"><p class="nota" style="font-size:14px">De uno en uno: ponemos el que más vecinos sin cubrir gana, lo damos por colocado y buscamos el siguiente con lo que queda. Los mayores de 65 cuentan doble porque son quienes más riesgo tienen. Se mide andando por la calle.</p></div></details>
     </section>
 
 
     <section class="vista" id="v-metodo" hidden>
       <div class="antetitulo">Datos abiertos y código</div>
       <h1 class="titular">Cómo lo <span>calculamos</span>.</h1>
-      <ol class="pasos" style="margin-top:18px">
+      <p class="entradilla">Datos abiertos de la Comunidad de Madrid, el INE y OpenStreetMap, y un cálculo para cada una de las 168 horas de la semana.</p>
+      <details class="bloque" open><summary>Los cinco pasos<small>Aparatos, horarios, vecinos, distancias y nuevos sitios</small></summary><div class="bloque-cuerpo">
+      <ol class="pasos">
         <li><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b>13.673</b>, todos con coordenadas. Quitamos los <b>2.206</b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
         <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de 2.331 formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Lo convertimos en una tabla de 7 días por 24 horas. <b>3.226</b> abren siempre y <b>4.543</b> no tienen un horario que se pueda leer, así que no los contamos como abiertos.</p></div></li>
         <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a 200 metros o menos de su centro, andando por la calle. Lo calculamos para las 168 horas de la semana.</p></div></li>
         <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a menos de 300 metros pedimos la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y le sumamos lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b>20,6 %</b> de los vecinos tiene uno abierto (en línea recta salía el 45,6 %) y un domingo a las 3, el <b>9,6 %</b> (frente al 25,9 %). Por eso toda la web, también "Dónde actuar", mide andando.</p></div></li>
         <li><div><h4>Dónde poner los siguientes</h4><p>Elegimos de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y repetimos con lo que queda. De día buscamos entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas o en cualquier punto del mapa.</p></div></li>
       </ol>
-      <h2 class="seccion">Por qué 200 metros</h2>
+      </div></details>
+      <details class="bloque"><summary>Por qué 200 metros<small>Ir y volver en tres minutos</small></summary><div class="bloque-cuerpo">
       <div class="reloj-tres">
         <div><strong>0:00</strong>Alguien cae. Un testigo llama al 112 y empieza a reanimar.</div>
         <div><strong>1:30</strong>Otro corre al desfibrilador más cercano: 200 metros.</div>
         <div><strong>3:00</strong>Vuelve con él y lo enciende. El aparato guía la descarga.</div>
       </div>
-      <p class="nota" style="margin-top:10px">Ir y volver 400 metros a paso rápido cabe en unos tres minutos. Por eso medimos 200 metros andando desde el centro de cada sección censal. En el reloj de "Ahora" puedes probar con 100 o 300 metros, o medir en línea recta. Por qué importan esos minutos, con todas las fuentes, está en <a href="https://github.com/eliatorressimon/tres_minutos/blob/main/docs/POR_QUE_IMPORTA.md" target="_blank" rel="noopener">este documento</a>.</p>
-      <h2 class="seccion">Fuentes</h2>
+      <p class="nota" style="margin-top:10px">Ir y volver 400 metros a paso rápido cabe en unos tres minutos. Por eso medimos 200 metros andando desde el centro de cada sección censal. En "Cobertura", dentro de "Cambiar la distancia", puedes probar con 100 o 300 metros, o medir en línea recta. Por qué importan esos minutos, con todas las fuentes, está en <a href="https://github.com/eliatorressimon/tres_minutos/blob/main/docs/POR_QUE_IMPORTA.md" target="_blank" rel="noopener">este documento</a>.</p>
+      </div></details>
+      <details class="bloque"><summary>Fuentes<small>De dónde sale cada dato</small></summary><div class="bloque-cuerpo">
       <ul class="fuentes">
         <li><a href="https://datos.comunidad.madrid/catalogo/dataset/desfibriladores_externos_fuera_ambito_sanitario" target="_blank" rel="noopener">Desfibriladores externos fuera del ámbito sanitario</a>, Comunidad de Madrid</li>
         <li>Secciones censales (seccionado de 2019), Comunidad de Madrid</li>
@@ -597,13 +622,16 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
         <li>Distancias a pie: OSRM con la red de calles de OpenStreetMap</li>
         <li>Mapa base: OpenFreeMap con datos de OpenStreetMap</li>
       </ul>
+      </div></details>
+      <details class="bloque"><summary>Límites<small>Lo que hay que tener en cuenta</small></summary><div class="bloque-cuerpo">
       <div class="aviso">Medimos desde el centro de cada sección, así que para quien vive en la fachada la distancia real es algo menor. Y un aparato sin horario puede estar abierto aunque no lo contemos. El código y los datos elaborados están en <a href="https://github.com/eliatorressimon/tres_minutos" target="_blank" rel="noopener">GitHub</a>, con licencia MIT.</div>
-      <h2 class="seccion">Quiénes somos</h2>
-      <p class="nota" style="font-size:14px;color:var(--gris-1)">Proyecto para DataMad 2026.</p>
+      </div></details>
+      <details class="bloque"><summary>Quiénes somos<small>Proyecto para DataMad 2026</small></summary><div class="bloque-cuerpo">
       <div class="equipo">
         <div><strong>Elia Torres Simón</strong><span>Matemáticas, Universidad Complutense</span></div>
         <div><strong>Clara Juarros</strong><span>Derecho y Economía, Universidad Rey Juan Carlos</span></div>
       </div>
+      </div></details>
       <p class="nota" style="margin-top:14px">Herramienta no oficial, sin relación con la Comunidad de Madrid. Ante una emergencia, llama al 112.</p>
     </section>
   </aside>
@@ -624,10 +652,6 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
       <button id="region" aria-label="Ver toda la Comunidad"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 6V2h4M12 2h4v4M16 12v4h-4M6 16H2v-4"/></svg></button>
     </div>
     <div class="creditos"><a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a>, <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>. Datos: Comunidad de Madrid, INE</div>
-    <div class="monitor">
-      <button class="play" id="play" aria-label="Reproducir la semana"><svg viewBox="0 0 16 16" id="playIco"><path d="M3 1l12 7-12 7z"/></svg></button>
-      <svg id="tira" preserveAspectRatio="none" aria-label="Porcentaje de vecinos cubiertos a lo largo de la semana. Arrastra para cambiar la hora"></svg>
-    </div>
   </main>
 </div>
 
@@ -711,7 +735,7 @@ async function cambiarMedida(r,m){
   document.querySelectorAll('.dist').forEach(e=>e.textContent=distL());
   document.querySelectorAll('.dist-c').forEach(e=>e.textContent=distC());
   calcular();gMin=Math.min(...curvaG.map(c=>c[0]));gMax=Math.max(...curvaG.map(c=>c[0]));
-  tira();casos();ponerT(T);
+  casos();ponerT(T);
 }
 function notaMedida(){const k=MEDIDA+'-'+RADIO;
   $('medirNota').innerHTML=NOTA_MEDIDA[MEDIDA]+(k==='recta-200'?'':` Con 200 m en línea recta, a esta hora, serían el <b>${p1(cobDe(VDEC['recta-200'],T))}</b>.`)}
@@ -735,10 +759,10 @@ function calcular(){
 /* ---------- mapa ---------- */
 let mapa=null,dk=null;
 const escena=$('escena');
-function caja(){const r=escena.getBoundingClientRect();return {w:r.width,h:r.height-(movil()?64:92)}}
+function caja(){const r=escena.getBoundingClientRect();return {w:r.width,h:r.height-0}}
 function vista0(conPitch=en3d){const {w,h}=caja();
   const z=Math.min(Math.log2((w-40)*360/(512*1.6)),Math.log2((h-50)*360/(512*1.75))+(conPitch?.25:0));const ppd=512*2**z/360;
-  return {longitude:-3.80,latitude:40.53-((movil()?64:92)/2)/(ppd*1.31)*(conPitch?1.5:1),zoom:z,pitch:conPitch?40:0,bearing:0}}
+  return {longitude:-3.80,latitude:40.53-(0/2)/(ppd*1.31)*(conPitch?1.5:1),zoom:z,pitch:conPitch?40:0,bearing:0}}
 function iniciarMapa(){
   const v=vista0(false);
   try{mapa=new maplibregl.Map({container:'mapa',style:'https://tiles.openfreemap.org/styles/positron',center:[v.longitude,v.latitude],zoom:v.zoom,interactive:false,attributionControl:false,maxPitch:85,fadeDuration:0})}catch(e){mapa=null}
@@ -812,53 +836,40 @@ function ponerT(t){
   if(camRuta&&((t+168)%168)!==camRuta.t){camRuta=null;$('rutaRes').innerHTML='<p class="nota">Has cambiado la hora: vuelve a buscar para ver el más cercano abierto ahora.</p>'}
   T=(t+168)%168;const d=Math.floor(T/24),h=T%24,c=curvaG[T],esAhora=T===ahoraT();
   document.querySelectorAll('#dias button').forEach((b,i)=>b.setAttribute('aria-pressed',i===d));
-  $('hora').value=h;$('horaTxt').textContent=hh(h);$('btnAhora').classList.toggle('es',esAhora);
-  $('cajaT').textContent=DIAS[d].toUpperCase()+' '+hh(h);$('cajaVivo').textContent=esAhora?'AHORA':'';
-  $('lecturaT').textContent=corto(T);$('lecturaP').textContent=Math.round(c[0])+' %';
-  esfera(d,h);
-  $('cTexto').innerHTML=`de los vecinos tiene un desfibrilador abierto ${distL()}. <b>${fmt(c[3])}</b> personas, no. Las horas más rojas del reloj son las peores del día.`;
+  $('hora').value=h;$('btnAhora').classList.toggle('es',esAhora);siguiendo=esAhora;textosHora();
+  $('lecturaP').textContent=Math.round(c[0])+' %';
+  esfera(d,h);$('barrasDia').textContent=DIAS[d].toLowerCase();$('cPct').textContent=Math.round(c[0])+' %';
+  $('cTexto').innerHTML=`de los vecinos tiene un desfibrilador abierto ${distL()}. <b>${fmt(c[3])}</b> personas, no.`;
   $('cFuera').textContent=p1(c[1]);$('c65').textContent=p1(c[2]);$('cAbiertos').textContent=fmt(abiertosT[T]);
   $('noche').style.opacity=(noche(h)*.42).toFixed(2);
-  const x=X(T);$('tCur').setAttribute('x1',x);$('tCur').setAttribute('x2',x);$('tPunto').setAttribute('cx',x);$('tPunto').setAttribute('cy',Y(c[0]));
-  const tx=Math.min(x+7,TW-92);$('tEtiq').setAttribute('x',tx);$('tEtiq').textContent=corto(T)+'  '+Math.round(c[0])+' %';
   if(vista==='ahora')rankings();if(sel>=0)actualizarMunicipio();if(mios.length)resultadoSim();
   notaMedida();pintar();
 }
 let gMin=0,gMax=100;
+/* hora real (con minutos) cuando se está viendo la hora actual */
+let siguiendo=true;
+function horaReal(){return new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date())}
+function textosHora(){const d=Math.floor(T/24),h=T%24,txt=siguiendo?horaReal():hh(h);
+  $('horaTxt').textContent=txt;$('cajaT').textContent=DIAS[d].toUpperCase()+' '+txt;$('cajaVivo').textContent=siguiendo?'AHORA':'';
+  $('lecturaE').textContent=siguiendo?'AHORA':'VIENDO';$('lecturaT').textContent=DIAS[d].slice(0,3).toUpperCase()+' '+txt}
+setInterval(()=>{if(!D||!siguiendo||reloj)return;const a=ahoraT();if(a!==T&&vista!=='actuar')ponerT(a);else textosHora()},15000);
 function esfera(d,h){
-  const sv=$('esfera'),r1=70,r2=104,ang=x=>(x*15-90)*Math.PI/180,pt=(r,a)=>[(r*Math.cos(a)).toFixed(2),(r*Math.sin(a)).toFixed(2)];
-  let g='';
-  for(let k=0;k<24;k++){const v=curvaG[d*24+k][0],q=Math.max(0,Math.min(1,(v-gMin)/(gMax-gMin||1)));const col='rgb('+mezcla(ROJO,[246,225,228],q).join(',')+')';
-    const a0=ang(k)+.012,a1=ang(k+1)-.012,[x1,y1]=pt(r2,a0),[x2,y2]=pt(r2,a1),[x3,y3]=pt(r1,a1),[x4,y4]=pt(r1,a0);
-    g+=`<path data-h="${k}" d="M${x1} ${y1}A${r2} ${r2} 0 0 1 ${x2} ${y2}L${x3} ${y3}A${r1} ${r1} 0 0 0 ${x4} ${y4}Z" fill="${col}"${k===h?' stroke="#1d1114" stroke-width="2"':''}><title>${hh(k)}: ${p1(v)}</title></path>`}
-  for(const k of [0,6,12,18]){const [x,y]=pt(115,ang(k));g+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="10" font-family="JetBrains Mono,monospace" fill="#7a6a6d">${k}</text>`}
-  const am=ang(h+.5),[hx,hy]=pt(r1-6,am);
-  g+=`<line x1="0" y1="0" x2="${hx}" y2="${hy}" stroke="#d6142f" stroke-width="2"/><rect x="-4" y="-4" width="8" height="8" fill="#d6142f" transform="rotate(45)"/>`;
-  const v=Math.round(curvaG[d*24+h][0]);
-  g+=`<circle r="44" fill="#fff"/><text y="6" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="44" letter-spacing="-1.5" fill="#1d1114" style="font-variation-settings:'wdth' 118">${v}<tspan font-size="20" dx="1">%</tspan></text><text y="26" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8.5" fill="#7a6a6d">CUBIERTOS</text>`;
+  const sv=$('esfera'),W=480,base=94,alto=80,paso=W/24,ah=ahoraT(),top=Math.max(1,...curvaG.map(c=>c[0]));
+  let g=`<line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="#e6d8d3"/>`;
+  for(let k=0;k<24;k++){const v=curvaG[d*24+k][0],hb=Math.max(2,v/top*alto),x=k*paso,sel=k===h,esA=d*24+k===ah;
+    g+=`<g data-h="${k}"><rect x="${x}" y="0" width="${paso}" height="${base+20}" fill="transparent"/><rect class="b" x="${(x+2).toFixed(1)}" y="${(base-hb).toFixed(1)}" width="${(paso-4).toFixed(1)}" height="${hb.toFixed(1)}" fill="${sel?'#d6142f':'#f0bcc4'}"/>`;
+    if(sel)g+=`<text x="${(x+paso/2).toFixed(1)}" y="${(base-hb-5).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" font-family="JetBrains Mono,monospace" fill="#d6142f">${Math.round(v)}%</text>`;
+    if(esA)g+=`<rect x="${(x+paso/2-3).toFixed(1)}" y="${base+3}" width="6" height="6" fill="#3a0c15" transform="rotate(45 ${(x+paso/2).toFixed(1)} ${base+6})"/>`;
+    g+=`<title>${hh(k)}: ${p1(v)}</title></g>`}
+  for(const k of [0,6,12,18]){g+=`<text x="${(k*paso+paso/2).toFixed(1)}" y="${base+20}" text-anchor="middle" font-size="10.5" font-family="JetBrains Mono,monospace" fill="#7a6a6d">${k}h</text>`}
+  g+=`<text x="${W}" y="${base+20}" text-anchor="end" font-size="10" font-family="JetBrains Mono,monospace" fill="#7a6a6d">${d*24<=ah&&ah<d*24+24?'◆ ahora':''}</text>`;
   sv.innerHTML=g;
 }
 $('esfera').addEventListener('click',e=>{const p=e.target.closest('[data-h]');if(p){parar();ponerT(Math.floor(T/24)*24+ +p.dataset.h)}});
-let TW=800,TH=72;const X=t=>10+t*((TW-20)/167),Y=p=>TH-6-p*((TH-24)/70);
-function tira(){
-  const s=$('tira'),r=s.getBoundingClientRect();TW=Math.max(200,Math.round(r.width));TH=Math.max(40,Math.round(r.height));s.setAttribute('viewBox',`0 0 ${TW} ${TH}`);
-  let g='';const paso=(TW-20)/167;
-  for(let h=0;h<168;h+=2)g+=`<line x1="${X(h)}" x2="${X(h)}" y1="14" y2="${TH}" stroke="rgba(255,255,255,.05)"/>`;
-  for(const p of [0,25,50])g+=`<line x1="10" x2="${TW-10}" y1="${Y(p)}" y2="${Y(p)}" stroke="rgba(255,255,255,.08)"/>`;
-  for(let h=0;h<168;h++){const nk=noche(h%24);if(nk>0)g+=`<rect x="${X(h)-paso/2}" y="14" width="${paso+.4}" height="${TH-14}" fill="#000" opacity="${(nk*.3).toFixed(2)}"/>`}
-  DIAS.forEach((d,i)=>{g+=`<line x1="${X(i*24)}" x2="${X(i*24)}" y1="0" y2="${TH}" stroke="rgba(255,255,255,.22)"/><text x="${X(i*24)+5}" y="10" font-size="10" font-weight="500" fill="#d9a7ae" font-family="JetBrains Mono,monospace">${d.slice(0,3).toUpperCase()}</text>`});
-  const camino=k=>curvaG.map((c,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(c[k]).toFixed(1)).join('');
-  g+=`<path d="${camino(1)}" fill="none" stroke="#b9606d" stroke-width="1.3" stroke-dasharray="3 3"/>`;
-  g+=`<path d="${camino(0)}" fill="none" stroke="#ff6b7d" stroke-width="2" stroke-linejoin="round" style="filter:drop-shadow(0 0 3px rgba(255,58,82,.7))"/>`;
-  g+=`<line id="tCur" y1="12" y2="${TH}" stroke="#fff" stroke-width="1.2"/><circle id="tPunto" r="4" fill="#fff"/><text id="tEtiq" y="24" font-size="11" font-weight="700" fill="#fff" font-family="JetBrains Mono,monospace"></text>`;
-  s.innerHTML=g;
-}
-(()=>{const s=$('tira');let arr=false;const elegir=e=>{const r=s.getBoundingClientRect();const vx=(e.clientX-r.left)/r.width*TW;ponerT(Math.max(0,Math.min(167,Math.round((vx-10)/((TW-20)/167)))))};
-  s.addEventListener('pointerdown',e=>{arr=true;s.setPointerCapture(e.pointerId);parar();elegir(e)});s.addEventListener('pointermove',e=>{if(arr)elegir(e)});s.addEventListener('pointerup',()=>arr=false)})();
-let retiro=null;addEventListener('resize',()=>{clearTimeout(retiro);retiro=setTimeout(()=>{if(D){tira();ponerT(T)}},200)});
+let retiro=null;addEventListener('resize',()=>{clearTimeout(retiro);retiro=setTimeout(()=>{if(D){ponerT(T)}},200)});
 let reloj=null;
-function parar(){clearInterval(reloj);reloj=null;$('playIco').innerHTML='<path d="M3 1l12 7-12 7z"/>';$('play').setAttribute('aria-label','Reproducir la semana')}
-$('play').onclick=()=>{if(reloj){parar();return}$('playIco').innerHTML='<path d="M2 1h4v14H2zM10 1h4v14h-4z"/>';$('play').setAttribute('aria-label','Pausa');reloj=setInterval(()=>ponerT(T+(reduce?6:1)),reduce?700:170)};
+function parar(){clearInterval(reloj);reloj=null;$('playIco').innerHTML='<path d="M3 1l12 7-12 7z"/>';$('playTxt').textContent='Ver pasar la semana hora a hora'}
+$('play').onclick=()=>{if(reloj){parar();return}$('playIco').innerHTML='<path d="M2 1h4v14H2zM10 1h4v14h-4z"/>';$('playTxt').textContent='Parar';reloj=setInterval(()=>ponerT(T+(reduce?6:1)),reduce?700:170)};
 
 /* ---------- casos y rankings ---------- */
 const ICO={luna:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M15 12.5A6.5 6.5 0 0 1 7.5 5a6.5 6.5 0 1 0 7.5 7.5z"/></svg>',
@@ -979,12 +990,12 @@ async function ponerAparato(c){
   if(MEDIDA==='andando'){$('resSim').hidden=false;$('resSim').textContent='Midiendo andando por la calle…';
     const d=await aPie(c,gan);if(d)gan=gan.filter((_,k)=>d[k]<=RADIO)}
   const g=gan.filter(i=>!cubierta(i,T)).reduce((a,i)=>a+S[i][2],0);
-  gan.forEach(i=>extra.add(i));mios.push({p:c,g});calcular();tira();ponerT(T);$('btnQuitar').hidden=false;
+  gan.forEach(i=>extra.add(i));mios.push({p:c,g});calcular();ponerT(T);$('btnQuitar').hidden=false;
 }
 function resultadoSim(){const base=mios.reduce((a,d)=>a+d.g,0);$('resSim').hidden=false;$('simCab').textContent=mios.length+(mios.length===1?' APARATO':' APARATOS');
   $('resSim').innerHTML=`<b>+${fmt(base)}</b> vecinos cubiertos al colocar${mios.length===1?'lo':'los'}. Con ${mios.length===1?'él':'ellos'}, la Comunidad queda al <b>${p1(curvaG[T][0])}</b> a esta hora.`}
 $('btnPoner').onclick=()=>{poniendo=!poniendo;$('btnPoner').setAttribute('aria-pressed',poniendo);$('btnPoner').textContent=poniendo?'Toca el mapa. Pulsa aquí para terminar':'Colocar en el mapa';$('deck').classList.toggle('poniendo',poniendo);if(poniendo&&zoom<11)volar({zoom:12.3})};
-$('btnQuitar').onclick=()=>{extra.clear();mios=[];calcular();tira();ponerT(T);$('btnQuitar').hidden=true;$('resSim').hidden=true;$('simCab').textContent=''};
+$('btnQuitar').onclick=()=>{extra.clear();mios=[];calcular();ponerT(T);$('btnQuitar').hidden=true;$('resSim').hidden=true;$('simCab').textContent=''};
 
 
 /* ---------- tu calle a tres horas (Información) ---------- */
@@ -1067,7 +1078,7 @@ function irA(v){if(location.hash!=='#'+v)location.hash=v;else ruta()}
 function ruta(){let v=(location.hash||'#emergencia').slice(1);if(v==='sos')v='emergencia';if(v==='admin')v=ultimaAdmin;
   const nv=['emergencia','ahora','actuar','metodo','info'].includes(v)?v:'emergencia',antes=vista;sel=-1;mostrar(nv);
   if(nv==='emergencia')return;
-  if(D){if(nv==='actuar'&&antes!=='actuar'){ponerT(horaAct());const b=vista0();volar({...b,zoom:b.zoom+.9,latitude:40.36,longitude:-3.74})}else pintar()}}
+  if(D){if(nv==='actuar'&&antes!=='actuar'){parar();ponerT(horaAct());const b=vista0();volar({...b,zoom:b.zoom+.9,latitude:40.36,longitude:-3.74})}else if(antes==='actuar'&&nv!=='actuar')ponerT(ahoraT());else pintar()}}
 document.querySelectorAll('.pestanas [data-tab]').forEach(b=>b.onclick=()=>irA(b.dataset.tab==='admin'?ultimaAdmin:b.dataset.tab));
 document.querySelectorAll('#subnav [data-vista]').forEach(b=>b.onclick=()=>irA(b.dataset.vista));
 $('inicio').onclick=()=>irA('emergencia');
@@ -1283,7 +1294,7 @@ fetch('datos.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}
   abiertosT=Array.from({length:168},(_,t)=>D.dea.reduce((a,x)=>a+(abierto(x,t)?1:0),0));
   calcular();gMin=Math.min(...curvaG.map(c=>c[0]));gMax=Math.max(...curvaG.map(c=>c[0]));
   if(!window.deck)throw new Error('deck');
-  iniciarMapa();tira();sitios();casos();ruta();ponerT(vista==='actuar'?horaAct():ahoraT());
+  iniciarMapa();sitios();casos();ruta();ponerT(vista==='actuar'?horaAct():ahoraT());
   await cambiarMedida(200,'andando');   // por defecto, la distancia de verdad: andando por la calle
   if(mapa){let h=false;const f=()=>{if(!h){h=true;intro.listo()}};mapa.once('load',f);setTimeout(f,5000)}else intro.listo();
 }).catch(e=>{console.error(e);$('introFrase').textContent='No se han podido cargar los datos. Recarga la página.'});
