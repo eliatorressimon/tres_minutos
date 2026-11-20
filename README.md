@@ -23,10 +23,11 @@ Por qué importan tres minutos y 200 metros, con todas las fuentes: [docs/POR_QU
 
 ## La web
 
+La web tiene tres pestañas, pensadas para tres tipos de público:
+
 - **Emergencia.** Es la pantalla de inicio. Un botón localiza a quien lo pulsa, busca el desfibrilador abierto más cercano a esa hora, dibuja la ruta a pie y lee en voz alta la distancia. También tiene un botón para llamar al 112, un metrónomo de 110 compresiones por minuto para guiar la reanimación y un aviso a un contacto por WhatsApp o SMS con la ubicación.
-- **Ahora.** Un mapa de los barrios sin ningún aparato abierto cerca, que cambia hora a hora durante la semana. Se puede elegir 100, 200 o 300 metros, andando o en línea recta, y abrir la ficha de cada municipio.
-- **Dónde actuar.** Las diez mejores farmacias (de día), las diez mejores gasolineras de 24 horas y los diez mejores puntos de madrugada para poner un aparato nuevo. También hay un simulador para colocar uno en el mapa y ver cuántos vecinos gana.
-- **Cómo lo calculamos.** Método, fuentes y límites, en corto.
+- **Administraciones.** Para ayuntamientos y la Comunidad. Un mapa de los barrios sin ningún aparato abierto cerca, que cambia hora a hora durante la semana (100, 200 o 300 metros, andando o en línea recta), con la ficha de cada municipio; un simulador para colocar un aparato en el mapa y ver cuántos vecinos gana; las diez mejores farmacias, gasolineras de 24 horas y puntos de madrugada para poner uno nuevo; y el método.
+- **Información.** Para vecinos, familias y personas mayores. Se escribe una calle o se usa la ubicación y sale a cuántos metros andando queda el desfibrilador más cercano un martes por la mañana, un sábado por la tarde y un domingo de madrugada. Debajo hay apartados desplegables: qué hacer si alguien se desploma, si cualquiera puede usar un desfibrilador, qué mirar al buscar casa o colegio, consejos para mayores y qué significa cada cosa del mapa. Tiene un botón para agrandar la letra.
 
 ## Estructura
 

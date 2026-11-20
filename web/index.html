@@ -52,6 +52,45 @@ a{color:var(--negro);text-decoration-color:var(--rojo);text-underline-offset:3px
 .cab-sos{align-self:center;flex:none;margin-left:8px;border:0;background:var(--rojo);color:#fff;font:700 13px var(--sans);padding:8px 14px 8px 12px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
 .cab-sos:hover{background:var(--vino-2)}
 .pestanas .corto{display:none}
+.pestanas .tab-sos{color:var(--rojo)}
+.pestanas .tab-sos:hover,.pestanas .tab-sos[aria-current]{color:var(--rojo-o,#9e0d22)}
+.lectura small{font:500 10px var(--mono);color:var(--gris-2);margin-left:4px;text-transform:uppercase;letter-spacing:.06em}
+.en-sos .cab{z-index:32}
+.subnav{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--linea);padding:0 22px;background:var(--papel)}
+.subnav button{border:0;background:none;padding:13px 10px 11px;font:600 13px var(--sans);color:var(--gris-2);white-space:nowrap}
+.subnav button:hover{color:var(--negro)}
+.subnav button[aria-current]{color:var(--negro);box-shadow:inset 0 -3px 0 var(--rojo)}
+.mas{margin-top:10px;border-top:1px solid var(--linea)}
+.mas details{border-bottom:1px solid var(--linea)}
+.mas summary{list-style:none;cursor:pointer;padding:13px 28px 13px 0;font:700 15px/1.3 var(--sans);position:relative}
+.mas summary::-webkit-details-marker{display:none}
+.mas summary::after{content:"+";position:absolute;right:4px;top:10px;font:500 20px var(--mono);color:var(--rojo)}
+.mas details[open] summary::after{content:"−"}
+.mas details>div{padding:0 0 14px;font-size:14px;line-height:1.55;color:var(--gris-1)}
+.mas details>div p+p,.mas details>div ul{margin-top:8px}
+.mas details li{margin-left:18px;margin-top:4px}
+.mas b{color:var(--negro)}
+.consejo{margin-top:16px;background:var(--rosa);padding:14px 16px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);font-size:14.5px;line-height:1.5;color:var(--vino)}
+.consejo strong{display:block;font:750 16px/1.3 var(--sans);margin-bottom:4px}
+.guia{display:grid;gap:10px;margin-top:4px}
+.guia div{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:start;font-size:13.5px;line-height:1.45;color:var(--gris-1)}
+.guia em{font:600 11px var(--mono);font-style:normal;text-transform:uppercase;letter-spacing:.05em;padding:3px 6px;justify-self:start}
+.guia .util{background:var(--vino);color:#fff}
+.guia .deco{background:var(--hueso,#efe6e1);color:var(--gris-1)}
+.barrio{margin-top:12px;display:grid;gap:6px}
+.barrio-fila{display:grid;grid-template-columns:1fr auto;gap:2px 10px;background:#fff;padding:10px 12px;border-left:4px solid var(--c)}
+.barrio-fila strong{font:700 14px var(--sans)}
+.barrio-fila b{font:700 15px var(--mono);text-align:right}
+.barrio-fila span{grid-column:1/-1;font-size:13px;color:var(--gris-1)}
+.letra{border:1.5px solid var(--negro);background:#fff;font:700 14px var(--sans);padding:7px 12px;margin-top:14px}
+.letra[aria-pressed=true]{background:var(--vino);color:#fff;border-color:var(--vino)}
+.grande .lado{zoom:1.18}
+.grande .sos-inicio,.grande .sos-ficha{zoom:1.15}
+.sos-contacto{border:0;background:none;color:#fff;font:600 15px var(--sans);text-decoration:underline;text-underline-offset:4px;padding:4px}
+.sos-slot{width:min(100%,380px)}
+.sos-slot .aviso-cfg{background:#fff;color:var(--gris-1);padding:14px;text-align:left}
+.sos-slot .aviso-cfg a.boton-sec{color:var(--vino)}
+.sos-ficha .aviso-cfg{margin-top:12px}
 .lectura{display:flex;align-items:center;gap:14px;padding:0 20px;font:500 13px var(--mono);color:var(--negro);white-space:nowrap}
 .lectura .pulso{width:8px;height:8px;background:var(--rojo);animation:latido 1.1s infinite}
 .lectura b{font-weight:700;color:var(--rojo)}
@@ -290,31 +329,34 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 
 /* entrada */
 /* pantalla de emergencia */
-.sos{position:fixed;inset:0;z-index:30;background:var(--rojo);color:#fff;display:flex;flex-direction:column;transition:opacity .5s var(--entrar),transform .5s var(--entrar)}
+.sos{position:fixed;top:var(--cab);left:0;right:0;bottom:0;z-index:30;background:var(--rojo);color:#fff;display:flex;flex-direction:column;transition:opacity .5s var(--entrar),transform .5s var(--entrar)}
 .sos.fuera{opacity:0;transform:translateY(-12px);pointer-events:none}
 .sos a{color:#fff}
 .sos-ficha a.boton-sec{color:var(--vino)}
 .sos-marca{white-space:nowrap}
 @media (max-width:520px){.sos-mapa-btn .largo{display:none}.sos-dist strong{font-size:42px}.sos-ficha{padding-top:12px}.sos-acciones .boton,.sos-acciones .boton-sec{min-height:42px;font-size:13.5px}}
-.sos-cab{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;flex:none}
+.sos-cab{display:none;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;flex:none}
 .sos-marca{display:flex;align-items:center;gap:10px;font:800 18px var(--sans);font-variation-settings:"wdth" 112}
 .sos-marca svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linejoin:round}
 .sos-mapa-btn{border:1.5px solid rgba(255,255,255,.7);background:none;color:#fff;font:600 13px var(--mono);padding:8px 12px;white-space:nowrap}
 .sos-mapa-btn:hover{background:rgba(255,255,255,.12)}
-.sos-inicio{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 22px 28px;gap:18px}
-.sos-ecg{width:min(520px,90vw);height:34px}
+.sos{overflow-y:auto}
+.sos-inicio{flex:1 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:safe center;text-align:center;padding:18px 22px 22px;gap:14px}
+.sos-ante{display:none}
+.sos-botones{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;align-items:center}
+.sos-ecg{width:min(520px,90vw);height:26px;flex:none}
 .sos-ecg path{fill:none;stroke:rgba(255,255,255,.85);stroke-width:2;stroke-linejoin:round;stroke-dasharray:1200;stroke-dashoffset:1200;animation:ecg 2.4s linear infinite}
 @keyframes ecg{to{stroke-dashoffset:0}}
 .sos-ante{font:600 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.85}
 .sos h1{font:800 clamp(30px,6.4vw,54px)/1.02 var(--sans);font-variation-settings:"wdth" 116;letter-spacing:-.025em;max-width:14ch}
 .sos-sub{font-size:16px;line-height:1.45;max-width:36ch;opacity:.92}
-.sos-boton{position:relative;width:min(64vw,260px);aspect-ratio:1;border:0;background:#fff;color:var(--rojo);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+.sos-boton{position:relative;width:min(60vw,34vh,260px);aspect-ratio:1;border:0;background:#fff;color:var(--rojo);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
   clip-path:polygon(0 0,calc(100% - 34px) 0,100% 34px,100% 100%,0 100%);font:800 clamp(22px,5.4vw,30px)/1.05 var(--sans);font-variation-settings:"wdth" 112;letter-spacing:-.01em;cursor:pointer;transition:transform .12s}
 .sos-boton:active{transform:scale(.97)}
 .sos-boton svg{width:38%;height:auto;fill:var(--rojo);animation:latido 1.1s ease-in-out infinite}
 .sos-boton small{font:600 12px var(--mono);letter-spacing:.08em;color:var(--vino)}
 @keyframes latido{0%,100%{transform:scale(1)}12%{transform:scale(1.14)}24%{transform:scale(1)}36%{transform:scale(1.08)}}
-.sos-halo{position:relative;padding:18px;margin:14px 0}
+.sos-halo{position:relative;padding:16px;margin:6px 0}
 .sos-halo::before,.sos-halo::after{content:"";position:absolute;inset:0;border:2px solid rgba(255,255,255,.55);animation:halo 2.2s ease-out infinite;pointer-events:none}
 .sos-halo::after{animation-delay:1.1s}
 @keyframes halo{from{transform:scale(.86);opacity:1}to{transform:scale(1.18);opacity:0}}
@@ -371,7 +413,9 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
   .pestanas button[aria-current]::after{left:11px;right:11px}
   .pestanas .largo{display:none}
   .pestanas .corto{display:inline}
-  .cab-sos{padding:8px 12px 8px 10px;margin-right:10px}
+  .pestanas button{padding:0 9px;font-size:13px}
+  .subnav{padding:0 10px}
+  .subnav button{padding:12px 8px 10px;font-size:12.5px}
   .cuerpo{position:static;display:flex;flex-direction:column;padding-top:var(--cab)}
   .escena{position:sticky;top:var(--cab);height:50dvh;z-index:1;order:-1;flex:none}
   .lado{overflow:visible;border-right:0;position:relative;z-index:2}
@@ -394,18 +438,23 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 <header class="cab">
   <button class="marca" id="inicio" aria-label="Tres minutos, inicio"><span class="logo"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M1 13h5l2-5 3 10 3-13 2 8h7"/></svg></span><strong>Tres minutos</strong></button>
   <nav class="pestanas" aria-label="Secciones">
-    <button data-vista="ahora">Ahora</button>
-    <button data-vista="actuar"><span class="largo">Dónde actuar</span><span class="corto">Actuar</span></button>
-    <button data-vista="metodo"><span class="largo">Cómo lo calculamos</span><span class="corto">Método</span></button>
+    <button data-tab="emergencia" class="tab-sos">Emergencia</button>
+    <button data-tab="admin"><span class="largo">Administraciones</span><span class="corto">Administración</span></button>
+    <button data-tab="info"><span class="largo">Información</span><span class="corto">Info</span></button>
   </nav>
-  <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><button class="cab-sos" id="cabSos">Emergencia</button><div class="lectura" aria-live="polite"><span class="pulso"></span><span id="lecturaT">MAR 11:00</span><b id="lecturaP">45 %</b></div>
+  <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><div class="lectura" aria-live="polite" title="Hora que estás viendo y vecinos con un desfibrilador abierto cerca"><span class="pulso"></span><span id="lecturaT">MAR 11:00</span><b id="lecturaP">45 %</b><small>cubiertos</small></div>
 </header>
 
 <div class="cuerpo">
   <aside class="lado" id="lado">
+    <nav class="subnav" id="subnav" aria-label="Administraciones">
+      <button data-vista="ahora">Cobertura</button>
+      <button data-vista="actuar">Dónde poner más</button>
+      <button data-vista="metodo">Método</button>
+    </nav>
 
     <section class="vista" id="v-ahora">
-      <div class="antetitulo">13.673 desfibriladores en 168 horas</div>
+      <div class="antetitulo">Para administraciones: 13.673 aparatos, 168 horas</div>
       <h1 class="titular">Si alguien cae ahora, ¿llega <span>a tiempo</span> un desfibrilador?</h1>
       <p class="entradilla">Hay unos <b>tres minutos</b> para ir a por uno y volver. Muchos están en oficinas, colegios o gimnasios que cierran, así que la respuesta cambia con la hora. Cada <b>marca roja</b> del mapa es un barrio donde ahora no hay ninguno abierto <span class="dist">a menos de 200 metros</span>.</p>
       <div class="caja">
@@ -427,17 +476,13 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
           </div>
         </div>
       </div>
-      <div class="cercano" id="cercano">
-        <h3>¿Dónde está el más cercano?</h3>
-        <p>Te buscamos el desfibrilador abierto más cercano a la hora elegida y la ruta andando por las calles.</p>
-        <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="enlace" id="btnTocar">o toca un punto del mapa</button></div>
-        <div id="rutaRes"></div>
-        <div class="emergencia">
-          <a class="boton" href="tel:112"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.6 1h2.6l1.3 3.4-1.7 1.2a8.6 8.6 0 0 0 4.6 4.6l1.2-1.7 3.4 1.3v2.6c0 .9-.7 1.6-1.6 1.6A12.4 12.4 0 0 1 2 2.6C2 1.7 2.7 1 3.6 1z"/></svg>Llamar al 112</a>
-          <button class="boton-sec" id="btnAvisar"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 3h12v8H6l-4 3z"/></svg>Avisar a un contacto</button>
-          <div class="aviso-cfg" id="avisoCfg" hidden></div>
-        </div>
-      </div>
+      <div class="mas" style="margin-top:14px"><details><summary>¿Qué es cada cosa de esta pantalla?</summary><div class="guia">
+        <div><em class="util">Sirve</em><span><b>El reloj redondo:</b> las 24 horas del día elegido. Cuanto más roja la porción, menos vecinos cubiertos. Pulsa una para ir a esa hora.</span></div>
+        <div><em class="util">Sirve</em><span><b>La línea de abajo:</b> la cobertura de toda la semana, hora a hora. La línea discontinua es fuera de Madrid capital. Arrástrala o pulsa el triángulo.</span></div>
+        <div><em class="util">Sirve</em><span><b>Las columnas rojas:</b> barrios sin aparato abierto cerca. Su altura es el número de vecinos.</span></div>
+        <div><em class="util">Sirve</em><span><b>Distancia y medida:</b> cambia entre 100, 200 y 300 metros, andando o en línea recta, y todo se recalcula.</span></div>
+        <div><em class="deco">Adorno</em><span><b>El mapa se oscurece</b> de noche para que se note la hora, y <b>el latido de la cabecera</b> es la marca de la web.</span></div>
+      </div></details></div>
       <div class="buscador">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 15 15"/></svg>
         <input id="buscar" type="search" placeholder="Busca tu municipio" autocomplete="off" aria-label="Busca tu municipio">
@@ -451,6 +496,57 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 
     <section class="vista" id="v-municipio" hidden></section>
 
+    <section class="vista" id="v-info" hidden>
+      <div class="antetitulo">Para vecinos, familias y mayores</div>
+      <h1 class="titular">¿Cómo de protegida está <span>tu calle</span>?</h1>
+      <p class="entradilla">Si alguien se desploma, cada minuto sin desfibrilador cuenta. Aquí puedes ver si tienes uno cerca a cualquier hora, y te contamos lo básico para estar preparado.</p>
+      <div class="cercano" id="cercano">
+        <h3>Mira tu calle</h3>
+        <p>Usa tu ubicación o toca cualquier punto del mapa: tu casa, el colegio, la casa de tus padres. Te decimos a qué distancia andando está el desfibrilador abierto más cercano, de día y de noche.</p>
+        <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="enlace" id="btnTocar">o toca un punto del mapa</button></div>
+        <div id="barrio" class="barrio"></div>
+        <div id="rutaRes"></div>
+        <div class="emergencia">
+          <a class="boton" href="tel:112"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.6 1h2.6l1.3 3.4-1.7 1.2a8.6 8.6 0 0 0 4.6 4.6l1.2-1.7 3.4 1.3v2.6c0 .9-.7 1.6-1.6 1.6A12.4 12.4 0 0 1 2 2.6C2 1.7 2.7 1 3.6 1z"/></svg>Llamar al 112</a>
+          <button class="boton-sec" id="btnAvisar"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 3h12v8H6l-4 3z"/></svg>Avisar a un contacto</button>
+          <div class="aviso-cfg" id="avisoCfg" hidden></div>
+        </div>
+      </div>
+      <div class="consejo"><strong>Si vas a dejar esta web a una persona mayor</strong>Guárdale un contacto en "Avisar a un contacto" y déjale la web abierta en Emergencia. Con un solo botón sabrá dónde está el desfibrilador, oirá las instrucciones en voz alta y podrá avisarte con su ubicación.</div>
+      <button class="letra" id="btnLetra" aria-pressed="false">Aa  Letra más grande</button>
+      <h2 class="seccion">Lo que conviene saber</h2>
+      <div class="mas">
+        <details><summary>¿Qué hago si alguien se desploma?</summary><div>
+          <ul><li><b>Llama al 112</b> y pon el altavoz. Te guían por teléfono.</li>
+          <li><b>Empieza a apretar el pecho</b>: manos en el centro, brazos rectos, fuerte y rápido (unas dos veces por segundo). En la pestaña Emergencia hay un metrónomo que marca el ritmo.</li>
+          <li><b>Que otra persona traiga el desfibrilador</b>. El botón de Emergencia le dice dónde está el abierto más cercano.</li></ul></div></details>
+        <details><summary>¿Puedo usar un desfibrilador si nunca lo he hecho?</summary><div>
+          <p>Están pensados para cualquiera. Al abrirlo te va diciendo en voz alta lo que tienes que hacer, analiza el corazón y solo da la descarga si hace falta. No le vas a hacer daño a nadie por intentarlo.</p></div></details>
+        <details><summary>Si estás buscando casa</summary><div>
+          <p>Toca en el mapa la calle que te interesa y mira <b>las tres horas</b>: martes por la mañana, sábado por la tarde y domingo de madrugada. Muchos aparatos están en oficinas, tiendas o polideportivos que cierran, y de noche la diferencia es grande.</p>
+          <p>Las farmacias, las estaciones grandes y los hoteles suelen ser los que más horas abren.</p></div></details>
+        <details><summary>Si estás eligiendo colegio</summary><div>
+          <p>En la Comunidad de Madrid, los centros educativos están obligados a tener un desfibrilador (Decreto 78/2017). Pregunta dónde está y quién sabe usarlo.</p>
+          <p>Fuera del horario escolar el colegio está cerrado, así que su aparato no sirve al barrio por la tarde ni de noche.</p></div></details>
+        <details><summary>Para las personas mayores</summary><div>
+          <ul><li>Los mayores de 65 son casi uno de cada cinco vecinos y quienes más riesgo tienen. Por eso en nuestros cálculos cuentan doble.</li>
+          <li>Guarda el <b>112</b> en marcación rápida y un contacto en "Avisar a un contacto".</li>
+          <li>La pantalla de Emergencia tiene botones grandes y voz, para que no haga falta leer.</li>
+          <li>Si te cuesta ver la pantalla, pulsa "Letra más grande".</li></ul></div></details>
+        <details><summary>¿Qué es cada cosa del mapa?</summary><div class="guia">
+          <div><em class="util">Sirve</em><span><b>Marcas rojas:</b> barrios sin ningún desfibrilador abierto a 200 m andando a esa hora. En 3D, cuanto más alta, más vecinos.</span></div>
+          <div><em class="util">Sirve</em><span><b>Cuadrados negros</b> (al acercarte): los desfibriladores abiertos a esa hora.</span></div>
+          <div><em class="util">Sirve</em><span><b>La línea de abajo</b>: cuántos vecinos están cubiertos cada hora de la semana. Arrástrala para cambiar de hora, o pulsa el triángulo para verla correr.</span></div>
+          <div><em class="util">Sirve</em><span><b>El reloj redondo</b> (en Administraciones): las 24 horas del día. Cuanto más roja la porción, menos vecinos cubiertos. Pulsa una para ir a esa hora.</span></div>
+          <div><em class="deco">Adorno</em><span><b>El mapa se oscurece</b> de noche para que se note la hora, y <b>el latido de la cabecera</b> es solo la marca de la web.</span></div>
+        </div></details>
+        <details><summary>¿De dónde salen estos datos?</summary><div>
+          <p>Del registro oficial de desfibriladores de la Comunidad de Madrid, con su horario, la población del INE y las calles de OpenStreetMap. Lo contamos en <a href="#metodo">Cómo lo calculamos</a>.</p>
+          <p>Si un aparato no tiene un horario claro, no lo contamos como abierto. Puede que haya alguno más de los que mostramos.</p></div></details>
+      </div>
+      <p class="nota" style="margin-top:16px">Herramienta no oficial, sin relación con la Comunidad de Madrid. Ante una emergencia, llama siempre al 112.</p>
+    </section>
+
     <section class="vista" id="v-actuar" hidden>
       <div class="antetitulo" id="antAct">Domingo, 3:00</div>
       <h1 class="titular">Diez aparatos más, <span>bien puestos</span>.</h1>
@@ -461,17 +557,17 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
         <button data-modo="ideal"><b>Sitio ideal</b><span>de madrugada</span></button>
       </div>
       <div class="hallazgo" id="hallazgo"></div>
-      <h2 class="seccion" id="tituloLista">Los diez primeros</h2>
-      <ol class="sitios" id="sitios"></ol>
-      <div class="suma"><span class="cifra" id="sumaPers"></span><p id="sumaTxt"></p></div>
       <div class="simulador">
         <div class="caja-cab"><span>PON TÚ UN APARATO</span><b id="simCab"></b></div>
         <div class="caja-cuerpo">
-          <p>Pulsa el botón y toca el mapa donde lo pondrías. Cuenta como abierto las 24 horas y calculamos cuántos vecinos gana a la hora que tengas elegida.</p>
+          <p>Para decidir dónde poner el próximo: pulsa el botón y toca el mapa donde lo pondrías. Cuenta como abierto las 24 horas y te decimos cuántos vecinos sin cobertura gana a la hora elegida, midiendo andando por la calle. Puedes poner varios.</p>
           <div class="acciones"><button class="boton" id="btnPoner" aria-pressed="false">Colocar en el mapa</button><button class="enlace" id="btnQuitar" hidden>Quitar los míos</button></div>
           <div class="resultado-sim" id="resSim" hidden></div>
         </div>
       </div>
+      <h2 class="seccion" id="tituloLista">Los diez primeros</h2>
+      <ol class="sitios" id="sitios"></ol>
+      <div class="suma"><span class="cifra" id="sumaPers"></span><p id="sumaTxt"></p></div>
     </section>
 
 
@@ -538,17 +634,15 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 <div class="etiqueta" id="etiqueta" hidden></div>
 
 <div class="sos" id="sos" role="dialog" aria-label="Emergencia: desfibrilador más cercano">
-  <div class="sos-cab">
-    <div class="sos-marca"><svg viewBox="0 0 24 24"><path d="M1 13h5l2-5 3 10 3-13 2 8h7"/></svg>Tres minutos</div>
-    <button class="sos-mapa-btn" id="sosAlMapa">Ver el mapa<span class="largo"> de cobertura</span> →</button>
-  </div>
   <div class="sos-inicio" id="sosInicio">
     <svg class="sos-ecg" viewBox="0 0 520 34" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22H170l8-12 10 12 6-20 8 28 7-8H330l8-12 10 12 6-20 8 28 7-8H520"/></svg>
     <div class="sos-ante">Emergencia</div>
     <h1>¿Alguien se ha desplomado?</h1>
     <p class="sos-sub">Pulsa el botón. Te decimos dónde está el desfibrilador abierto más cercano y cómo llegar andando.</p>
     <div class="sos-halo"><button class="sos-boton" id="sosBoton"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3.1A4.6 4.6 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>Pulsa aquí<small>DESFIBRILADOR MÁS CERCANO</small></button></div>
-    <a class="sos-112" href="tel:112"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.6 1h2.6l1.3 3.4-1.7 1.2a8.6 8.6 0 0 0 4.6 4.6l1.2-1.7 3.4 1.3v2.6c0 .9-.7 1.6-1.6 1.6A12.4 12.4 0 0 1 2 2.6C2 1.7 2.7 1 3.6 1z"/></svg>Llamar al 112</a>
+    <div class="sos-botones"><a class="sos-112" href="tel:112"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.6 1h2.6l1.3 3.4-1.7 1.2a8.6 8.6 0 0 0 4.6 4.6l1.2-1.7 3.4 1.3v2.6c0 .9-.7 1.6-1.6 1.6A12.4 12.4 0 0 1 2 2.6C2 1.7 2.7 1 3.6 1z"/></svg>Llamar al 112</a>
+    <button class="sos-contacto" id="sosContacto">Avisar a un contacto</button></div>
+    <div class="sos-slot" id="sosSlot"></div>
   </div>
   <div class="sos-ruta" id="sosRuta" hidden>
     <div class="sos-pasos"><div><b>1</b>Llama al 112</div><div><b>2</b>Empieza a reanimar</div><div><b>3</b>Que alguien traiga el desfibrilador</div></div>
@@ -893,6 +987,31 @@ $('btnPoner').onclick=()=>{poniendo=!poniendo;$('btnPoner').setAttribute('aria-p
 $('btnQuitar').onclick=()=>{extra.clear();mios=[];calcular();tira();ponerT(T);$('btnQuitar').hidden=true;$('resSim').hidden=true;$('simCab').textContent=''};
 
 
+/* ---------- tu calle a tres horas (Información) ---------- */
+// Para decidir dónde vivir o qué colegio elegir: el desfibrilador abierto más cercano andando
+// un martes por la mañana, un sábado por la tarde y un domingo de madrugada.
+async function barrio(c){
+  const el=$('barrio');el.innerHTML='<p class="nota">Mirando tu calle a tres horas distintas…</p>';
+  const momentos=[[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00']];
+  const por=momentos.map(([t])=>D.dea.filter(d=>abierto(d,t)).map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,4));
+  const uni=[...new Set(por.flat().map(x=>x.d))],dist=new Map();
+  try{const pts=[c,...uni.map(d=>[d[0],d[1]])].map(p=>(+p[0]).toFixed(5)+','+(+p[1]).toFixed(5)).join(';');
+    const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');if(!r.ok)throw 0;const j=await r.json();
+    uni.forEach((d,k)=>{const v=j.distances[0][k+1];if(v!=null)dist.set(d,v+j.sources[0].distance+j.destinations[k+1].distance)})}catch(e){}
+  const filas=momentos.map(([t,et],i)=>{if(!por[i].length)return {et,m:Infinity};
+    return {et,...por[i].map(x=>({m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)})).sort((a,b)=>a.m-b.m)[0]}});
+  el.innerHTML='<p class="nota" style="margin-bottom:2px">El desfibrilador abierto más cercano, andando:</p>'+filas.map(f=>{
+    const c2=f.m<=200?'#5c7a5a':f.m<=400?'#b5651d':'#d6142f';
+    const txt=f.m===Infinity?'No consta ninguno abierto cerca':f.m<=200?'Da tiempo a ir y volver corriendo en menos de tres minutos':f.m<=400?'Ida y vuelta corriendo, de tres a cinco minutos':'Más de cinco minutos ida y vuelta';
+    return `<div class="barrio-fila" style="--c:${c2}"><strong>${f.et}</strong><b>${f.m===Infinity?'Ninguno':fmt(Math.round(f.m/10)*10)+' m'}</b><span>${txt}${f.aprox?' (distancia aproximada)':''}</span></div>`}).join('');
+}
+
+/* ---------- letra grande ---------- */
+const letraGuardada=()=>{try{return localStorage.getItem('tm_letra')==='1'}catch(e){return false}};
+function ponerLetra(on){document.body.classList.toggle('grande',on);$('btnLetra').setAttribute('aria-pressed',on);$('btnLetra').textContent=on?'Aa  Letra normal':'Aa  Letra más grande';try{localStorage.setItem('tm_letra',on?'1':'0')}catch(e){}}
+$('btnLetra').onclick=()=>ponerLetra(!document.body.classList.contains('grande'));
+if(letraGuardada())ponerLetra(true);
+
 /* ---------- el más cercano abierto ---------- */
 const DENTRO=c=>c[0]>-4.7&&c[0]<-2.9&&c[1]>39.8&&c[1]<41.25;
 $('btnCerca').onclick=()=>{
@@ -919,27 +1038,39 @@ async function buscarCercano(c){
   const hor=D.horarios_texto[b.d[6]]||'';
   const mm=v=>v<1?'menos de 1 min':Math.round(v)+' min';
   $('rutaRes').innerHTML=`<div class="ruta">
-    <div class="ruta-veredicto" style="--c:${c2}">${ok?'Da tiempo: ida y vuelta corriendo en unos '+mm(idaVuelta):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
+    <div class="ruta-veredicto" style="--c:${c2}">${ok?'Da tiempo: ida y vuelta corriendo en '+(idaVuelta<1?'menos de 1 min':'unos '+Math.round(idaVuelta)+' min'):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
     <div class="ruta-cifras"><div><strong>${fmt(b.dist)} m</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
     <dl><dt>Sitio</dt><dd>${D.tipos[b.d[5]]==="Otros sitios"?"Sin tipo concreto":D.tipos[b.d[5]]}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Estado</dt><dd>${est}, ${etiquetaT(T).toLowerCase()}</dd>${hor?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
     <div class="acciones" style="margin-top:12px"><a class="enlace" href="https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${b.d[1]},${b.d[0]}&travelmode=walking" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
     <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p></div>`;
-  $('btnBorrarRuta').onclick=()=>{camRuta=null;$('rutaRes').innerHTML='';pintar()};
+  $('btnBorrarRuta').onclick=()=>{camRuta=null;$('rutaRes').innerHTML='';$('barrio').innerHTML='';pintar()};
+  barrio(c);
   let x0=Math.min(...camino.map(p=>p[0])),x1=Math.max(...camino.map(p=>p[0])),y0=Math.min(...camino.map(p=>p[1])),y1=Math.max(...camino.map(p=>p[1]));
   const {w,h}=caja(),span=Math.max(x1-x0,(y1-y0)*1.31,.002);const z=Math.min(17,Math.log2((Math.min(w,h)-240)*360/(512*span)));
   volar({longitude:(x0+x1)/2,latitude:(y0+y1)/2,zoom:z,pitch:0,bearing:0},1300);pintar();
 }
 
 /* ---------- navegación ---------- */
+const ADMIN=['ahora','actuar','metodo','municipio'];
+let ultimaAdmin='ahora';
 function mostrar(v){vista=v;
-  document.querySelectorAll('.pestanas [data-vista]').forEach(b=>b.dataset.vista===(v==='municipio'?vistaAntes:v)?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  const tab=v==='emergencia'?'emergencia':v==='info'?'info':'admin',sub=v==='municipio'?vistaAntes:v;
+  if(tab==='admin'&&v!=='municipio')ultimaAdmin=v;
+  document.querySelectorAll('.pestanas [data-tab]').forEach(b=>b.dataset.tab===tab?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  document.querySelectorAll('#subnav [data-vista]').forEach(b=>b.dataset.vista===sub?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  $('subnav').hidden=tab!=='admin';
+  tab==='emergencia'?SOS.ver():SOS.ocultar();
+  if(tab==='emergencia')return;
   document.querySelectorAll('.vista').forEach(s=>s.hidden=s.id!=='v-'+v);$('lado').scrollTop=0;
   $('leyNuevo').hidden=v!=='actuar';if(v!=='actuar'&&poniendo)$('btnPoner').click();if(v==='ahora')rankings()}
 function irA(v){if(location.hash!=='#'+v)location.hash=v;else ruta()}
-function ruta(){const v=(location.hash||'#ahora').slice(1),nv=['ahora','actuar','metodo'].includes(v)?v:'ahora',antes=vista;sel=-1;mostrar(nv);
+function ruta(){let v=(location.hash||'#emergencia').slice(1);if(v==='sos')v='emergencia';if(v==='admin')v=ultimaAdmin;
+  const nv=['emergencia','ahora','actuar','metodo','info'].includes(v)?v:'emergencia',antes=vista;sel=-1;mostrar(nv);
+  if(nv==='emergencia')return;
   if(D){if(nv==='actuar'&&antes!=='actuar'){ponerT(horaAct());const b=vista0();volar({...b,zoom:b.zoom+.9,latitude:40.36,longitude:-3.74})}else pintar()}}
-document.querySelectorAll('.pestanas [data-vista]').forEach(b=>b.onclick=()=>irA(b.dataset.vista));
-$('inicio').onclick=()=>{irA('ahora');volar(vista0())};
+document.querySelectorAll('.pestanas [data-tab]').forEach(b=>b.onclick=()=>irA(b.dataset.tab==='admin'?ultimaAdmin:b.dataset.tab));
+document.querySelectorAll('#subnav [data-vista]').forEach(b=>b.onclick=()=>irA(b.dataset.vista));
+$('inicio').onclick=()=>irA('emergencia');
 addEventListener('hashchange',ruta);
 
 /* ---------- controles ---------- */
@@ -1041,7 +1172,9 @@ function prepararAviso(){
   if(!navigator.geolocation){pintar(null);return}
   navigator.geolocation.getCurrentPosition(p=>pintar([p.coords.longitude,p.coords.latitude]),()=>pintar(null),{enableHighAccuracy:true,timeout:8000,maximumAge:60000});
 }
-$('btnAvisar').onclick=()=>{if(!$('avisoCfg').hidden&&$('avisoCfg').innerHTML){$('avisoCfg').hidden=true;return}prepararAviso()};
+function avisoEn(caja){caja.appendChild($('avisoCfg'));prepararAviso()}
+$('btnAvisar').onclick=()=>{const a=$('avisoCfg'),aqui=document.querySelector('#cercano .emergencia');
+  if(a.parentNode===aqui&&!a.hidden&&a.innerHTML){a.hidden=true;return}avisoEn(aqui)};
 
 /* ---------- pantalla de emergencia ---------- */
 // Lo primero que se ve: un botón que te localiza y te lleva al desfibrilador abierto más cercano.
@@ -1053,8 +1186,9 @@ const SOS=(()=>{
     const v=speechSynthesis.getVoices().find(x=>x.lang&&x.lang.startsWith('es'));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}};
   const ficha=h=>{$('sosFicha').innerHTML=h};
   const enCM=c=>c[0]>-4.6&&c[0]<-3.0&&c[1]>39.85&&c[1]<41.2;
-  function cerrar(){$('sos').classList.add('fuera');setTimeout(()=>{$('sos').hidden=true},500);try{speechSynthesis.cancel()}catch(e){};pararRCP();
-    if(!location.hash)history.replaceState(null,'','#ahora')}
+  let tapar=null;
+  function ver(){clearTimeout(tapar);const e=$('sos');document.body.classList.add('en-sos');e.hidden=false;requestAnimationFrame(()=>e.classList.remove('fuera'));if(mapaS)setTimeout(()=>mapaS.resize(),50)}
+  function ocultar(){const e=$('sos');document.body.classList.remove('en-sos');if(e.hidden)return;e.classList.add('fuera');tapar=setTimeout(()=>{e.hidden=true},500);try{speechSynthesis.cancel()}catch(x){};pararRCP()}
   function abrirMapaS(c){
     if(mapaS||!window.maplibregl)return;
     try{mapaS=new maplibregl.Map({container:'sosMapa',style:'https://tiles.openfreemap.org/styles/positron',center:c||[-3.70,40.42],zoom:c?15:8.3,attributionControl:{compact:true}});
@@ -1107,7 +1241,7 @@ const SOS=(()=>{
     const frase=`Llama al uno uno dos. El desfibrilador abierto más cercano está a ${dist} metros, unos ${Math.max(1,Math.round(correr))} minutos corriendo. Mientras alguien va a por él, empieza a hacer compresiones en el centro del pecho.`;
     hablar(frase);
     $('sosRCP').onclick=empezarRCP;
-    $('sosAvisar').onclick=()=>{cerrar();irA('ahora');setTimeout(()=>{$('cercano').scrollIntoView({behavior:'smooth'});prepararAviso()},600)};
+    $('sosAvisar').onclick=()=>{let h=$('sosFichaAviso');if(!h){h=document.createElement('div');h.id='sosFichaAviso';$('sosFicha').appendChild(h)}avisoEn(h)};
     $('sosVoz').onclick=()=>{voz=!voz;if(!voz)try{speechSynthesis.cancel()}catch(e){};$('sosVoz').textContent=voz?'Silenciar la voz':'Activar la voz'};
     $('sosRepetir').onclick=()=>hablar(frase);
     $('sosOtro').onclick=pedirPunto;
@@ -1135,11 +1269,9 @@ const SOS=(()=>{
   function pararRCP(){clearInterval(metro);metro=null;$('rcp').hidden=true}
   $('rcpSalir').onclick=pararRCP;
   $('sosBoton').onclick=empezar;
-  $('sosAlMapa').onclick=cerrar;
-  $('cabSos').onclick=()=>{const e=$('sos');e.hidden=false;requestAnimationFrame(()=>e.classList.remove('fuera'));
-    $('sosInicio').hidden=false;$('sosPie').hidden=false;$('sosRuta').hidden=true;history.replaceState(null,'',location.pathname)};
-  if(location.hash&&location.hash!=='#sos'){$('sos').hidden=true}
-  return {datos:()=>datosOk()};
+  $('sosContacto').onclick=()=>{const a=$('avisoCfg');if(a.parentNode===$('sosSlot')&&!a.hidden){a.hidden=true;return}avisoEn($('sosSlot'));setTimeout(()=>a.scrollIntoView({behavior:'smooth',block:'nearest'}),60)};
+  if(!location.hash||/^#(emergencia|sos)$/.test(location.hash))ver();else $('sos').hidden=true;
+  return {datos:()=>datosOk(),ver,ocultar};
 })();
 
 /* ---------- arranque ---------- */
