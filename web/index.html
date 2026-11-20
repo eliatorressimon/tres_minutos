@@ -51,6 +51,7 @@ a{color:var(--negro);text-decoration-color:var(--rojo);text-underline-offset:3px
 .pestanas button[aria-current]::after{content:"";position:absolute;left:50%;bottom:10px;width:6px;height:6px;margin-left:-3px;background:var(--rojo);transform:rotate(45deg)}
 .cab-sos{align-self:center;flex:none;margin-left:8px;border:0;background:var(--rojo);color:#fff;font:700 13px var(--sans);padding:8px 14px 8px 12px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
 .cab-sos:hover{background:var(--vino-2)}
+.pestanas .corto{display:none}
 .lectura{display:flex;align-items:center;gap:14px;padding:0 20px;font:500 13px var(--mono);color:var(--negro);white-space:nowrap}
 .lectura .pulso{width:8px;height:8px;background:var(--rojo);animation:latido 1.1s infinite}
 .lectura b{font-weight:700;color:var(--rojo)}
@@ -368,6 +369,9 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
   .lectura{display:none}
   .pestanas button{padding:0 11px;font-size:13.5px}
   .pestanas button[aria-current]::after{left:11px;right:11px}
+  .pestanas .largo{display:none}
+  .pestanas .corto{display:inline}
+  .cab-sos{padding:8px 12px 8px 10px;margin-right:10px}
   .cuerpo{position:static;display:flex;flex-direction:column;padding-top:var(--cab)}
   .escena{position:sticky;top:var(--cab);height:50dvh;z-index:1;order:-1;flex:none}
   .lado{overflow:visible;border-right:0;position:relative;z-index:2}
@@ -391,8 +395,8 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
   <button class="marca" id="inicio" aria-label="Tres minutos, inicio"><span class="logo"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M1 13h5l2-5 3 10 3-13 2 8h7"/></svg></span><strong>Tres minutos</strong></button>
   <nav class="pestanas" aria-label="Secciones">
     <button data-vista="ahora">Ahora</button>
-    <button data-vista="actuar">Dónde actuar</button>
-    <button data-vista="metodo">Cómo lo calculamos</button>
+    <button data-vista="actuar"><span class="largo">Dónde actuar</span><span class="corto">Actuar</span></button>
+    <button data-vista="metodo"><span class="largo">Cómo lo calculamos</span><span class="corto">Método</span></button>
   </nav>
   <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><button class="cab-sos" id="cabSos">Emergencia</button><div class="lectura" aria-live="polite"><span class="pulso"></span><span id="lecturaT">MAR 11:00</span><b id="lecturaP">45 %</b></div>
 </header>
@@ -479,7 +483,7 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
         <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de 2.331 formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Lo convertimos en una tabla de 7 días por 24 horas. <b>3.226</b> abren siempre y <b>4.543</b> no tienen un horario que se pueda leer, así que no los contamos como abiertos.</p></div></li>
         <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a 200 metros o menos de su centro, andando por la calle. Lo calculamos para las 168 horas de la semana.</p></div></li>
         <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a menos de 300 metros pedimos la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y le sumamos lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b>20,6 %</b> de los vecinos tiene uno abierto (en línea recta salía el 45,6 %) y un domingo a las 3, el <b>9,6 %</b> (frente al 25,9 %). Por eso toda la web, también "Dónde actuar", mide andando.</p></div></li>
-        <li><div><h4>Dónde poner los siguientes</h4><p>Elegimos de uno en uno el sitio que más vecinos sin cubrir gana de madrugada, con doble peso para los mayores de 65, y repetimos.</p></div></li>
+        <li><div><h4>Dónde poner los siguientes</h4><p>Elegimos de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y repetimos con lo que queda. De día buscamos entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas o en cualquier punto del mapa.</p></div></li>
       </ol>
       <h2 class="seccion">Por qué 200 metros</h2>
       <div class="reloj-tres">
@@ -491,8 +495,8 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
       <h2 class="seccion">Fuentes</h2>
       <ul class="fuentes">
         <li><a href="https://datos.comunidad.madrid/catalogo/dataset/desfibriladores_externos_fuera_ambito_sanitario" target="_blank" rel="noopener">Desfibriladores externos fuera del ámbito sanitario</a>, Comunidad de Madrid</li>
-        <li>Secciones censales y población por sección, INE</li>
-        <li>Población municipal 2024, Comunidad de Madrid</li>
+        <li>Secciones censales (seccionado de 2019), Comunidad de Madrid</li>
+        <li>Población por sección censal y por municipio, 2019 y 2024 (tabla 31105), INE</li>
         <li>Oficinas de farmacia, Comunidad de Madrid, y gasolineras con su horario, Ministerio para la Transición Ecológica</li>
         <li>Distancias a pie: OSRM con la red de calles de OpenStreetMap</li>
         <li>Mapa base: OpenFreeMap con datos de OpenStreetMap</li>
@@ -782,11 +786,12 @@ function rankings(){
   const ms=D.munis.map((_,m)=>m);
   const top=(arr,v,f)=>{const L=arr.slice(0,5),mx=Math.max(...L.map(v))||1;return L.map((m,k)=>`<li><button data-m="${m}"><span class="n">${k+1}</span><span>${nombreBonito(D.munis[m])}</span><span class="v">${f(m)}</span><span class="bar"><i style="width:${(100*v(m)/mx).toFixed(1)}%"></i></span></button></li>`).join('')};
   const a=ms.filter(m=>m!==MAD).sort((x,y)=>D.sinM[y][T]-D.sinM[x][T]);
-  const b=ms.filter(m=>D.totM[m]>=5000).sort((x,y)=>curvaM[x][T]-curvaM[y][T]);
+  const b=ms.filter(m=>D.totM[m]>=5000).sort((x,y)=>Math.round(10*curvaM[x][T])-Math.round(10*curvaM[y][T])||D.totM[y]-D.totM[x]); // empates: primero los más poblados
+  const ceros=b.filter(m=>curvaM[m][T]<0.05).length;
   const c=ms.filter(m=>D.totM[m]>=5000).sort((x,y)=>curvaM[y][T]-curvaM[x][T]);
   $('rankings').innerHTML=`
     <div class="ranking"><h3>Más vecinos sin aparato cerca</h3><p class="nota">Personas sin desfibrilador abierto ${distC()}, sin contar Madrid capital (${fmt(D.sinM[MAD][T])})</p><ol>${top(a,m=>D.sinM[m][T],m=>fmt(D.sinM[m][T]))}</ol></div>
-    <div class="ranking"><h3>Peor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes</p><ol>${top(b,m=>100-curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>
+    <div class="ranking"><h3>Peor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes${ceros>1?`. A esta hora, <b>${ceros}</b> no tienen ninguno abierto ${distC()}; aquí van los más poblados`:''}</p><ol>${top(b,m=>100-curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>
     <div class="ranking bien"><h3>Mejor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes</p><ol>${top(c,m=>curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>`;
 }
 $('rankings').onclick=e=>{const b=e.target.closest('[data-m]');if(b)abrirMunicipio(+b.dataset.m)};
@@ -797,9 +802,9 @@ const colorV=v=>{for(let i=1;i<ESC.length;i++)if(v<=ESC[i][0]){const k=(v-ESC[i-
 function veredicto(m){
   const c=curvaM[m],max=Math.max(...c),min=Math.min(...c),dia=c[35],noc=c[147];
   if(!D.municipios[m][4])return {c:'#111',t:'Ningún aparato fijo',p:`No tiene ningún desfibrilador registrado fuera de los centros sanitarios. Sus ${fmt(D.totM[m])} vecinos dependen de la ambulancia.`};
-  if(max<10)return {c:'#d6142f',t:'Casi nadie tiene uno cerca',p:`Tiene aparatos, pero lejos de donde vive la gente: nunca pasa del ${p1(max)} de vecinos cubiertos.`};
-  if(dia-noc>15)return {c:'#d6142f',t:'Cubierto de día, a oscuras de noche',p:`Un martes a las 11 tiene cubierto al ${p1(dia)} de sus vecinos. Un domingo a las 3, al ${p1(noc)}. Sus aparatos están en sitios que cierran.`};
-  if(min>=50)return {c:'#6d6d6d',t:'Bien cubierto casi siempre',p:`Incluso en su peor hora tiene cubierto al ${p1(min)} de sus vecinos.`};
+  if(max<15)return {c:'#d6142f',t:'Casi nadie tiene uno cerca',p:`Tiene aparatos, pero muy pocos vecinos viven ${distC()} de uno abierto: nunca pasa del ${p1(max)}.`};
+  if(dia-noc>10&&noc<dia/2)return {c:'#d6142f',t:'Cubierto de día, a oscuras de noche',p:`Un martes a las 11 tiene cubierto al ${p1(dia)} de sus vecinos. Un domingo a las 3, al ${p1(noc)}. Sus aparatos están en sitios que cierran.`};
+  if(min>=30)return {c:'#6d6d6d',t:'Bien cubierto casi siempre',p:`Incluso en su peor hora tiene cubierto al ${p1(min)} de sus vecinos.`};
   return {c:'#a3a3a3',t:'Cobertura a medias',p:`Según la hora, entre el ${p1(min)} y el ${p1(max)} de sus vecinos tiene uno cerca.`};
 }
 let vistaAntes='ahora';

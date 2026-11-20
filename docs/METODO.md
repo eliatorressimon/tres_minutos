@@ -9,12 +9,13 @@ El registro guarda el horario de cada desfibrilador como texto libre: "L-V 8-20 
 - "Horario de oficina", "laboral", "comercial": de lunes a viernes de 9:00 a 18:00.
 - Rangos de horas con o sin días: se asignan a los días que se nombran, ya sean rangos ("L-V", "martes a sábado") o días sueltos con su abreviatura ("S 9-14", "D: 10-15", "sábados"). Si no se nombra ninguno y solo hay un rango, se entiende todos los días.
 
-Revisando la tabla de "L-V 8:00-15:00 / S 9-14" vimos que el sábado salía vacío: las abreviaturas de una letra sueltas ("S", "D") no se reconocían, y "S y D" se partía en dos. Al arreglarlo cambiaron las tablas de 273 aparatos, sobre todo en fin de semana. La cobertura del martes a las 11:00 en línea recta subió unas décimas, hasta el 45,6 %, y la del domingo a las 3:00 no cambió.
 - "Autobús urbano" o "durante el servicio de transporte": aparato móvil, se deja fuera.
 - "Según eventos", "partidos", "competiciones": solo abierto en actos, no cuenta.
 - Vacío o ilegible: desconocido, no cuenta como abierto.
 
-Un aparato solo cuenta como abierto a una hora si su horario lo dice. Por eso las cifras son un mínimo: si todos los de horario desconocido estuvieran abiertos de madrugada, la cobertura en línea recta del domingo a las 3:00 subiría del 25,9 % al 56,8 %.
+Revisando la tabla de "L-V 8:00-15:00 / S 9-14" vimos que el sábado salía vacío: las abreviaturas de una letra sueltas ("S", "D") no se reconocían, y "S y D" se partía en dos. Al arreglarlo cambiaron las tablas de unos 270 aparatos, sobre todo en fin de semana. La cobertura del martes a las 11:00 en línea recta subió unas décimas, hasta el 45,6 %, y la del domingo a las 3:00 no cambió.
+
+Un aparato solo cuenta como abierto a una hora si su horario lo dice. Por eso las cifras son un mínimo: si todos los de horario desconocido estuvieran abiertos de madrugada, la cobertura en línea recta del domingo a las 3:00 subiría del 25,9 % al 56,6 % (lo calcula `src/04_cobertura.py`).
 
 ## 2. Población
 
@@ -56,7 +57,7 @@ Solo 4.878 parejas quedan a 300 m o menos andando. La mediana de la distancia an
 
 Los sitios propuestos (pasos 7 y 8) se calculan andando con 200 m.
 
-## Ruta al más cercano
+## 7. Pantalla de emergencia
 
 La pantalla de inicio de la web es para una emergencia. Al pulsar el botón grande pide la ubicación del móvil, busca los tres aparatos abiertos más cercanos a un punto (la ubicación del móvil o un punto del mapa), pide la ruta a pie de cada uno al servidor OSRM de routing.openstreetmap.de y se queda con la más corta. Calcula el tiempo de ida y vuelta corriendo (2,8 m/s) y andando (1,35 m/s). Si el servidor no responde, usa la línea recta. Enseña la ruta en un mapa, la distancia y si el aparato está abierto ahora, y lo dice en voz alta con la síntesis de voz del navegador. También tiene un botón para llamar al 112, un metrónomo de 110 compresiones por minuto para guiar la reanimación y un botón para avisar a un contacto por WhatsApp o SMS con la ubicación. El contacto se guarda solo en el navegador de quien lo usa.
 
@@ -71,4 +72,6 @@ La pantalla de inicio de la web es para una emergencia. Al pulsar el botón gran
 
 ## Próximos pasos
 
+- Que el registro recoja el horario en un formato fijo (días y horas por separado). Hoy un tercio de los aparatos no tiene un horario que se pueda leer.
+- Comprobar sobre el terreno si los aparatos "24 horas" son accesibles de madrugada o están dentro de un edificio cerrado.
 - Más candidatos reales: farmacias de guardia, comisarías y estaciones.

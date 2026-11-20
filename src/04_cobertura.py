@@ -43,6 +43,13 @@ semana.to_csv(ELABORADOS / 'cobertura_semana.csv', index=False)
 np.save(ELABORADOS / 'cubiertas_por_hora.npy', cubiertas)
 print(semana.loc[[35, 147]])
 
+# cota superior: si todos los de horario desconocido estuvieran abiertos el domingo a las 3:00
+desconocido = dea['estado_horario'].eq('desconocido').values
+c = cubiertas[147].copy()
+for j in np.flatnonzero(desconocido):
+    c[cerca[j]] = True
+print('Domingo 3:00 si los de horario desconocido estuvieran abiertos:', round(100 * pob[c].sum() / pob.sum(), 1), '%')
+
 # resumen por municipio: martes 11:00 (t=35) y domingo 3:00 (t=147)
 muni = pd.read_csv(ELABORADOS / 'municipios.csv', dtype={'cod_ine_muni': str})
 con_dea = set('28' + dea['municipio_codigo'].dropna())

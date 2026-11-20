@@ -48,7 +48,7 @@ Una fila por hora de la semana (168).
 |---|---|
 | `dia`, `hora` | Día de la semana y hora de inicio |
 | `aparatos_abiertos` | Aparatos fijos que constan como abiertos |
-| `pct_poblacion` | % de habitantes con uno abierto a menos de 200 m |
+| `pct_poblacion` | % de habitantes con uno abierto a 200 m o menos en línea recta (andando, en `cobertura_variantes.csv`) |
 | `pct_poblacion_fuera_capital` | Lo mismo sin contar Madrid capital |
 | `pct_mayores_65` | Lo mismo para mayores de 65 |
 

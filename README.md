@@ -1,6 +1,8 @@
 # Tres minutos
 
-Si alguien sufre una parada cardiaca en la calle, ¿hay un desfibrilador abierto lo bastante cerca como para llegar a tiempo? Tres minutos mide, para cada hora de la semana, qué parte de la población de la Comunidad de Madrid tiene uno a menos de 200 metros, y propone dónde colocar los siguientes.
+Si alguien sufre una parada cardiaca en la calle, ¿hay un desfibrilador abierto lo bastante cerca como para llegar a tiempo? Tres minutos mide, para cada hora de la semana, qué parte de la población de la Comunidad de Madrid tiene uno a 200 metros o menos andando por la calle, y propone dónde colocar los siguientes.
+
+**Web: https://tres-minutos.web.app**
 
 Proyecto para **DataMad 2026**, el datathon de datos abiertos de la Comunidad de Madrid.
 
@@ -19,6 +21,13 @@ Equipo: Elia Torres Simón y Clara Juarros.
 
 Por qué importan tres minutos y 200 metros, con todas las fuentes: [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md).
 
+## La web
+
+- **Emergencia.** Es la pantalla de inicio. Un botón localiza a quien lo pulsa, busca el desfibrilador abierto más cercano a esa hora, dibuja la ruta a pie y lee en voz alta la distancia. También tiene un botón para llamar al 112, un metrónomo de 110 compresiones por minuto para guiar la reanimación y un aviso a un contacto por WhatsApp o SMS con la ubicación.
+- **Ahora.** Un mapa de los barrios sin ningún aparato abierto cerca, que cambia hora a hora durante la semana. Se puede elegir 100, 200 o 300 metros, andando o en línea recta, y abrir la ficha de cada municipio.
+- **Dónde actuar.** Las diez mejores farmacias (de día), las diez mejores gasolineras de 24 horas y los diez mejores puntos de madrugada para poner un aparato nuevo. También hay un simulador para colocar uno en el mapa y ver cuántos vecinos gana.
+- **Cómo lo calculamos.** Método, fuentes y límites, en corto.
+
 ## Estructura
 
 ```
@@ -35,7 +44,7 @@ docs/
 
 ## Cómo reproducirlo
 
-Con Python 3.10 o posterior:
+Con Python 3.9 o posterior:
 
 ```bash
 python -m venv .venv
@@ -85,11 +94,11 @@ firebase deploy --only hosting
 | [Precios de carburantes en estaciones de servicio (API REST)](https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/help) | Ministerio para la Transición Ecológica | Gasolineras con horario de 24 horas como sitios candidatos de noche |
 | [Indicadores demográficos por sección censal (tabla 31105)](https://www.ine.es/jaxiT3/Tabla.htm?t=31105) | INE | Población y porcentaje de mayores de 65 por sección |
 
-Las cifras sobre paradas cardiacas (incidencia, tiempos de llegada de la ambulancia, supervivencia) vienen del informe EuReCa THREE del Consejo Europeo de Resucitación y de una revisión de 41 estudios sobre desfibriladores usados por testigos. Están citadas en `docs/METODO.md`.
+Las cifras sobre paradas cardiacas (incidencia, tiempos de llegada de la ambulancia, supervivencia) vienen del informe EuReCa THREE del Consejo Europeo de Resucitación y de una revisión de 41 estudios sobre desfibriladores usados por testigos. Están citadas, con enlaces, en [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md).
 
 ## Herramientas
 
-Python con pandas, NumPy y SciPy (búsquedas por cercanía con `cKDTree`), pyproj (cambio de coordenadas), pyshp y Shapely (lectura del shapefile y contornos municipales) y requests (descargas). Las distancias andando se piden al servidor OSRM de routing.openstreetmap.de, que usa la red de calles de OpenStreetMap. La web es un único HTML: MapLibre GL con el mapa base de OpenFreeMap (datos de OpenStreetMap) y deck.gl para las columnas en 3D. Las fotos de cada municipio se piden a Wikipedia al abrir su ficha.
+Python con pandas, NumPy y SciPy (búsquedas por cercanía con `cKDTree`), pyproj (cambio de coordenadas), pyshp y Shapely (lectura del shapefile y contornos municipales) y requests (descargas). Las distancias andando se piden al servidor OSRM de routing.openstreetmap.de, que usa la red de calles de OpenStreetMap. La web es un único HTML: MapLibre GL con el mapa base de OpenFreeMap (datos de OpenStreetMap) y deck.gl para las columnas en 3D.
 
 ## Licencia
 
