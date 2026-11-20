@@ -9,12 +9,12 @@ import numpy as np
 
 DIAS = {'l':0,'lu':0,'lun':0,'lunes':0,'m':1,'ma':1,'mar':1,'martes':1,'x':2,'mi':2,'mie':2,'miercoles':2,
         'j':3,'ju':3,'jue':3,'jueves':3,'v':4,'vi':4,'vie':4,'viernes':4,'s':5,'sa':5,'sab':5,'sabado':5,'sabados':5,
-        'd':6,'do':6,'dom':6,'domingo':6,'domingos':6}
+        'd':6,'do':6,'dom':6,'domingo':6,'domingos':6,'vier':4,'sabad':5}
 
 def norm(s):
     s = s.replace('\u2013','-').replace('\u2014','-').replace('?','-')
     s = unicodedata.normalize('NFKD', s.lower()).encode('ascii','ignore').decode()
-    s = s.replace('l/v','l-v').replace('l/d','l-d').replace('l/s','l-s')
+    s = s.replace('l/v','l-v').replace('l/d','l-d').replace('l/s','l-s').replace('l/j','l-j')
     return re.sub(r'\s+',' ', s).strip()
 
 HORA = r'(\d{1,2})(?:[:\.,h]\s?(\d{2}))?\s*(?:h|hs|horas|hrs)?\.?'
@@ -30,21 +30,29 @@ def rangos(txt):
         out.append((a,b))
     return out
 
+DIA = r'(lunes|martes|miercoles|jueves|viernes|sabados?|domingos?|vier|sabad|lun|mar|mie|jue|vie|sab|dom|lu|ma|mi|ju|vi|sa|do|l|m|x|j|v|s|d)'
+# un día suelto de una letra solo cuenta si no va pegado a un punto (para no leer 'a.m.' como martes)
+DIA_SUELTO = re.compile(r'(?<![\.\w])' + DIA + r'(?=[\s:\.,\d]|$)')
+RANGO_DIAS = re.compile(r'(?<![\.\w])' + DIA + r'\s*(?:a|-|al)\s*' + DIA + r'(?=de\b|[^a-z]|$)')
+LUNES_VIERNES = re.compile(r'\b(lunes|lun|lu|l)\s+(viernes|vie|vi|v)\b')
+
 def dias_de(seg):
     """Días mencionados en un trozo; None si no menciona ninguno."""
-    seg=' '+seg+' '
+    seg=' '+re.sub(r'\bdel(?=[\s-])', 'de l', seg)+' '
     if re.search(r'todos los dias|diario|365|7 dias|l-d|l a d|lunes a domingo|7/7|7 d|l - d', seg): return list(range(7))
-    m=re.search(r'\b(lunes|lun|lu|l)\s*(?:a|-|al|\s)\s*(viernes|vie|vi|v)\b', seg)
     d=set()
-    if m: d|=set(range(5))
-    m=re.search(r'\b(lunes|lun|lu|l)\s*(?:a|-|al)\s*(jueves|jue|ju|j)\b', seg)
-    if m: d|=set(range(4))
-    m=re.search(r'\b(lunes|lun|lu|l)\s*(?:a|-|al)\s*(sabado|sab|sa|s)\b', seg)
-    if m: d|=set(range(6))
-    if re.search(r'\b(s|sab|sabados?)\s*(?:,|y|-|/)?\s*(d|dom|domingos?)\b', seg) or re.search(r'fines? de semana|festivos', seg): d|={5,6}
-    for w in re.findall(r'\b(lunes|martes|miercoles|jueves|viernes|sabados?|domingos?|vie|sab|dom)\b', seg):
+    # rangos de días: 'l-v', 'lunes a viernes', 'martes a sabado'...
+    for a, b in RANGO_DIAS.findall(seg):
+        i, j = DIAS[a], DIAS[b]
+        d |= set(range(i, j + 1)) if i <= j else set(range(i, 7)) | set(range(0, j + 1))
+    if LUNES_VIERNES.search(seg): d |= set(range(5))
+    sin_rangos = LUNES_VIERNES.sub(' ', RANGO_DIAS.sub(' ', seg))
+    if re.search(r'fines? de semana', sin_rangos): d |= {5, 6}
+    if re.search(r'festivos?|fest\b', sin_rangos): d.add(6)
+    # días sueltos ('s', 'd', 'sabados'...), solo antes de la primera hora: en '9-21 S 10-14' la S
+    # no dice de qué días es el 9-21
+    for w in DIA_SUELTO.findall(re.split(r'\d', sin_rangos, maxsplit=1)[0]):
         d.add(DIAS[w])
-    if re.search(r'\b(v|vie|viernes)\b', seg) and not d: d.add(4)
     return sorted(d) if d else None
 
 def parse(raw):
@@ -67,7 +75,7 @@ def parse(raw):
     if re.search(r'horario (de )?(apertura|de trabajo)|ver en observaciones|ver observaciones|segun horario', s):
         return 'desconocido', None
     # partimos el texto en bloques de días (por ejemplo 'L-V 8-20 / S 9-14')
-    trozos=re.split(r'[;|/\n]|(?<=\d)\s*,\s*(?=[a-z])|\by (?=(?:s|sab|d|dom|fines|festivos|sabados|domingos)\b)', s)
+    trozos=re.split(r'[;|/\n]|(?<=\d)\s*,\s*(?=[a-z])|(?<=[\dh])\s+y (?=(?:s|sab|d|dom|fines|festivos|sabados|domingos)\b)', s)
     asignado=False; ultimo_dias=None
     for t in trozos:
         rs=rangos(t)

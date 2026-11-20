@@ -7,7 +7,9 @@ El registro guarda el horario de cada desfibrilador como texto libre: "L-V 8-20 
 - "24 h", "24 horas", "permanente" y parecidos: abierto siempre.
 - "Horario escolar": de lunes a viernes de 8:00 a 17:00.
 - "Horario de oficina", "laboral", "comercial": de lunes a viernes de 9:00 a 18:00.
-- Rangos de horas con o sin días: se asignan a los días que se nombran ("L-V", "sábados", "fines de semana"...). Si no se nombra ninguno y solo hay un rango, se entiende todos los días.
+- Rangos de horas con o sin días: se asignan a los días que se nombran, ya sean rangos ("L-V", "martes a sábado") o días sueltos con su abreviatura ("S 9-14", "D: 10-15", "sábados"). Si no se nombra ninguno y solo hay un rango, se entiende todos los días.
+
+Revisando la tabla de "L-V 8:00-15:00 / S 9-14" vimos que el sábado salía vacío: las abreviaturas de una letra sueltas ("S", "D") no se reconocían, y "S y D" se partía en dos. Al arreglarlo cambiaron las tablas de 273 aparatos, sobre todo en fin de semana. La cobertura del martes a las 11:00 en línea recta pasó del 45,2 % al 45,5 %, y la del domingo a las 3:00 no cambió.
 - "Autobús urbano" o "durante el servicio de transporte": aparato móvil, se deja fuera.
 - "Según eventos", "partidos", "competiciones": solo abierto en actos, no cuenta.
 - Vacío o ilegible: desconocido, no cuenta como abierto.
@@ -35,7 +37,7 @@ Problema de máxima cobertura: elegir k puntos que cubran a la mayor cantidad de
 - De día (martes a las 11:00): las 2.954 oficinas de farmacia del registro de la Comunidad.
 - De madrugada (domingo a las 3:00): las 550 gasolineras cuyo horario en la API del Ministerio es `L-D: 24H` o `L-D: 00:00-23:59`.
 
-Para cada grupo elegimos los diez mejores y calculamos también qué pasaría si todos los locales tuvieran uno. Las distancias de cada local a las secciones se miden andando (apartado 6). Con todas las farmacias, la cobertura del martes a las 11:00 pasaría del 20,5 % al 45,6 %. Con todas las gasolineras de 24 horas, la del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %.
+Para cada grupo elegimos los diez mejores y calculamos también qué pasaría si todos los locales tuvieran uno. Las distancias de cada local a las secciones se miden andando (apartado 6). Con todas las farmacias, la cobertura del martes a las 11:00 pasaría del 20,6 % al 45,7 %. Con todas las gasolineras de 24 horas, la del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %.
 
 ## 6. Andando por la calle
 
@@ -47,8 +49,8 @@ Solo 4.878 parejas quedan a 300 m o menos andando. La mediana de la distancia an
 
 | | 100 m | 200 m | 300 m |
 |---|---|---|---|
-| Martes 11:00, línea recta | 17,6 % | 45,2 % | 65,9 % |
-| Martes 11:00, andando | 5,0 % | 20,5 % | 38,8 % |
+| Martes 11:00, línea recta | 17,8 % | 45,5 % | 66,3 % |
+| Martes 11:00, andando | 5,0 % | 20,6 % | 39,0 % |
 | Domingo 3:00, línea recta | 7,9 % | 25,9 % | 42,7 % |
 | Domingo 3:00, andando | 2,0 % | 9,6 % | 22,3 % |
 

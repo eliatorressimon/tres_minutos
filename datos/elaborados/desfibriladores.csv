@@ -700,12 +700,12 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2019-903,Establecimiento dependiente de una Administración Pública,Pública,080,Majadahonda,-3.87563,40.56535,,desconocido,False,False,True
 2022-156,Otros,Privada,080,Majadahonda,-3.84934,40.47206,,desconocido,False,False,True
 2025-810,Centro de trabajo con más de 250 trabajadores,Privada,080,Majadahonda,-3.84937,40.47206,DE L-V DE 9H A 20.30H Y SABADOS DE 17H A 20H,horario,True,False,True
-2026-675,Centro de trabajo con más de 250 trabajadores,Privada,080,Majadahonda,-3.84942,40.47213,L-.V DE 7.30H A 18H,horario,False,False,True
+2026-675,Centro de trabajo con más de 250 trabajadores,Privada,080,Majadahonda,-3.84942,40.47213,L-.V DE 7.30H A 18H,horario,True,False,True
 2019-914,Centro educativo,Privada,079,Madrid,-3.67262,40.44703,,desconocido,False,False,True
 2018-1259,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.78701,40.44641,,desconocido,False,False,True
 2026-1094,Otros,Privada,079,Madrid,-3.78801,40.44498,24H,24h,True,True,True
 2022-133,Establecimiento hotelero con más de 100 plazas,Privada,079,Madrid,-3.69619,40.42127,24H,24h,True,True,True
-2025-114,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.69268,40.37531,Lun-Dom 10–15h y 16-21h,horario,False,False,True
+2025-114,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.69268,40.37531,Lun-Dom 10–15h y 16-21h,horario,True,False,True
 2024-692,Otros,Privada,079,Madrid,-3.69252,40.37644,7;30-21:00,desconocido,False,False,True
 2023-543,Centro educativo,Privada,079,Madrid,-3.42242,40.25513,De 8:00 a 19:00 Horas,horario,True,False,True
 2019-843,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.72722,40.468,,desconocido,False,False,True
@@ -960,7 +960,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2025-145,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.64556,40.3857,08:00 - 15:00,horario,True,False,True
 2024-234,Otros,Privada,079,Madrid,-3.64348,40.42909,ver observaciones,desconocido,False,False,True
 2018-1662,Otros,Pública,079,Madrid,-3.69305,40.42291,24 HORAS,24h,True,True,True
-2026-1833,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.69301,40.42292,HORARIO VARIABLE DE 10H A 14H MENOS EL LUNES,horario,False,False,True
+2026-1833,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.69301,40.42292,HORARIO VARIABLE DE 10H A 14H MENOS EL LUNES,horario,True,False,True
 2019-241,Centro educativo,Privada,079,Madrid,-3.40493,40.21007,,desconocido,False,False,True
 2019-756,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.72129,40.39593,8:30-14:30,horario,True,False,True
 2019-751,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.72157,40.39594,8:30-14:30,horario,True,False,True
@@ -1433,7 +1433,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2024-951,Otros,Privada,079,Madrid,-3.67824,40.4218,24H,24h,True,True,True
 2025-933,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.67764,40.42175,DE L-V DE 7H A 22.30H S Y D DE 10H A 15H,horario,True,False,True
 2019-2459,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.67794,40.42144,,desconocido,False,False,True
-2024-806,Otros,Privada,079,Madrid,-3.67814,40.42145,"9:00 a 0.00h y ½ hora más viernes, sábados y vísperas de festivos",horario,False,False,True
+2024-806,Otros,Privada,079,Madrid,-3.67814,40.42145,"9:00 a 0.00h y ½ hora más viernes, sábados y vísperas de festivos",horario,True,False,True
 2026-651,Establecimiento hotelero con más de 100 plazas,Privada,079,Madrid,-3.67232,40.4216,24H,24h,True,True,True
 2018-2393,Centro educativo,Pública,079,Madrid,-3.73354,40.43559,L-V: 7:00-21:00 H .  S:7:00-15:00 H,horario,True,False,True
 2018-79,Otros,Privada,079,Madrid,-3.81775,40.46902,HORARIO LABORAL,horario,True,False,True
@@ -1455,7 +1455,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2026-2333,Otros,Privada,079,Madrid,-3.6957,40.44832,DE 9H A 17H,horario,True,False,True
 2018-864,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.69525,40.44699,24H,24h,True,True,True
 2026-1876,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.69378,40.46045,L-V DE 8H A 20H,horario,True,False,True
-2017-419,Otros,Privada,079,Madrid,-3.6928,40.45039,9-19 V 9-15,horario,False,False,True
+2017-419,Otros,Privada,079,Madrid,-3.6928,40.45039,9-19 V 9-15,horario,True,False,True
 2018-808,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.6638,40.51389,,desconocido,False,False,True
 2018-1235,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.6932,40.45051,L-V 7:00-22:30 S-D 10:00-15:00,horario,True,False,True
 2018-1268,Otros,Privada,079,Madrid,-3.69277,40.45023,24/7,24h,True,True,True
@@ -1537,7 +1537,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-749,Otros,Privada,074,Leganés,-3.74584,40.32289,,desconocido,False,False,True
 2026-343,Otros,Privada,074,Leganés,-3.74509,40.32392,DE 7H A 22H,horario,True,False,True
 2024-31,Otros,Pública,074,Leganés,-3.75158,40.33717,,desconocido,False,False,True
-2023-505,Otros,Privada,074,Leganés,-3.75061,40.3392,D a X de 11:30 a 21:30 - J y V 11:30 a 22:00,horario,False,False,True
+2023-505,Otros,Privada,074,Leganés,-3.75061,40.3392,D a X de 11:30 a 21:30 - J y V 11:30 a 22:00,horario,True,False,True
 2026-357,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,160,Valdemorillo,-4.06583,40.49857,L-V DE 10H A 22H,horario,True,False,True
 2021-374,Otros,Privada,160,Valdemorillo,-4.05031,40.50827,24H,24h,True,True,True
 2025-939,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,068,Guadarrama,-4.09036,40.67386,DE L-V DE 6.45H A 13H Y DE 17H A 21H Y S DE 9.30H A 11.30H,horario,True,False,True
@@ -1604,7 +1604,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2026-330,Centro educativo,Privada,079,Madrid,-3.67292,40.42709,,desconocido,False,False,True
 2025-443,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.58047,40.46811,DE LUNES A JUEVES DE 7.30H A 21.30H,horario,True,False,True
 2017-158,Otros,Privada,079,Madrid,-3.66621,40.43598,,desconocido,False,False,True
-2024-1086,Otros,Privada,079,Madrid,-3.72865,40.41986,"LU, 8-14 / MI, JU, 9-14 / VI, 9-14, 16-18",horario,True,False,True
+2024-1086,Otros,Privada,079,Madrid,-3.72865,40.41986,"LU, 8-14 / MI, JU, 9-14 / VI, 9-14, 16-18",horario,False,False,True
 2017-305,Centro educativo,Privada,079,Madrid,-3.58763,40.46798,HORARIO ESCOLAR,horario,True,False,True
 2017-116,Centro educativo,Pública,079,Madrid,-3.64984,40.44356,9:30 A 16:00,horario,True,False,True
 2023-257,Otros,Privada,079,Madrid,-3.65732,40.44123,24H,24h,True,True,True
@@ -1714,7 +1714,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2024-1023,Centro educativo,Pública,005,Alcalá de Henares,-3.35941,40.49362,"Lunes a viernes, 9:00–15:00 horas.",horario,True,False,True
 2022-1260,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.65131,40.46365,8-21H,horario,True,False,True
 2025-427,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.69527,40.44562,24H,24h,True,True,True
-2026-591,Otros,Privada,079,Madrid,-3.69541,40.44251,"L,M,J,V- DE 9.30H a 13h y X DE 15H a 17h",horario,False,False,True
+2026-591,Otros,Privada,079,Madrid,-3.69541,40.44251,"L,M,J,V- DE 9.30H a 13h y X DE 15H a 17h",horario,True,False,True
 2017-344,Instalaciones de transporte,Pública,079,Madrid,-3.682,40.47266,0 A 24,horario,True,True,True
 2018-2839,Instalaciones de transporte,Pública,079,Madrid,-3.682,40.47266,24 H,24h,True,True,True
 2019-2912,Otros,Privada,079,Madrid,-3.68563,40.46976,07:00-21:00,horario,True,False,True
@@ -2233,7 +2233,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2026-455,Otros,Privada,058,Fuenlabrada,-3.76815,40.26031,24H,24h,True,True,True
 2018-2217,Establecimiento dependiente de una Administración Pública,Pública,058,Fuenlabrada,-3.76749,40.28076,servicio médico,desconocido,False,False,True
 2018-2218,Establecimiento dependiente de una Administración Pública,Pública,058,Fuenlabrada,-3.76739,40.2806,Servicio Médico,desconocido,False,False,True
-2019-729,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,058,Fuenlabrada,-3.76749,40.28076,M A D Y FESTIVOS 10:30 A 20:00  L 14:00 A 20:00,horario,False,False,True
+2019-729,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,058,Fuenlabrada,-3.76749,40.28076,M A D Y FESTIVOS 10:30 A 20:00  L 14:00 A 20:00,horario,True,False,True
 2018-2155,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,058,Fuenlabrada,-3.76818,40.27919,L a V de 9:00 a 22:00 / S y D de 9:00 a 21:00,horario,True,False,True
 2021-488,Centro de trabajo con más de 250 trabajadores,Privada,115,Pozuelo de Alarcón,-3.8389,40.43636,24H,24h,True,True,True
 2024-481,Otros,Privada,115,Pozuelo de Alarcón,-3.83823,40.43699,L-V 7-14,horario,True,False,True
@@ -2243,7 +2243,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-368,Establecimiento dependiente de una Administración Pública,Pública,115,Pozuelo de Alarcón,-3.80325,40.44862,,desconocido,False,False,True
 2018-369,Establecimiento dependiente de una Administración Pública,Pública,115,Pozuelo de Alarcón,-3.80066,40.44899,,desconocido,False,False,True
 2018-365,Establecimiento dependiente de una Administración Pública,Pública,115,Pozuelo de Alarcón,-3.8094,40.44505,,desconocido,False,False,True
-2019-471,Otros,Privada,115,Pozuelo de Alarcón,-3.8078,40.44646,9:00 a 16:00 LJ   9:00 a 15:00 V/JUNIO Y SEPT.,horario,False,False,True
+2019-471,Otros,Privada,115,Pozuelo de Alarcón,-3.8078,40.44646,9:00 a 16:00 LJ   9:00 a 15:00 V/JUNIO Y SEPT.,horario,True,False,True
 2020-726,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,115,Pozuelo de Alarcón,-3.80926,40.44485,de L a V: de 07h a 23h S de 9h a 20h y D: de 9:30h a14:30h,horario,True,False,True
 2021-570,Centro educativo,Privada,115,Pozuelo de Alarcón,-3.80893,40.44427,,desconocido,False,False,True
 2019-2616,Centro educativo,Privada,079,Madrid,-3.63895,40.43143,8 A 17 H,horario,True,False,True
@@ -3405,7 +3405,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2017-230,Establecimiento dependiente de una Administración Pública,Pública,049,Coslada,-3.55137,40.42651,L A V DE 10 A 21 S Y D 10 A 14 Y 16:30 20:30,horario,True,False,True
 2019-400,Establecimiento dependiente de una Administración Pública,Pública,049,Coslada,-3.55235,40.42651,DE 8:00 A 22:00 L a V + FIN SEMANA CUANDO HAY ACTIVIDAD,eventos,False,False,True
 2019-401,Establecimiento dependiente de una Administración Pública,Pública,049,Coslada,-3.5514,40.42648,DE 8:00 A 20:00 L a V+ FIN DE SSEMANA CUANDO HAY ACTIVIDAD,eventos,False,False,True
-2022-222,Establecimiento dependiente de una Administración Pública,Pública,049,Coslada,-3.5496,40.42615,L-X-V 08:30 A 14:30 y M-J 08:30 a 20:00,horario,False,False,True
+2022-222,Establecimiento dependiente de una Administración Pública,Pública,049,Coslada,-3.5496,40.42615,L-X-V 08:30 A 14:30 y M-J 08:30 a 20:00,horario,True,False,True
 2018-1646,Centro de trabajo con más de 250 trabajadores,Privada,022,Boadilla del Monte,-3.86954,40.3954,,desconocido,False,False,True
 2018-1700,Centro de trabajo con más de 250 trabajadores,Privada,022,Boadilla del Monte,-3.87995,40.39434,,desconocido,False,False,True
 2018-1653,Centro de trabajo con más de 250 trabajadores,Privada,022,Boadilla del Monte,-3.85271,40.39174,,desconocido,False,False,True
@@ -3518,7 +3518,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2022-754,Otros,Privada,079,Madrid,-3.69347,40.45791,Lunes a Jueves de 9:00 a 14:30 y 15:00 a 18:00 Viernes 9:00 a 14:00,horario,True,False,True
 2022-998,Otros,Privada,079,Madrid,-3.69308,40.45776,24 horas,24h,True,True,True
 2025-450,Otros,Privada,079,Madrid,-3.6928,40.45408,L-V 7:30-19,horario,True,False,True
-2025-929,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.6931,40.45563,DEL-V DE 6H A 23H,horario,False,False,True
+2025-929,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.6931,40.45563,DEL-V DE 6H A 23H,horario,True,False,True
 2018-1900,Centro educativo,Privada,079,Madrid,-3.73372,40.41024,HORARIO LECTIVO,horario,True,False,True
 2019-1393,Centro educativo,Pública,079,Madrid,-3.58397,40.47064,HORARIO LECTIVO,horario,True,False,True
 2019-41,Instalaciones de transporte,Pública,079,Madrid,-3.65014,40.40986,24h,24h,True,True,True
@@ -3874,7 +3874,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-2066,Establecimiento dependiente de una Administración Pública,Pública,092,Móstoles,-3.87921,40.31741,,desconocido,False,False,True
 2019-490,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,092,Móstoles,-3.86138,40.33147,,desconocido,False,False,True
 2018-3146,Instalaciones de transporte,Pública,092,Móstoles,-3.87467,40.31636,24h,24h,True,True,True
-2019-480,Otros,Privada,092,Móstoles,-3.83918,40.32212,8:00 a 18:00 LJ 8:00 A 15:00 V / JUN Y SEPT,horario,False,False,True
+2019-480,Otros,Privada,092,Móstoles,-3.83918,40.32212,8:00 a 18:00 LJ 8:00 A 15:00 V / JUN Y SEPT,horario,True,False,True
 2018-2076,Establecimiento dependiente de una Administración Pública,Pública,092,Móstoles,-3.87935,40.31985,,desconocido,False,False,True
 2019-764,Establecimiento dependiente de una Administración Pública,Pública,092,Móstoles,-3.88114,40.32187,08:30-14:30,horario,True,False,True
 2019-765,Establecimiento dependiente de una Administración Pública,Pública,092,Móstoles,-3.88114,40.32187,08:30-14:30,horario,True,False,True
@@ -3931,7 +3931,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-1733,Otros,Privada,079,Madrid,-3.66301,40.48733,,desconocido,False,False,True
 2018-1730,Otros,Privada,079,Madrid,-3.66301,40.48733,,desconocido,False,False,True
 2018-2032,Otros,Privada,079,Madrid,-3.66574,40.48627,,desconocido,False,False,True
-2019-429,Otros,Privada,079,Madrid,-3.66711,40.48815,L-L 7:30-19:30 H  /V 7:30-15:30H,horario,True,False,True
+2019-429,Otros,Privada,079,Madrid,-3.66711,40.48815,L-L 7:30-19:30 H  /V 7:30-15:30H,horario,False,False,True
 2020-572,Establecimiento público con aforo igual o superior a 2000 personas,Privada,079,Madrid,-3.66575,40.48627,,desconocido,False,False,True
 2019-103,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.66561,40.48787,,desconocido,False,False,True
 2018-1976,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.66355,40.48738,,desconocido,False,False,True
@@ -4070,7 +4070,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2024-223,Centro educativo,Privada,092,Móstoles,-3.88505,40.32557,L-V 9-14,horario,True,False,True
 2018-2077,Establecimiento dependiente de una Administración Pública,Pública,092,Móstoles,-3.867,40.33556,,desconocido,False,False,True
 2018-3155,Instalaciones de transporte,Pública,092,Móstoles,-3.87224,40.33474,24h,24h,True,True,True
-2023-945,Otros,Privada,092,Móstoles,-3.8597,40.33375,DE LUNES A SABADOS DE 8 A 22H. DOMINGOS CERRADOS,horario,False,False,True
+2023-945,Otros,Privada,092,Móstoles,-3.8597,40.33375,DE LUNES A SABADOS DE 8 A 22H. DOMINGOS CERRADOS,horario,True,False,True
 2019-561,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.39493,40.28376,,desconocido,False,False,True
 2021-286,Instalaciones de transporte,Pública,079,Madrid,-3.66288,40.47661,24h,24h,True,True,True
 2018-2266,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.682,40.41527,,desconocido,False,False,True
@@ -4159,7 +4159,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2024-645,Centro educativo,Privada,079,Madrid,-3.70999,40.37924,,desconocido,False,False,True
 2025-111,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.71254,40.37575,Lunes-viernes 9:00–20:00h / Sábado-Domingo 9-14h,horario,True,False,True
 2018-863,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.69409,40.44666,,desconocido,False,False,True
-2018-889,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.6962,40.44739,8-18.30 V 8-15,horario,False,False,True
+2018-889,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.6962,40.44739,8-18.30 V 8-15,horario,True,False,True
 2018-865,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.69408,40.44666,,desconocido,False,False,True
 2020-585,Otros,Privada,079,Madrid,-3.69802,40.4468,L-V 9-21 // D Y F 11-20,horario,True,False,True
 2022-983,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.70251,40.44659,,desconocido,False,False,True
@@ -4238,7 +4238,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2026-2325,Otros,Privada,079,Madrid,-3.65278,40.43716,L-V DE 8H A 18H,horario,True,False,True
 2018-1837,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.65913,40.43558,L-V:06:00-24:00/S-D-F: 08:00 A 21:00,horario,True,False,True
 2025-425,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.65914,40.43556,24H,24h,True,True,True
-2025-967,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.64514,40.43719,DEL-V DE 7.30H A 23H Y S-D DE 10H A 15H,horario,False,False,True
+2025-967,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.64514,40.43719,DEL-V DE 7.30H A 23H Y S-D DE 10H A 15H,horario,True,False,True
 2022-338,Otros,Privada,115,Pozuelo de Alarcón,-3.8003,40.41343,,desconocido,False,False,True
 2025-493,Otros,Privada,115,Pozuelo de Alarcón,-3.79411,40.41339,24H,24h,True,True,True
 2018-1250,Centro educativo,Privada,115,Pozuelo de Alarcón,-3.84534,40.44085,HORARIO ESCOLAR,horario,True,False,True
@@ -4348,7 +4348,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2019-277,Establecimiento dependiente de una Administración Pública,Pública,127,"Rozas de Madrid, Las",-3.9166,40.51359,,desconocido,False,False,True
 2019-290,Establecimiento dependiente de una Administración Pública,Pública,127,"Rozas de Madrid, Las",-3.91907,40.51553,,desconocido,False,False,True
 2026-649,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.67442,40.40463,,desconocido,False,False,True
-2025-79,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.65643,40.3731,"Lun-Dom 9-20:30/ Sáb, Dom: 9-14:30h",horario,False,False,True
+2025-79,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.65643,40.3731,"Lun-Dom 9-20:30/ Sáb, Dom: 9-14:30h",horario,True,False,True
 2025-77,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.65674,40.37164,"Lun-Vie, 9:00–22:00h / Sáb-Dom 9-20:00h",horario,True,False,True
 2025-822,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.65769,40.36982,L-D DE 17.30H A 21H,horario,False,False,True
 2022-69,Otros,Privada,079,Madrid,-3.7097,40.44727,,desconocido,False,False,True
@@ -4831,7 +4831,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-1137,Centro educativo,Pública,079,Madrid,-3.73702,40.439,24 H,24h,True,True,True
 2018-2418,Centro educativo,Privada,079,Madrid,-3.73519,40.43633,L-V: 7:00-21:00H   S: 7:00-15:00H,horario,True,False,True
 2021-366,Otros,Privada,005,Alcalá de Henares,-3.34522,40.50842,24 horas del días de todos los días del año,24h,True,True,True
-2018-1594,Grandes establecimientos comerciales con una superficie superior a 2500 m2,Privada,005,Alcalá de Henares,-3.33419,40.50518,7-22 DOMINGO Y FIESTAS 9-15,horario,False,False,True
+2018-1594,Grandes establecimientos comerciales con una superficie superior a 2500 m2,Privada,005,Alcalá de Henares,-3.33419,40.50518,7-22 DOMINGO Y FIESTAS 9-15,horario,True,False,True
 2021-279,Otros,Privada,005,Alcalá de Henares,-3.33318,40.50202,,desconocido,False,False,True
 2023-544,Centro de trabajo con más de 250 trabajadores,Privada,005,Alcalá de Henares,-3.32517,40.50539,,desconocido,False,False,True
 2024-800,Otros,Privada,005,Alcalá de Henares,-3.33028,40.50795,Lunes a viernes de 8 a 20 h. Sábados de 8 a 14 h.,horario,True,False,True
@@ -5194,7 +5194,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2023-300,Otros,Privada,006,Alcobendas,-3.63011,40.53379,24H,24h,True,True,True
 2018-2933,Centro de trabajo con más de 250 trabajadores,Privada,006,Alcobendas,-3.63017,40.53342,DE LUNES A VIERNES 24 H,desconocido,False,False,True
 2023-329,Establecimiento hotelero con más de 100 plazas,Privada,006,Alcobendas,-3.63459,40.53715,24h,24h,True,True,True
-2017-219,Otros,Privada,006,Alcobendas,-3.62801,40.53361,8-18:30 VIERNES 8-15,horario,False,False,True
+2017-219,Otros,Privada,006,Alcobendas,-3.62801,40.53361,8-18:30 VIERNES 8-15,horario,True,False,True
 2018-258,Centro de trabajo con más de 250 trabajadores,Privada,006,Alcobendas,-3.62576,40.53448,,desconocido,False,False,True
 2018-671,Centro de trabajo con más de 250 trabajadores,Privada,006,Alcobendas,-3.6266,40.53333,,desconocido,False,False,True
 2018-1755,Centro de trabajo con más de 250 trabajadores,Privada,006,Alcobendas,-3.62832,40.53304,,desconocido,False,False,True
@@ -5224,7 +5224,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2024-1031,Otros,Privada,079,Madrid,-3.66305,40.36096,lunes a viernes de 6 a 17h,horario,True,False,True
 2023-701,Otros,Privada,079,Madrid,-3.65919,40.36088,,desconocido,False,False,True
 2018-2365,Otros,Privada,079,Madrid,-3.66795,40.36054,L a V 24 HORAS; S 5.45-15.30,horario,True,False,True
-2018-2472,Grandes establecimientos comerciales con una superficie superior a 2500 m2,Privada,005,Alcalá de Henares,-3.39609,40.49457,A S 8-20.30,horario,True,False,True
+2018-2472,Grandes establecimientos comerciales con una superficie superior a 2500 m2,Privada,005,Alcalá de Henares,-3.39609,40.49457,A S 8-20.30,horario,False,False,True
 2017-63,Establecimiento público con aforo igual o superior a 2000 personas,Pública,022,Boadilla del Monte,-3.88713,40.40277,DE LUNES A SÁBADO DE 8:00 A 21:00,horario,True,False,True
 2017-64,Establecimiento dependiente de una Administración Pública,Pública,022,Boadilla del Monte,-3.8841,40.3989,L A V DE 9:00 A 22:00. S Y D: DE 10:00 A 22:00,horario,True,False,True
 2026-2814,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,022,Boadilla del Monte,-3.88616,40.41038,,desconocido,False,False,True
@@ -5443,7 +5443,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2025-441,Otros,Privada,151,Torrelaguna,-3.53046,40.82979,L-V: De 09:00 h. a 20:00 h.,horario,True,False,True
 2026-666,Centro educativo,Pública,096,Navalcarnero,-4.01509,40.29238,,desconocido,False,False,True
 2018-458,Otros,Privada,106,Parla,-3.75949,40.22172,,desconocido,False,False,True
-2026-148,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.5934,40.45868,S Y D DE 10H A 18H,horario,True,False,True
+2026-148,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.5934,40.45868,S Y D DE 10H A 18H,horario,False,False,True
 2018-2758,Centro educativo,Privada,079,Madrid,-3.65444,40.42887,8:: A 19:00 H,desconocido,False,False,True
 2018-862,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.55012,40.44697,,desconocido,False,False,True
 2018-1191,Establecimiento hotelero con más de 100 plazas,Privada,079,Madrid,-3.5586,40.44908,24H,24h,True,True,True
@@ -5809,7 +5809,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-443,Otros,Privada,079,Madrid,-3.68741,40.47578,24H,24h,True,True,True
 2018-441,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.68741,40.47578,24 H,24h,True,True,True
 2018-690,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.69175,40.45169,,desconocido,False,False,True
-2018-887,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.68947,40.42688,8-18.30 V 8-15,horario,False,False,True
+2018-887,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.68947,40.42688,8-18.30 V 8-15,horario,True,False,True
 2018-1340,Otros,Privada,079,Madrid,-3.68887,40.4291,L A V 7.30-14.30,horario,True,False,True
 2018-1414,Establecimiento hotelero con más de 100 plazas,Privada,079,Madrid,-3.68966,40.45591,,desconocido,False,False,True
 2018-1613,Otros,Privada,079,Madrid,-3.68931,40.43449,,desconocido,False,False,True
@@ -6218,7 +6218,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-3128,Instalaciones de transporte,Pública,079,Madrid,-3.74505,40.40486,24H,24h,True,True,True
 2025-186,Otros,Privada,079,Madrid,-3.74946,40.40534,10:00 a 14:00 y 16:00 a 20:00,horario,True,False,True
 2019-946,Establecimiento hotelero con más de 100 plazas,Privada,079,Madrid,-3.41548,40.25337,,desconocido,False,False,True
-2025-796,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.69827,40.41688,L-X-V DE 7.30H A 15.30H M-J DE 7.30H A 19.30H,horario,False,False,True
+2025-796,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.69827,40.41688,L-X-V DE 7.30H A 15.30H M-J DE 7.30H A 19.30H,horario,True,False,True
 2018-2489,Establecimiento hotelero con más de 100 plazas,Privada,079,Madrid,-3.70586,40.41724,24 H,24h,True,True,True
 2018-1986,Centros residenciales de mayores con 200 plazas,Privada,079,Madrid,-3.67477,40.40027,24 H,24h,True,True,True
 2023-61,Otros,Privada,079,Madrid,-3.67581,40.3994,,desconocido,False,False,True
@@ -9237,7 +9237,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2024-1024,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.74501,40.45082,24H,24h,True,True,True
 2019-2495,Centro educativo,Pública,181,Villaviciosa de Odón,-3.90633,40.3625,,desconocido,False,False,True
 2019-2470,Centros residenciales de mayores con 200 plazas,Pública,181,Villaviciosa de Odón,-3.90612,40.36171,24 H,24h,True,True,True
-2018-272,Establecimiento dependiente de una Administración Pública,Pública,123,Rivas-Vaciamadrid,-3.55077,40.36366,10-14 V 17-18.30,horario,False,False,True
+2018-272,Establecimiento dependiente de una Administración Pública,Pública,123,Rivas-Vaciamadrid,-3.55077,40.36366,10-14 V 17-18.30,horario,True,False,True
 2023-622,Establecimiento dependiente de una Administración Pública,Pública,123,Rivas-Vaciamadrid,-3.55025,40.3634,L a V de 10 a 14h y de 17 a 20h,horario,True,False,True
 2024-1192,Otros,Privada,123,Rivas-Vaciamadrid,-3.52655,40.37253,24h,24h,True,True,True
 2018-267,Establecimiento dependiente de una Administración Pública,Pública,123,Rivas-Vaciamadrid,-3.55043,40.36903,L-V 10-15 Y 16-20,horario,True,False,True
@@ -9358,7 +9358,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2019-351,Centro educativo,Privada,079,Madrid,-3.68424,40.44672,,desconocido,False,False,True
 2017-152,Centro educativo,Privada,079,Madrid,-3.60712,40.43135,L A V DE 8:00 A 17:00 (ESCEPTO JULIO Y AGOSTO),horario,True,False,True
 2018-3191,Instalaciones de transporte,Pública,079,Madrid,-3.60788,40.43252,24h,24h,True,True,True
-2025-923,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.60607,40.42768,DEL-V DE 8H A 23H S DE 9H A 22H D Y F DE 9H A 15H,horario,False,False,True
+2025-923,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.60607,40.42768,DEL-V DE 8H A 23H S DE 9H A 22H D Y F DE 9H A 15H,horario,True,False,True
 2024-1038,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.60624,40.4278,"Todos los días, festivos incluidos, 7:00 - 24:00H",horario,True,False,True
 2018-1712,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.7473,40.38383,,desconocido,False,False,True
 2018-695,Centros residenciales de mayores con 200 plazas,Privada,079,Madrid,-3.74879,40.38522,24h,24h,True,True,True
@@ -9459,9 +9459,9 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-2195,Establecimiento dependiente de una Administración Pública,Pública,058,Fuenlabrada,-3.79093,40.29284,L/V 9:00-14:00 L/J 17:00-19:00,horario,True,False,True
 2018-2190,Establecimiento dependiente de una Administración Pública,Pública,058,Fuenlabrada,-3.79093,40.2928,Según Programación,desconocido,False,False,True
 2018-2194,Establecimiento dependiente de una Administración Pública,Pública,058,Fuenlabrada,-3.79092,40.2928,Lunes a Viernes de 9:00 a 21:30 / Sabado 10:: a 14:00,horario,True,False,True
-2018-2193,Establecimiento dependiente de una Administración Pública,Pública,058,Fuenlabrada,-3.79095,40.29281,V 17:00–21:00 S/D 11:00 a 21:00,horario,True,False,True
+2018-2193,Establecimiento dependiente de una Administración Pública,Pública,058,Fuenlabrada,-3.79095,40.29281,V 17:00–21:00 S/D 11:00 a 21:00,horario,False,False,True
 2018-2192,Centro educativo,Pública,058,Fuenlabrada,-3.80104,40.29362,Lunes a Viernes de 8:00 a 22:00,horario,True,False,True
-2018-2165,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,058,Fuenlabrada,-3.8007,40.29444,M a V 9:30 a 13:00 tardes de 15:30 a 22:30/Sabado de 9:00 a 21:00,horario,False,False,True
+2018-2165,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,058,Fuenlabrada,-3.8007,40.29444,M a V 9:30 a 13:00 tardes de 15:30 a 22:30/Sabado de 9:00 a 21:00,horario,True,False,True
 2018-2147,Establecimiento dependiente de una Administración Pública,Pública,058,Fuenlabrada,-3.79569,40.28371,Lunes a Viernes 9:00 a 14:30 Tardes 16:00 a 20:00,horario,True,False,True
 2023-269,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,058,Fuenlabrada,-3.79996,40.29028,De lunes a domingo,desconocido,False,False,True
 2026-1254,Otros,Privada,058,Fuenlabrada,-3.79979,40.28686,09:00 a 15:00 HORAS,horario,True,False,True
@@ -10000,11 +10000,11 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2023-410,Centro de trabajo con más de 250 trabajadores,Privada,903,Tres Cantos,-3.69572,40.60529,,desconocido,False,False,True
 2023-409,Centro de trabajo con más de 250 trabajadores,Privada,903,Tres Cantos,-3.69572,40.60529,,desconocido,False,False,True
 2023-450,Otros,Privada,903,Tres Cantos,-3.69555,40.6153,24H,24h,True,True,True
-2025-532,Otros,Privada,903,Tres Cantos,-3.70264,40.61694,L J 8-18 V8-15,horario,True,False,True
+2025-532,Otros,Privada,903,Tres Cantos,-3.70264,40.61694,L J 8-18 V8-15,horario,False,False,True
 2025-568,Otros,Privada,903,Tres Cantos,-3.69978,40.61599,L-V 8-18,horario,True,False,True
 2020-584,Otros,Privada,005,Alcalá de Henares,-3.38393,40.50518,9-18,horario,True,False,True
 2017-320,Centro educativo,Privada,005,Alcalá de Henares,-3.38003,40.49398,7:30 A 18 PERIODO LECTIVO,horario,True,False,True
-2022-196,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,094,Navalafuente,-3.67913,40.82103,9-14 Y 17-22 DOMINGOS SOLO MAÑANAS,horario,False,False,True
+2022-196,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,094,Navalafuente,-3.67913,40.82103,9-14 Y 17-22 DOMINGOS SOLO MAÑANAS,horario,True,False,True
 2020-614,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,172,Villalbilla,-3.2967,40.43768,10-22,horario,True,False,True
 2026-1463,Otros,Privada,173,Villamanrique de Tajo,-3.2402,40.06881,24H,24h,True,True,True
 2025-298,Establecimiento dependiente de una Administración Pública,Pública,174,Villamanta,-4.10869,40.29631,09:00-21:00 L-D,horario,True,False,True
@@ -10095,7 +10095,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2024-428,Establecimiento dependiente de una Administración Pública,Pública,045,Colmenar Viejo,-3.77794,40.64834,L-V 7:30-15,horario,True,False,True
 2018-1110,Centro educativo,Privada,045,Colmenar Viejo,-3.77411,40.64799,,desconocido,False,False,True
 2024-227,Establecimiento dependiente de una Administración Pública,Pública,045,Colmenar Viejo,-3.78701,40.64608,,desconocido,False,False,True
-2024-448,Establecimiento dependiente de una Administración Pública,Pública,045,Colmenar Viejo,-3.78734,40.64621,Lun a vier de 9 a 22:30 Sáb de 9 a 14 y 16 a 20.Dom de 9 a 14 h,horario,False,False,True
+2024-448,Establecimiento dependiente de una Administración Pública,Pública,045,Colmenar Viejo,-3.78734,40.64621,Lun a vier de 9 a 22:30 Sáb de 9 a 14 y 16 a 20.Dom de 9 a 14 h,horario,True,False,True
 2024-449,Establecimiento dependiente de una Administración Pública,Pública,045,Colmenar Viejo,-3.7898,40.64673,L-D 9-22,horario,True,False,True
 2025-790,Otros,Privada,045,Colmenar Viejo,-3.78609,40.65245,24H,24h,True,True,True
 2019-2668,Otros,Privada,079,Madrid,-3.65225,40.49752,24 H,24h,True,True,True
@@ -11086,7 +11086,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-3175,Establecimiento hotelero con más de 100 plazas,Privada,079,Madrid,-3.70402,40.43762,8:00 A 10:00,horario,False,False,True
 2019-2645,Centro educativo,Privada,079,Madrid,-3.69744,40.46352,,desconocido,False,False,True
 2020-672,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Privada,079,Madrid,-3.70348,40.44867,"de L a V: de 7h a 22H, S de 10h a 20h D de 10h a 15h",horario,True,False,True
-2018-1692,Grandes establecimientos comerciales con una superficie superior a 2500 m2,Privada,079,Madrid,-3.73533,40.33933,10:00 A 22:00 lunes a sabados y domingos apertura,horario,False,False,True
+2018-1692,Grandes establecimientos comerciales con una superficie superior a 2500 m2,Privada,079,Madrid,-3.73533,40.33933,10:00 A 22:00 lunes a sabados y domingos apertura,horario,True,False,True
 2025-675,Otros,Privada,079,Madrid,-3.70271,40.45396,Lunes a Jueves de 09:00 a 18:00 / Viernes a 15:00,horario,True,False,True
 2025-138,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.7027,40.45403,de 9h a 19h,horario,True,False,True
 2025-87,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.69247,40.46508,Lunes-viernes 9:00–21:00h / Sab-Dom 9:00-15:00h.,horario,True,False,True
@@ -11226,7 +11226,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2021-495,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.65602,40.39193,,desconocido,False,False,True
 2021-496,Grandes establecimientos comerciales con una superficie superior a 2500 m2,Privada,079,Madrid,-3.65585,40.39196,,desconocido,False,False,True
 2023-863,Otros,Privada,079,Madrid,-3.63067,40.38351,8:30 a 19:30,horario,True,False,True
-2025-262,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.63297,40.38439,L/J 8:00-18:00 V 8:00-15:00,horario,False,False,True
+2025-262,Centro de trabajo con más de 250 trabajadores,Privada,079,Madrid,-3.63297,40.38439,L/J 8:00-18:00 V 8:00-15:00,horario,True,False,True
 2025-373,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.66565,40.39661,L-V 8:00H A 15:00H,horario,True,False,True
 2018-2159,Centros residenciales de mayores con 200 plazas,Privada,079,Madrid,-3.64204,40.47588,24 H,24h,True,True,True
 2019-2871,Instalaciones de transporte,Pública,079,Madrid,-3.70516,40.3504,,desconocido,False,False,True
@@ -11255,7 +11255,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-2606,Centro educativo,Privada,079,Madrid,-3.70303,40.36523,,desconocido,False,False,True
 2018-1987,Establecimiento dependiente de una Administración Pública,Pública,079,Madrid,-3.70303,40.36523,24H,24h,True,True,True
 2018-20,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.63244,40.39839,,desconocido,False,False,True
-2025-100,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.63249,40.3984,"Lu, Ju, Vi, Sa, Do, 9:00–23:00h",horario,True,False,True
+2025-100,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.63249,40.3984,"Lu, Ju, Vi, Sa, Do, 9:00–23:00h",horario,False,False,True
 2025-546,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,079,Madrid,-3.63146,40.39827,"LUNES,JUEVES, VIERNES, SABADO Y DOMINGO DE 9 A 23H",horario,False,False,True
 2018-2317,Otros,Privada,079,Madrid,-3.79454,40.46751,L A V DE 9-21 S 9-14,horario,True,False,True
 2023-495,Otros,Privada,079,Madrid,-3.78725,40.46848,24h,24h,True,True,True
@@ -11427,7 +11427,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2019-652,Centro educativo,Privada,134,San Sebastián de los Reyes,-3.62514,40.54886,,desconocido,False,False,True
 2019-11,Establecimiento dependiente de una Administración Pública,Pública,134,San Sebastián de los Reyes,-3.63039,40.5573,,desconocido,False,False,True
 2018-119,Centro educativo,Pública,176,Villanueva de la Cañada,-3.99852,40.43797,,desconocido,False,False,True
-2021-501,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,176,Villanueva de la Cañada,-4.00094,40.43972,L a V1 6:00 a 22:00 .S 9:00 a 14:00 h. y de 16:30 a 20:30 h.,horario,True,True,True
+2021-501,"Instalación, centro o complejo deportivo con más de 500 usuarios diarios",Pública,176,Villanueva de la Cañada,-4.00094,40.43972,L a V1 6:00 a 22:00 .S 9:00 a 14:00 h. y de 16:30 a 20:30 h.,horario,True,False,True
 2021-512,Establecimiento dependiente de una Administración Pública,Pública,176,Villanueva de la Cañada,-3.94803,40.46547,L A V 9:00?20:30,horario,True,False,True
 2026-167,Otros,Privada,176,Villanueva de la Cañada,-3.94868,40.46571,L-V DE 9H A 14H Y DE 15:30H A 18H,horario,True,False,True
 2026-260,Otros,Privada,176,Villanueva de la Cañada,-3.94868,40.46571,24H,24h,True,True,True
@@ -11854,7 +11854,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2018-481,Establecimiento dependiente de una Administración Pública,Pública,006,Alcobendas,-3.63417,40.54518,L A V 8-22.30,horario,True,False,True
 2019-455,Establecimiento hotelero con más de 100 plazas,Privada,006,Alcobendas,-3.64922,40.58041,,desconocido,False,False,True
 2018-478,Establecimiento dependiente de una Administración Pública,Pública,006,Alcobendas,-3.64815,40.54726,L A D 9.30-20,horario,True,False,True
-2019-476,Otros,Privada,014,Arganda del Rey,-3.43394,40.29931,9:00 a 18:00 LJ  8:00 a 15:00 v/junio septiembre,horario,False,False,True
+2019-476,Otros,Privada,014,Arganda del Rey,-3.43394,40.29931,9:00 a 18:00 LJ  8:00 a 15:00 v/junio septiembre,horario,True,False,True
 2019-787,Establecimiento dependiente de una Administración Pública,Pública,005,Alcalá de Henares,-3.36073,40.4854,8:30-14:30,horario,True,False,True
 2023-32,Otros,Privada,005,Alcalá de Henares,-3.40631,40.50792,8:00 a 20:00,horario,True,False,True
 2026-1267,Otros,Privada,005,Alcalá de Henares,-3.40327,40.50697,lunes a viernes de 9:00 a 17:30,horario,True,False,True
@@ -12295,7 +12295,7 @@ codigo_dea,tipo_establecimiento,tipo_titularidad,municipio_codigo,municipio_nomb
 2023-244,Otros,Privada,045,Colmenar Viejo,-3.77678,40.64092,L a V 8:00-16:00,horario,True,False,True
 2025-953,Otros,Privada,006,Alcobendas,-3.65096,40.53622,DE 9H A 16H,horario,True,False,True
 2018-1517,Centro de trabajo con más de 250 trabajadores,Privada,006,Alcobendas,-3.64755,40.5255,24H,24h,True,True,True
-2025-581,Otros,Privada,006,Alcobendas,-3.64614,40.52728,L/J 9:00 a 18:00 y Viernes de 8:00 a 14:00,horario,False,False,True
+2025-581,Otros,Privada,006,Alcobendas,-3.64614,40.52728,L/J 9:00 a 18:00 y Viernes de 8:00 a 14:00,horario,True,False,True
 2017-404,Otros,Privada,006,Alcobendas,-3.64607,40.52729,24 H,24h,True,True,True
 2018-260,Centro de trabajo con más de 250 trabajadores,Privada,006,Alcobendas,-3.65748,40.5137,,desconocido,False,False,True
 2018-1759,Centro de trabajo con más de 250 trabajadores,Privada,006,Alcobendas,-3.68496,40.46601,,desconocido,False,False,True

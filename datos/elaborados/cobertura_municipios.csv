@@ -12,7 +12,7 @@ cod_ine_muni,municipio,poblacion,pct_martes_11h,pct_domingo_3h,tiene_desfibrilad
 28011,Ambite,725,0.0,0.0,True
 28012,Anchuelo,1402,0.0,0.0,True
 28013,Aranjuez,62708,22.3,10.7,True
-28014,Arganda del Rey,59251,17.1,8.0,True
+28014,Arganda del Rey,59251,19.6,8.0,True
 28015,Arroyomolinos,37886,5.2,0.0,True
 28016,"Atazar, El",110,0.0,0.0,True
 28017,Batres,1928,0.0,0.0,True
@@ -47,7 +47,7 @@ cod_ine_muni,municipio,poblacion,pct_martes_11h,pct_domingo_3h,tiene_desfibrilad
 28046,Collado Mediano,7677,0.0,0.0,True
 28047,Collado Villalba,67037,30.8,11.6,True
 28048,Corpa,835,0.0,0.0,True
-28049,Coslada,79351,47.0,19.5,True
+28049,Coslada,79351,49.1,19.5,True
 28050,Cubas de la Sagra,6980,0.0,0.0,True
 28051,Chapinería,2661,0.0,0.0,True
 28052,Chinchón,5743,0.0,0.0,True
@@ -72,11 +72,11 @@ cod_ine_muni,municipio,poblacion,pct_martes_11h,pct_domingo_3h,tiene_desfibrilad
 28071,Horcajuelo de la Sierra,106,0.0,0.0,False
 28072,Hoyo de Manzanares,9048,0.0,0.0,True
 28073,Humanes de Madrid,20131,0.0,0.0,True
-28074,Leganés,193278,27.2,12.8,True
+28074,Leganés,193278,30.0,12.8,True
 28075,Loeches,9223,16.5,0.0,True
 28076,Lozoya,600,0.0,0.0,True
 28078,Madarcos,69,0.0,0.0,True
-28079,Madrid,3414244,60.5,39.0,True
+28079,Madrid,3414244,60.7,39.0,True
 28080,Majadahonda,72704,36.2,16.9,True
 28082,Manzanares el Real,9594,0.0,0.0,True
 28083,Meco,15811,0.0,0.0,True
@@ -88,7 +88,7 @@ cod_ine_muni,municipio,poblacion,pct_martes_11h,pct_domingo_3h,tiene_desfibrilad
 28089,Moraleja de Enmedio,5564,0.0,0.0,True
 28090,Moralzarzal,14460,0.0,0.0,True
 28091,Morata de Tajuña,8086,0.0,0.0,True
-28092,Móstoles,211596,36.5,15.9,True
+28092,Móstoles,211596,37.1,15.9,True
 28093,Navacerrada,3256,0.0,0.0,True
 28094,Navalafuente,1722,0.0,0.0,True
 28095,Navalagamella,3170,0.0,0.0,True
