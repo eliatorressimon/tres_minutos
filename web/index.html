@@ -145,6 +145,11 @@ details.bloque .medir{border-top:0;margin:0;padding:0}
 details.bloque .caja,details.bloque .simulador{margin-top:0}
 details.bloque .pasos{margin-top:4px}
 details.bloque h2.seccion:first-child{margin-top:6px}
+.como{margin:4px 0 10px 0;padding:0;list-style:none;counter-reset:c}
+.como li{counter-increment:c;position:relative;padding:0 0 12px 40px;font-size:14px;line-height:1.5;color:var(--gris-1)}
+.como li b{color:var(--negro)}
+.como li::before{content:counter(c);position:absolute;left:0;top:0;width:26px;height:26px;display:grid;place-items:center;background:var(--rojo);color:#fff;font:700 13px var(--mono);clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%)}
+.emergencia.solo{grid-template-columns:1fr}
 /* caja monitor */
 .caja{background:#fff;margin-top:24px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);box-shadow:inset 3px 0 0 var(--rojo)}
 .caja-cab{background:var(--vino);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:9px 14px;font:500 12.5px var(--mono);letter-spacing:.02em}
@@ -464,6 +469,11 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       <button data-vista="metodo">Método</button>
     </nav>
 
+    <nav class="subnav" id="subnavInfo" aria-label="Información" hidden>
+      <button data-vista="info">Tu calle</button>
+      <button data-vista="saber">Para decidir</button>
+    </nav>
+
     <section class="vista" id="v-ahora">
       <div class="antetitulo">Para administraciones: 13.673 aparatos, 168 horas</div>
       <h1 class="titular">Si alguien cae ahora, ¿llega <span>a tiempo</span> un desfibrilador?</h1>
@@ -486,10 +496,19 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <input id="buscar" type="search" placeholder="Busca un municipio" autocomplete="off" aria-label="Busca un municipio">
         <ul class="sugerencias" id="sugerencias" hidden></ul>
       </div>
+      <details class="bloque"><summary>Cómo se lee esta pantalla<small>En tres pasos</small></summary><div class="bloque-cuerpo">
+        <ol class="como">
+          <li><b>Elige un momento.</b> Pulsa un día y mueve la barra de la hora, o pulsa una de las barras del gráfico. "Ahora" vuelve a la hora real.</li>
+          <li><b>Mira la cifra.</b> Es el porcentaje de vecinos que tienen un desfibrilador abierto a esa hora <span class="dist">a 200 metros o menos andando</span>. Las barras te dejan comparar con el resto del día: cuanto más baja, peor.</li>
+          <li><b>Busca en el mapa.</b> Cada marca roja es un barrio sin ninguno abierto cerca. Púlsala, o escribe un municipio arriba, para ver sus cifras.</li>
+        </ol>
+        <p class="nota">De noche el mapa se oscurece para que se note la hora.</p>
+      </div></details>
       <details class="bloque"><summary>Más cifras de esta hora<small>Fuera de la capital, mayores de 65 y aparatos abiertos</small></summary><div class="bloque-cuerpo">
         <ul class="apilado"><li><span>Fuera de Madrid capital</span><strong id="cFuera"></strong></li><li><span>Mayores de 65 cubiertos</span><strong id="c65"></strong></li><li><span>Aparatos abiertos</span><strong id="cAbiertos"></strong></li></ul>
       </div></details>
-      <details class="bloque"><summary>Cambiar la distancia<small>100, 200 o 300 metros, andando o en línea recta</small></summary><div class="bloque-cuerpo">
+      <details class="bloque"><summary>Probar con otra distancia<small>Para ver si el resultado depende de cómo medimos</small></summary><div class="bloque-cuerpo">
+            <p class="nota" style="font-size:14px;margin-bottom:12px">Contamos a un vecino como cubierto si tiene un aparato abierto a <b>200 metros andando</b>: es lo que da tiempo a ir y volver en unos tres minutos. Aquí puedes ver qué pasa con un criterio más exigente (100 m), más generoso (300 m) o midiendo en línea recta, como si se pudieran atravesar los edificios. Todo se recalcula, también el mapa.</p>
             <div class="medir" id="medir">
               <div class="medir-fila"><span>Distancia</span><div class="seg" id="segR"><button data-r="100" aria-pressed="false">100 m</button><button data-r="200" aria-pressed="true">200 m</button><button data-r="300" aria-pressed="false">300 m</button></div></div>
               <div class="medir-fila"><span>Medida</span><div class="seg" id="segM"><button data-m="recta" aria-pressed="true">En línea recta</button><button data-m="andando" aria-pressed="false">Andando por la calle</button></div></div>
@@ -501,13 +520,6 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       </div></details>
       <details class="bloque"><summary>Municipios mejor y peor cubiertos<small>Se actualiza con la hora que elijas</small></summary><div class="bloque-cuerpo">
         <div id="rankings"></div>
-      </div></details>
-      <details class="bloque"><summary>¿Qué es cada cosa de esta pantalla?<small>Lo que sirve y lo que es solo adorno</small></summary><div class="bloque-cuerpo guia">
-        <div><em class="util">Sirve</em><span><b>Las barras:</b> cada una es una hora del día elegido. Cuanto más alta, más vecinos tienen un aparato abierto cerca. La roja es la hora que ves en el mapa. Pulsa otra para cambiar.</span></div>
-        <div><em class="util">Sirve</em><span><b>Los días y la barra deslizante:</b> eligen la hora. "Ahora" vuelve a la hora real.</span></div>
-        <div><em class="util">Sirve</em><span><b>Las marcas rojas del mapa:</b> barrios sin aparato abierto cerca. En 3D, su altura es el número de vecinos.</span></div>
-        <div><em class="util">Sirve</em><span><b>"Ver pasar la semana":</b> el mapa avanza solo, hora a hora, para ver cómo se vacía de noche.</span></div>
-        <div><em class="deco">Adorno</em><span><b>El mapa se oscurece</b> de noche para que se note la hora, y <b>el latido de la cabecera</b> es la marca de la web.</span></div>
       </div></details>
     </section>
 
@@ -524,22 +536,29 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="enlace" id="btnTocar">o toca un punto del mapa</button></div>
         <div id="barrio" class="barrio"></div>
         <div id="rutaRes"></div>
-        <div class="emergencia">
-          <a class="boton" href="tel:112"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.6 1h2.6l1.3 3.4-1.7 1.2a8.6 8.6 0 0 0 4.6 4.6l1.2-1.7 3.4 1.3v2.6c0 .9-.7 1.6-1.6 1.6A12.4 12.4 0 0 1 2 2.6C2 1.7 2.7 1 3.6 1z"/></svg>Llamar al 112</a>
+        <div class="emergencia solo">
           <button class="boton-sec" id="btnAvisar"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 3h12v8H6l-4 3z"/></svg>Avisar a un contacto</button>
           <div class="aviso-cfg" id="avisoCfg" hidden></div>
         </div>
       </div>
-      <h2 class="seccion">Lo que conviene saber</h2>
+      <div class="consejo"><strong>Si vas a dejar esta web a una persona mayor</strong>Guárdale un contacto en "Avisar a un contacto" y déjale la web abierta en Emergencia. Con un solo botón sabrá dónde está el desfibrilador, oirá las instrucciones en voz alta y podrá avisarte con su ubicación.</div>
+      <h2 class="seccion">Dos preguntas importantes</h2>
       <div class="mas">
-        <details><summary>Si vas a dejar esta web a una persona mayor</summary><div>
-          <p>Guárdale un contacto en "Avisar a un contacto" y déjale la web abierta en Emergencia. Con un solo botón sabrá dónde está el desfibrilador, oirá las instrucciones en voz alta y podrá avisarte con su ubicación.</p></div></details>
         <details><summary>¿Qué hago si alguien se desploma?</summary><div>
           <ul><li><b>Llama al 112</b> y pon el altavoz. Te guían por teléfono.</li>
           <li><b>Empieza a apretar el pecho</b>: manos en el centro, brazos rectos, fuerte y rápido (unas dos veces por segundo). En la pestaña Emergencia hay un metrónomo que marca el ritmo.</li>
           <li><b>Que otra persona traiga el desfibrilador</b>. El botón de Emergencia le dice dónde está el abierto más cercano.</li></ul></div></details>
         <details><summary>¿Puedo usar un desfibrilador si nunca lo he hecho?</summary><div>
           <p>Están pensados para cualquiera. Al abrirlo te va diciendo en voz alta lo que tienes que hacer, analiza el corazón y solo da la descarga si hace falta. No le vas a hacer daño a nadie por intentarlo.</p></div></details>
+      </div>
+      <p class="nota" style="margin-top:16px">¿Buscas casa, colegio o cuidas de una persona mayor? Mira <a href="#saber">Para decidir</a>.</p>
+    </section>
+
+    <section class="vista" id="v-saber" hidden>
+      <div class="antetitulo">Para vecinos, familias y mayores</div>
+      <h1 class="titular">Para <span>decidir</span> mejor.</h1>
+      <p class="entradilla">Si vas a cambiarte de casa, elegir colegio o te preocupa un familiar mayor, esto es lo que conviene mirar.</p>
+      <div class="mas" style="margin-top:18px">
         <details><summary>Si estás buscando casa</summary><div>
           <p>Toca en el mapa la calle que te interesa y mira <b>las tres horas</b>: martes por la mañana, sábado por la tarde y domingo de madrugada. Muchos aparatos están en oficinas, tiendas o polideportivos que cierran, y de noche la diferencia es grande.</p>
           <p>Las farmacias, las estaciones grandes y los hoteles suelen ser los que más horas abren.</p></div></details>
@@ -551,12 +570,11 @@ details.bloque h2.seccion:first-child{margin-top:6px}
           <li>Guarda el <b>112</b> en marcación rápida y un contacto en "Avisar a un contacto".</li>
           <li>La pantalla de Emergencia tiene botones grandes y voz, para que no haga falta leer.</li>
           <li>Si te cuesta ver la pantalla, pulsa "Letra más grande".</li></ul></div></details>
-        <details><summary>¿Qué es cada cosa del mapa?</summary><div class="guia">
-          <div><em class="util">Sirve</em><span><b>Marcas rojas:</b> barrios sin ningún desfibrilador abierto a 200 m andando a esa hora. En 3D, cuanto más alta, más vecinos.</span></div>
-          <div><em class="util">Sirve</em><span><b>Cuadrados negros</b> (al acercarte): los desfibriladores abiertos a esa hora.</span></div>
-          <div><em class="util">Sirve</em><span><b>La tabla de "Mira tu calle":</b> a cuántos metros andando queda el aparato abierto más cercano a tres horas distintas. Verde si está a 200 metros o menos, rojo si está lejos.</span></div>
-          <div><em class="deco">Adorno</em><span><b>El mapa se oscurece</b> de noche para que se note la hora, y <b>el latido de la cabecera</b> es solo la marca de la web.</span></div>
-        </div></details>
+        <details><summary>¿Qué es cada cosa del mapa?</summary><div>
+          <ul><li><b>Marcas rojas:</b> barrios sin ningún desfibrilador abierto a 200 metros andando a esa hora. En 3D, cuanto más alta, más vecinos.</li>
+          <li><b>Cuadrados oscuros</b> (al acercarte): los desfibriladores abiertos a esa hora.</li>
+          <li><b>La tabla de "Tu calle":</b> a cuántos metros andando queda el más cercano a tres horas distintas. Verde si está a 200 metros o menos, rojo si está lejos.</li>
+          <li>De noche el mapa se oscurece para que se note la hora.</li></ul></div></details>
         <details><summary>¿De dónde salen estos datos?</summary><div>
           <p>Del registro oficial de desfibriladores de la Comunidad de Madrid, con su horario, la población del INE y las calles de OpenStreetMap. Lo contamos en <a href="#metodo">Cómo lo calculamos</a>.</p>
           <p>Si un aparato no tiene un horario claro, no lo contamos como abierto. Puede que haya alguno más de los que mostramos.</p></div></details>
@@ -1063,24 +1081,24 @@ async function buscarCercano(c){
 
 /* ---------- navegación ---------- */
 const ADMIN=['ahora','actuar','metodo','municipio'];
-let ultimaAdmin='ahora';
+let ultimaAdmin='ahora',ultimaInfo='info';
 function mostrar(v){vista=v;
-  const tab=v==='emergencia'?'emergencia':v==='info'?'info':'admin',sub=v==='municipio'?vistaAntes:v;
+  const tab=v==='emergencia'?'emergencia':(v==='info'||v==='saber')?'info':'admin',sub=v==='municipio'?vistaAntes:v;
   if(tab==='admin'&&v!=='municipio')ultimaAdmin=v;
   document.querySelectorAll('.pestanas [data-tab]').forEach(b=>b.dataset.tab===tab?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
-  document.querySelectorAll('#subnav [data-vista]').forEach(b=>b.dataset.vista===sub?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
-  $('subnav').hidden=tab!=='admin';
+  document.querySelectorAll('#subnav [data-vista],#subnavInfo [data-vista]').forEach(b=>b.dataset.vista===sub?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
+  $('subnav').hidden=tab!=='admin';$('subnavInfo').hidden=tab!=='info';if(tab==='info')ultimaInfo=v;
   tab==='emergencia'?SOS.ver():SOS.ocultar();
   if(tab==='emergencia')return;
   document.querySelectorAll('.vista').forEach(s=>s.hidden=s.id!=='v-'+v);$('lado').scrollTop=0;
   $('leyNuevo').hidden=v!=='actuar';if(v!=='actuar'&&poniendo)$('btnPoner').click();if(v==='ahora')rankings()}
 function irA(v){if(location.hash!=='#'+v)location.hash=v;else ruta()}
-function ruta(){let v=(location.hash||'#emergencia').slice(1);if(v==='sos')v='emergencia';if(v==='admin')v=ultimaAdmin;
-  const nv=['emergencia','ahora','actuar','metodo','info'].includes(v)?v:'emergencia',antes=vista;sel=-1;mostrar(nv);
+function ruta(){let v=(location.hash||'#emergencia').slice(1);if(v==='sos')v='emergencia';if(v==='admin')v=ultimaAdmin;if(v==='informacion')v=ultimaInfo;
+  const nv=['emergencia','ahora','actuar','metodo','info','saber'].includes(v)?v:'emergencia',antes=vista;sel=-1;mostrar(nv);
   if(nv==='emergencia')return;
   if(D){if(nv==='actuar'&&antes!=='actuar'){parar();ponerT(horaAct());const b=vista0();volar({...b,zoom:b.zoom+.9,latitude:40.36,longitude:-3.74})}else if(antes==='actuar'&&nv!=='actuar')ponerT(ahoraT());else pintar()}}
-document.querySelectorAll('.pestanas [data-tab]').forEach(b=>b.onclick=()=>irA(b.dataset.tab==='admin'?ultimaAdmin:b.dataset.tab));
-document.querySelectorAll('#subnav [data-vista]').forEach(b=>b.onclick=()=>irA(b.dataset.vista));
+document.querySelectorAll('.pestanas [data-tab]').forEach(b=>b.onclick=()=>irA(b.dataset.tab==='admin'?ultimaAdmin:b.dataset.tab==='info'?ultimaInfo:b.dataset.tab));
+document.querySelectorAll('#subnav [data-vista],#subnavInfo [data-vista]').forEach(b=>b.onclick=()=>irA(b.dataset.vista));
 $('inicio').onclick=()=>irA('emergencia');
 addEventListener('hashchange',ruta);
 
