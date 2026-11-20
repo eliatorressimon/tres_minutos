@@ -9,6 +9,8 @@ Se descargan con `src/01_descargar.py`. No se suben al repositorio.
 | `desfibriladores.csv` | Registro de desfibriladores externos fuera del ámbito sanitario, Portal de Datos Abiertos de la Comunidad de Madrid | Separador `;`, coordenadas con coma decimal. El horario (`horario_acceso`) es texto libre. |
 | `secciones_censales.zip` | Secciones censales, Portal de Datos Abiertos de la Comunidad de Madrid | Shapefile del seccionado de 2019 en ETRS89 / UTM 30N. En Collado Villalba, Majadahonda y Pinto el campo `CDTSECCION` viene vacío, por eso usamos `CDGSECCION`. |
 | `ine_31105.csv` | INE, Atlas de distribución de renta de los hogares, indicadores demográficos | Números con punto de miles y coma decimal. En secciones de pueblos muy pequeños el valor de 2019 es 0. |
+| `oficinas_farmacia.csv` | Oficinas de farmacia, Portal de Datos Abiertos de la Comunidad de Madrid | Trae el nombre del titular; no lo usamos ni lo guardamos en los elaborados. |
+| `gasolineras.json` | API REST de precios de carburantes del Ministerio para la Transición Ecológica (filtro Comunidad de Madrid, código 13) | Hay que pedirla con la cabecera `Accept: application/json`. Coordenadas con coma decimal; el horario es texto como `L-D: 24H`. |
 | `defunciones_causa.csv` | Defunciones por causa de muerte y sexo, Portal de Datos Abiertos de la Comunidad de Madrid | Solo se usa como contexto. |
 
 ## Elaborados (`datos/elaborados/`)
@@ -55,6 +57,21 @@ Una fila por municipio: población, % cubierto el martes a las 11:00 y el doming
 
 ### `nuevos_sitios.csv`
 Los diez puntos propuestos, en orden de elección, con los vecinos y mayores de 65 que añaden a la cobertura del domingo a las 3:00.
+
+### `sitios_reales.csv`
+Las diez mejores farmacias (martes 11:00) y las diez mejores gasolineras 24 h (domingo 3:00).
+
+| Columna | Significado |
+|---|---|
+| `orden` | Orden de elección dentro de su grupo |
+| `momento` | `martes 11:00` o `domingo 3:00` |
+| `tipo` | `Farmacia` o `Gasolinera 24 h` |
+| `nombre`, `direccion`, `municipio` | Rótulo y dirección del local |
+| `lon`, `lat` | Coordenadas en grados |
+| `vecinos_nuevos`, `mayores_65_nuevos` | Lo que añade a la cobertura, después de los anteriores |
+
+### `sitios_reales_resumen.csv`
+Qué pasaría si todos los locales de cada grupo tuvieran un aparato: número de locales, % cubierto antes y después y vecinos nuevos.
 
 ### `municipios.csv`
 Código, nombre y población de 2024 de los 179 municipios.

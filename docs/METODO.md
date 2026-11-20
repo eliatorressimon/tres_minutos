@@ -26,7 +26,16 @@ Una sección está cubierta a una hora si hay al menos un aparato abierto a meno
 
 ## 4. Sitios nuevos
 
-Problema de máxima cobertura: elegir k puntos que cubran a la mayor cantidad de gente. Lo resolvemos de forma voraz, eligiendo en cada paso el punto que más mayores de 65 años añade a la cobertura del domingo a las 3:00. El algoritmo voraz garantiza al menos un 1 − 1/e ≈ 63 % del óptimo. Los candidatos son, por ahora, los centros de las secciones.
+Problema de máxima cobertura: elegir k puntos que cubran a la mayor cantidad de gente. Lo resolvemos de forma voraz, eligiendo en cada paso el punto que más añade a la cobertura del domingo a las 3:00. Cada vecino cuenta uno y los mayores de 65 cuentan doble (peso = población + mayores de 65). El algoritmo voraz garantiza al menos un 1 − 1/e ≈ 63 % del óptimo. Los candidatos son los centros de las secciones: es el "sitio ideal", sin mirar si allí hay un local donde ponerlo.
+
+## 5. Sitios reales
+
+`src/07_sitios_reales.py` repite la elección voraz, con el mismo peso, pero solo entre locales que existen:
+
+- De día (martes a las 11:00): las 2.954 oficinas de farmacia del registro de la Comunidad.
+- De madrugada (domingo a las 3:00): las 550 gasolineras cuyo horario en la API del Ministerio es `L-D: 24H` o `L-D: 00:00-23:59`.
+
+Para cada grupo elegimos los diez mejores y calculamos también qué pasaría si todos los locales tuvieran uno. Con todas las farmacias, la cobertura del martes a las 11:00 pasaría del 45,2 % al 71,6 %. Con todas las gasolineras de 24 horas, la del domingo a las 3:00 solo pasaría del 25,9 % al 28,4 %.
 
 ## Por qué importa
 
@@ -36,6 +45,10 @@ Problema de máxima cobertura: elegir k puntos que cubran a la mayor cantidad de
 - Fuentes: informe EuReCa THREE (Consejo Europeo de Resucitación, casos de 2022, presentado en octubre de 2025).
 - Cuando un testigo conecta un desfibrilador antes de que llegue la ambulancia, la supervivencia mediana es del 32 % (revisión de 41 estudios: https://evidence.nihr.ac.uk/alert/use-of-public-defibrillators-linked-to-out-of-hospital-cardiac-arrest-survival/).
 - En 2024 murieron en la Comunidad de Madrid 11.747 personas por enfermedades del sistema circulatorio, la segunda causa de muerte después de los tumores (Portal de Datos Abiertos, defunciones por causa de muerte).
+
+## Ruta al más cercano
+
+La web busca los tres aparatos abiertos más cercanos a un punto (la ubicación del móvil o un punto del mapa), pide la ruta a pie de cada uno al servidor OSRM de routing.openstreetmap.de y se queda con la más corta. Calcula el tiempo de ida y vuelta corriendo (2,8 m/s) y andando (1,35 m/s). Si el servidor no responde, usa la línea recta.
 
 ## Límites
 
@@ -47,6 +60,5 @@ Problema de máxima cobertura: elegir k puntos que cubran a la mayor cantidad de
 ## Próximos pasos
 
 - Distancias andando con la red peatonal de OpenStreetMap.
-- Candidatos reales para los aparatos nuevos: farmacias de guardia, gasolineras con su horario, comisarías y estaciones.
-- Buscador del aparato abierto más cercano a una dirección.
+- Más candidatos reales: farmacias de guardia, comisarías y estaciones.
 - Simulador para que cada ayuntamiento pruebe dónde colocar los suyos.

@@ -5,6 +5,8 @@ Fuentes:
   - Secciones censales, shapefile (Portal de Datos Abiertos, Comunidad de Madrid)
   - Indicadores demográficos por sección censal, tabla 31105 del Atlas de distribución de renta (INE)
   - Defunciones por causa de muerte y sexo, municipios (Portal de Datos Abiertos, Comunidad de Madrid)
+  - Oficinas de farmacia (Portal de Datos Abiertos, Comunidad de Madrid)
+  - Gasolineras con su horario (Ministerio para la Transición Ecológica, servicio REST de precios de carburantes)
 """
 import requests
 from config import ORIGINALES, URLS
@@ -14,7 +16,7 @@ CKAN = 'https://datos.comunidad.madrid/api/3/action/package_show?id='
 
 def bajar(url, destino):
     print('Descargando', destino.name)
-    r = requests.get(url, timeout=120)
+    r = requests.get(url, timeout=120, headers={'Accept': 'application/json'})
     r.raise_for_status()
     destino.write_bytes(r.content)
     print('  ', round(len(r.content) / 1e6, 1), 'MB')

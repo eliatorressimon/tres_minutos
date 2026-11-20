@@ -12,7 +12,9 @@ Equipo: Elia Torres Simón y Clara Juarros.
 - De los 13.673 aparatos del registro, 2.206 tienen como horario "autobús urbano": van en autobuses de Madrid capital y no cubren un barrio fijo.
 - 4.543 aparatos no indican su horario o lo indican de una forma que no se puede interpretar.
 - 15 municipios no tienen ningún desfibrilador fijo registrado. El mayor es El Molar, con 9.805 habitantes.
-- Diez aparatos de 24 horas bien colocados darían cobertura de madrugada a unas 76.850 personas más, 23.360 de ellas mayores de 65 años.
+- Diez aparatos de 24 horas bien colocados darían cobertura de madrugada a unas 86.440 personas más, 20.820 de ellas mayores de 65 años.
+- Si cada una de las 2.954 farmacias de la Comunidad tuviera un desfibrilador, un martes a las 11:00 la cobertura pasaría del 45,2 % al 71,6 %: 1,84 millones de personas más.
+- Las gasolineras abiertas 24 horas sirven de poco de madrugada: aunque las 550 tuvieran uno, la cobertura del domingo a las 3:00 solo pasaría del 25,9 % al 28,4 %, porque están en carreteras y avenidas y no donde vive la gente.
 
 ## Estructura
 
@@ -42,6 +44,7 @@ python 02_limpiar_desfibriladores.py   # limpia el registro y traduce los horari
 python 03_poblacion_secciones.py       # centro y población de cada sección censal
 python 04_cobertura.py                 # cobertura en las 168 horas de la semana
 python 05_nuevos_sitios.py             # dónde poner los próximos aparatos
+python 07_sitios_reales.py             # las mejores farmacias y gasolineras 24 h
 python 06_exportar_web.py              # genera web/datos.json
 ```
 
@@ -72,6 +75,8 @@ firebase deploy --only hosting
 | [Desfibriladores externos fuera del ámbito sanitario](https://datos.comunidad.madrid/dataset/desfibriladores_externos_fuera_ambito_sanitario) | Comunidad de Madrid | Ubicación, tipo y horario de cada aparato |
 | [Secciones censales](https://datos.comunidad.madrid/dataset/secciones_censales) | Comunidad de Madrid | Dónde vive la gente |
 | [Defunciones por causa de muerte y sexo. Municipios](https://datos.comunidad.madrid/dataset/defunciones_por_causa_y_sexo) | Comunidad de Madrid | Contexto: muertes por enfermedades del sistema circulatorio |
+| [Oficinas de farmacia](https://datos.comunidad.madrid/dataset/oficinas_farmacia) | Comunidad de Madrid | Farmacias como sitios candidatos de día |
+| [Precios de carburantes en estaciones de servicio (API REST)](https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/help) | Ministerio para la Transición Ecológica | Gasolineras con horario de 24 horas como sitios candidatos de noche |
 | [Indicadores demográficos por sección censal (tabla 31105)](https://www.ine.es/jaxiT3/Tabla.htm?t=31105) | INE | Población y porcentaje de mayores de 65 por sección |
 
 Las cifras sobre paradas cardiacas (incidencia, tiempos de llegada de la ambulancia, supervivencia) vienen del informe EuReCa THREE del Consejo Europeo de Resucitación y de una revisión de 41 estudios sobre desfibriladores usados por testigos. Están citadas en `docs/METODO.md`.

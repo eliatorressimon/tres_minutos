@@ -21,6 +21,8 @@ cubiertas = np.load(ELABORADOS / 'cubiertas_por_hora.npy')
 semana = pd.read_csv(ELABORADOS / 'cobertura_semana.csv')
 muni = pd.read_csv(ELABORADOS / 'cobertura_municipios.csv', dtype={'cod_ine_muni': str})
 nuevos = pd.read_csv(ELABORADOS / 'nuevos_sitios.csv')
+reales = pd.read_csv(ELABORADOS / 'sitios_reales.csv').fillna('')
+si_todos = pd.read_csv(ELABORADOS / 'sitios_reales_resumen.csv')
 
 codigos = sorted(sec['cod_ine_muni'].unique())
 idx = {m: i for i, m in enumerate(codigos)}
@@ -92,6 +94,10 @@ datos = {
     'horarios_texto': textos,
     'nuevos': [{'lon': r.lon, 'lat': r.lat, 'muni': r.municipio, 'personas': int(r.vecinos_nuevos), 'mayores': int(r.mayores_65_nuevos)}
                for r in nuevos.itertuples()],
+    'reales': [{'momento': 'noche' if r.momento.startswith('domingo') else 'dia', 'tipo': r.tipo, 'nombre': r.nombre,
+                'direccion': r.direccion, 'muni': r.municipio, 'lon': round(r.lon, 5), 'lat': round(r.lat, 5),
+                'personas': int(r.vecinos_nuevos), 'mayores': int(r.mayores_65_nuevos)} for r in reales.itertuples()],
+    'si_todos': si_todos.to_dict('records'),
     'municipios': [[r.municipio, int(r.poblacion), r.pct_martes_11h, r.pct_domingo_3h, int(r.tiene_desfibrilador_fijo)]
                    for r in muni.itertuples()],
 }

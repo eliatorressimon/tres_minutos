@@ -15,4 +15,7 @@ URLS = {
     'secciones_censales.zip': 'https://datos.comunidad.madrid/dataset/2c176a23-a6cd-4c18-b5df-b32a3a3a1219/resource/b53b766c-e013-444c-b3b0-0992c4a0dbfc/download/558.zip',
     'ine_31105.csv': 'https://www.ine.es/jaxiT3/files/t/es/csv_bdsc/31105.csv',
     'defunciones_causa.csv': None,  # se busca por la API del portal (ver 01_descargar.py)
+    'oficinas_farmacia.csv': 'https://datos.comunidad.madrid/dataset/2d682b1d-e2e8-4c6f-b902-7a3f108e2fb9/resource/904a161b-f339-4296-be61-1ae914494c89/download/oficinas_farmacia.csv',
+    # gasolineras de la Comunidad de Madrid (código 13) con su horario, del Ministerio para la Transición Ecológica
+    'gasolineras.json': 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroCCAA/13',
 }

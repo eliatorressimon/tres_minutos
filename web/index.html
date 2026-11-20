@@ -226,6 +226,19 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 .ruta dd{margin:0}
 .aviso-112{margin-top:10px;font-size:12.5px;color:var(--gris-2)}
 .aviso-112 b{color:var(--rojo)}
+.modos{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:18px}
+.modos button{border:0;background:var(--hueso);padding:9px 8px;text-align:left;display:flex;flex-direction:column;gap:1px;transition:background .15s}
+.modos button b{font:700 13.5px/1.2 var(--sans)}
+.modos button span{font:500 11px var(--mono);color:var(--gris-2)}
+.modos button:hover{background:var(--rosa)}
+.modos button[aria-pressed=true]{background:var(--vino);color:#fff;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.modos button[aria-pressed=true] span{color:#e9b9c0}
+.hallazgo{margin-top:16px;padding:14px;background:#fff;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);box-shadow:inset 3px 0 0 var(--rojo)}
+.hallazgo .cifra{font-size:40px;color:var(--rojo)}
+.hallazgo p{font-size:14px;line-height:1.45;color:var(--gris-1);margin-top:6px}
+.hallazgo .flecha{display:flex;align-items:baseline;gap:10px;font:800 40px/.9 var(--sans);font-variation-settings:"wdth" 118;letter-spacing:-.03em}
+.hallazgo .flecha i{font-style:normal;font-size:22px;color:var(--gris-3)}
+.hallazgo .flecha .despues{color:var(--rojo)}
 /* mapa: leyenda, controles, monitor */
 .leyenda{position:absolute;top:14px;left:14px;z-index:3;background:rgba(255,255,255,.95);box-shadow:inset 3px 0 0 var(--rojo);clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);padding:10px 12px;font-size:12.5px;line-height:1.4;max-width:250px;animation:fundido .6s 1s both}
 .leyenda div{display:flex;gap:8px;align-items:center}
@@ -344,12 +357,18 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
     <section class="vista" id="v-municipio" hidden></section>
 
     <section class="vista" id="v-actuar" hidden>
-      <div class="antetitulo">Domingo, 3:00</div>
+      <div class="antetitulo" id="antAct">Domingo, 3:00</div>
       <h1 class="titular">Diez aparatos más, <span>bien puestos</span>.</h1>
-      <p class="entradilla">De madrugada casi tres de cada cuatro vecinos se quedan sin un desfibrilador abierto cerca. Estos son los diez sitios donde uno abierto <b>las 24 horas</b> cubriría a más gente. Los elegimos de uno en uno, después de colocar el anterior, y los mayores de 65 cuentan doble.</p>
-      <h2 class="seccion">Los diez primeros</h2>
+      <p class="entradilla">Hemos buscado dónde un aparato nuevo cubriría a más vecinos que hoy no tienen ninguno abierto cerca. Los elegimos de uno en uno, después de colocar el anterior, y los mayores de 65 cuentan doble. Puedes verlo de tres maneras:</p>
+      <div class="modos" id="modos">
+        <button data-modo="dia" aria-pressed="true"><b>Farmacias</b><span>de día</span></button>
+        <button data-modo="noche"><b>Gasolineras 24 h</b><span>de madrugada</span></button>
+        <button data-modo="ideal"><b>Sitio ideal</b><span>de madrugada</span></button>
+      </div>
+      <div class="hallazgo" id="hallazgo"></div>
+      <h2 class="seccion" id="tituloLista">Los diez primeros</h2>
       <ol class="sitios" id="sitios"></ol>
-      <div class="suma"><span class="cifra" id="sumaPers"></span><p>vecinos más tendrían uno a menos de 200 metros a cualquier hora. <b id="sumaMay"></b> tienen más de 65 años.</p></div>
+      <div class="suma"><span class="cifra" id="sumaPers"></span><p id="sumaTxt"></p></div>
       <div class="simulador">
         <div class="caja-cab"><span>PON TÚ UN APARATO</span><b id="simCab"></b></div>
         <div class="caja-cuerpo">
@@ -517,7 +536,7 @@ function capas(){
       getLineColor:[255,255,255,255],lineWidthMinPixels:1,getFillColor:nk>.5?[255,255,255,255]:[...NEGRO,255],updateTriggers:{getFillColor:nk>.5}})
   ];
   if(vista==='actuar'){
-    L.push(new deck.TextLayer({id:'nuevos',data:D.nuevos.map((d,i)=>({...d,i:i+1})),pickable:true,getPosition:d=>[d.lon,d.lat],getText:d=>String(d.i),getSize:14,
+    L.push(new deck.TextLayer({id:'nuevos',data:listaAct().map((d,i)=>({...d,i:i+1})),pickable:true,getPosition:d=>[d.lon,d.lat],getText:d=>String(d.i),getSize:14,
       getColor:[255,255,255,255],fontFamily:'JetBrains Mono, monospace',fontWeight:700,background:true,getBackgroundColor:[...NEGRO,255],backgroundPadding:[7,4],
       getBorderColor:[255,255,255,255],getBorderWidth:1.5,getPixelOffset:d=>[[0,0],[16,-8],[-14,10]][(d.i-1)%3],billboard:true,sizeUnits:'pixels',parameters:{depthTest:false,depthCompare:'always'}}));
   }
@@ -539,7 +558,7 @@ function alPasar(info){
   if(o!=null&&!poniendo){
     if(id==='col'){const s=D.secs[o];m=s[4];html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${fmt(s[2])}</b> vecinos sin aparato abierto a 200 m</span><em>${fmt(s[3])} con más de 65 años. ${corto(T)}</em>`}
     else if(id==='munis'){m=o.m;html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${p1(curvaM[m][T])}</b> de sus vecinos cubiertos</span><em>${corto(T)}. Pulsa para ver el municipio</em>`}
-    else if(id==='nuevos'){html=`<strong>${o.i}. ${nombreBonito(o.muni)}</strong><span><b>+${fmt(o.personas)}</b> vecinos cubiertos a cualquier hora</span><em>${fmt(o.mayores)} con más de 65 años</em>`}
+    else if(id==='nuevos'){html=`<strong>${o.i}. ${o.tipo?(o.tipo==='Farmacia'?'Farmacia':o.nombre)+', ':''}${nombreBonito(o.muni)}</strong><span><b>+${fmt(o.personas)}</b> vecinos cubiertos${o.direccion?'<br>'+o.direccion:''}</span><em>${fmt(o.mayores)} con más de 65 años</em>`}
   }
   if(html){eti.innerHTML=html;eti.hidden=false;const r=escena.getBoundingClientRect();const x=Math.min(r.left+info.x+16,innerWidth-eti.offsetWidth-8),y=Math.min(r.top+info.y+16,innerHeight-eti.offsetHeight-8);eti.style.transform=`translate(${x}px,${y}px)`}else eti.hidden=true;
   if(m!==hover){hover=m;pintar()}
@@ -656,7 +675,7 @@ function construirMunicipio(){
   const m=sel,n=nombreBonito(D.munis[m]),mun=D.municipios[m],suyos=D.dea.filter(d=>d[4]===m),h24=suyos.filter(d=>d[2]===0).length,v=veredicto(m);
   const porTipo=D.tipos.map((tp,k)=>({tp,n:suyos.filter(d=>d[5]===k).length,s:suyos.filter(d=>d[5]===k&&d[2]===0).length})).filter(x=>x.n).sort((a,b)=>b.n-a.n);
   const maxT=Math.max(1,...porTipo.map(x=>x.n));
-  const aqui=D.nuevos.map((d,i)=>({...d,i})).filter(d=>d.muni===D.munis[m]||d.muni===n);
+  const aqui=D.reales.map(d=>({...d,i:D.reales.filter(r=>r.momento===d.momento).indexOf(d)})).filter(d=>d.muni===D.munis[m]||d.muni===n);
   const orden=D.munis.map((_,k)=>k).sort((a,b)=>curvaM[b][147]-curvaM[a][147]);
   let hu='';for(let d=0;d<7;d++){hu+=`<span>${'LMXJVSD'[d]}</span>`;for(let h=0;h<24;h++){const t=d*24+h;hu+=`<button data-t="${t}" style="--c:${colorV(curvaM[m][t])}" title="${etiquetaT(t)}: ${p1(curvaM[m][t])}"></button>`}}
   $('v-municipio').innerHTML=`
@@ -672,13 +691,13 @@ function construirMunicipio(){
     <div class="escala">nadie cubierto <i></i> todos</div>
     ${porTipo.length?`<h2 class="seccion">Dónde están sus aparatos</h2><ul class="barras">${porTipo.map(x=>`<li><span>${x.tp}</span><span class="v">${x.n}</span><span class="barra"><i style="width:${100*x.s/maxT}%"></i><i style="width:${100*(x.n-x.s)/maxT}%"></i></span></li>`).join('')}</ul><p class="nota" style="margin-top:8px">Negro: abiertos las 24 horas. Gris: con horario o sin él.</p>`:''}
     <h2 class="seccion">Lo que más ayudaría</h2>
-    ${aqui.length?`<p class="nota" style="font-size:14px;color:var(--gris-1);margin-bottom:10px">De los diez mejores sitios de la Comunidad para un aparato abierto las 24 horas, ${aqui.length===1?'uno está':aqui.length+' están'} aquí.</p><ol class="sitios">${aqui.map(d=>sitioHTML(d,d.i)).join('')}</ol>`
+    ${aqui.length?`<p class="nota" style="font-size:14px;color:var(--gris-1);margin-bottom:10px">Entre las mejores farmacias y gasolineras de la Comunidad para un aparato nuevo, ${aqui.length===1?'una está':aqui.length+' están'} aquí.</p><ol class="sitios">${aqui.map(d=>sitioHTML(d,d.i).replace('class="sitio"','class="sitio" data-modo="'+d.momento+'"')).join('')}</ol>`
       :`<p class="nota" style="font-size:14px;color:var(--gris-1)">De madrugada está en el puesto <b>${orden.indexOf(m)+1}</b> de 179 por vecinos cubiertos. Prueba a poner un aparato aquí en <button class="enlace" id="irActuar">Dónde actuar</button>.</p>`}`;
   actualizarMunicipio();$('lado').scrollTop=0;
   $('volver').onclick=cerrarMunicipio;
   $('huella').onclick=e=>{const b=e.target.closest('[data-t]');if(b){parar();ponerT(+b.dataset.t)}};
   const ir=$('irActuar');if(ir)ir.onclick=()=>{sel=-1;irA('actuar')};
-  $('v-municipio').querySelectorAll('.sitio').forEach(b=>b.onclick=()=>{sel=-1;irASitio(+b.dataset.i)});
+  $('v-municipio').querySelectorAll('.sitio').forEach(b=>b.onclick=()=>{sel=-1;modoAct=b.dataset.modo;sitios();irASitio(+b.dataset.i)});
 }
 function actualizarMunicipio(){if(sel<0||!$('mPct'))return;const v=curvaM[sel][T];
   $('mT').textContent=DIAS[Math.floor(T/24)].toUpperCase()+' '+hh(T%24);$('mVivo').textContent=T===ahoraT()?'AHORA':'';
@@ -687,13 +706,29 @@ function actualizarMunicipio(){if(sel<0||!$('mPct'))return;const v=curvaM[sel][T
   $('v-municipio').querySelectorAll('.huella button').forEach(b=>b.classList.toggle('actual',+b.dataset.t===T))}
 
 /* ---------- dónde actuar ---------- */
-function sitioHTML(d,i){return `<li><button class="sitio" data-i="${i}"><span class="num">${i+1}</span><span><strong>${nombreBonito(d.muni)}</strong><small>abierto las 24 horas</small></span><span class="mas">+${fmt(d.personas)}<small>vecinos</small></span></button></li>`}
+let modoAct='dia';
+const listaAct=()=>modoAct==='ideal'?D.nuevos:D.reales.filter(r=>r.momento===modoAct);
+const horaAct=()=>modoAct==='dia'?35:147;
+function sitioHTML(d,i){const sub=d.tipo?(d.direccion||d.tipo):'punto del mapa, abierto las 24 horas';
+  return `<li><button class="sitio" data-i="${i}"><span class="num">${i+1}</span><span><strong>${d.tipo&&d.tipo!=='Farmacia'?d.nombre+', ':''}${nombreBonito(d.muni)}</strong><small>${sub}</small></span><span class="mas">+${fmt(d.personas)}<small>vecinos</small></span></button></li>`}
 function sitios(){
-  $('sitios').innerHTML=D.nuevos.map(sitioHTML).join('');
-  $('sitios').onclick=e=>{const b=e.target.closest('[data-i]');if(b)irASitio(+b.dataset.i)};
-  $('sumaPers').textContent='+'+fmt(D.nuevos.reduce((a,d)=>a+d.personas,0));$('sumaMay').textContent=fmt(D.nuevos.reduce((a,d)=>a+d.mayores,0));
+  const L=listaAct(),pers=L.reduce((a,d)=>a+d.personas,0),may=L.reduce((a,d)=>a+d.mayores,0);
+  document.querySelectorAll('#modos button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.modo===modoAct));
+  $('antAct').textContent=modoAct==='dia'?'Martes, 11:00':'Domingo, 3:00';
+  $('tituloLista').textContent=modoAct==='dia'?'Las diez mejores farmacias':modoAct==='noche'?'Las diez mejores gasolineras 24 h':'Los diez mejores puntos';
+  $('sitios').innerHTML=L.map(sitioHTML).join('');
+  $('sumaPers').textContent='+'+fmt(pers);
+  $('sumaTxt').innerHTML=modoAct==='dia'?`vecinos más tendrían uno a menos de 200 metros un martes por la mañana. <b>${fmt(may)}</b> tienen más de 65 años.`
+    :`vecinos más tendrían uno a menos de 200 metros de madrugada. <b>${fmt(may)}</b> tienen más de 65 años.`;
+  const st=D.si_todos||[],g=st.find(x=>/gasolineras/.test(x.caso)),f=st.find(x=>/farmacias/.test(x.caso));
+  const ideal=D.nuevos.reduce((a,d)=>a+d.personas,0),gas=D.reales.filter(r=>r.momento==='noche').reduce((a,d)=>a+d.personas,0);
+  $('hallazgo').innerHTML=modoAct==='dia'&&f?`<div class="flecha"><span>${Math.round(f.pct_antes)} %</span><i>→</i><span class="despues">${Math.round(f.pct_despues)} %</span></div><p>Si <b>cada una de las ${fmt(f.locales)} farmacias</b> de la Comunidad tuviera un desfibrilador, un martes a las 11 la cobertura pasaría del ${p1(f.pct_antes)} al ${p1(f.pct_despues)}: <b>${fmt(f.vecinos_nuevos)} vecinos más</b>. Están en todos los barrios y abren de día.</p>`
+    :modoAct==='noche'&&g?`<div class="flecha"><span>${Math.round(g.pct_antes)} %</span><i>→</i><span class="despues">${Math.round(g.pct_despues)} %</span></div><p>Aunque <b>las ${fmt(g.locales)} gasolineras</b> abiertas las 24 horas tuvieran uno, de madrugada solo pasaríamos del ${p1(g.pct_antes)} al ${p1(g.pct_despues)}. Están en carreteras y avenidas, no donde vive la gente. Las diez mejores suman ${fmt(gas)} vecinos.</p>`
+    :`<div class="flecha"><span class="despues">+${fmt(ideal)}</span></div><p>Es el máximo que se puede ganar con diez aparatos abiertos las 24 horas, poniéndolos en el mejor punto posible, haya allí un local o no. Sirve para comparar: las diez mejores gasolineras ganan ${fmt(gas)}.</p>`;
 }
-function irASitio(i){const d=D.nuevos[i];if(vista!=='actuar')irA('actuar');if(T!==147)ponerT(147);volar({longitude:d.lon,latitude:d.lat,zoom:14,pitch:en3d?50:0})}
+$('modos').onclick=e=>{const b=e.target.closest('[data-modo]');if(!b)return;modoAct=b.dataset.modo;sitios();parar();ponerT(horaAct());const v=vista0();volar({...v,zoom:v.zoom+.9,latitude:40.38,longitude:-3.72})};
+$('sitios').onclick=e=>{const b=e.target.closest('[data-i]');if(b)irASitio(+b.dataset.i)};
+function irASitio(i){const d=listaAct()[i];if(vista!=='actuar')irA('actuar');if(T!==horaAct())ponerT(horaAct());volar({longitude:d.lon,latitude:d.lat,zoom:14.5,pitch:en3d?50:0})}
 function ponerAparato(c){
   const S=D.secs,gan=[];for(let i=0;i<S.length;i++)if(!extra.has(i)&&metros(S[i],c)<=200)gan.push(i);
   const g=gan.filter(i=>!cubierta(i,T)).reduce((a,i)=>a+S[i][2],0);
@@ -749,7 +784,7 @@ function mostrar(v){vista=v;
   $('leyNuevo').hidden=v!=='actuar';if(v!=='actuar'&&poniendo)$('btnPoner').click();if(v==='ahora')rankings()}
 function irA(v){if(location.hash!=='#'+v)location.hash=v;else ruta()}
 function ruta(){const v=(location.hash||'#ahora').slice(1),nv=['ahora','actuar','porque','metodo'].includes(v)?v:'ahora',antes=vista;sel=-1;mostrar(nv);
-  if(D){if(nv==='actuar'&&antes!=='actuar'){ponerT(147);const b=vista0();volar({...b,zoom:b.zoom+.9,latitude:40.36,longitude:-3.74})}else pintar()}}
+  if(D){if(nv==='actuar'&&antes!=='actuar'){ponerT(horaAct());const b=vista0();volar({...b,zoom:b.zoom+.9,latitude:40.36,longitude:-3.74})}else pintar()}}
 document.querySelectorAll('.pestanas [data-vista]').forEach(b=>b.onclick=()=>irA(b.dataset.vista));
 $('inicio').onclick=()=>{irA('ahora');volar(vista0())};
 addEventListener('hashchange',ruta);
