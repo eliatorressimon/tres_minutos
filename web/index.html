@@ -576,7 +576,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
           <li><b>La tabla de "Tu calle":</b> a cuántos metros andando queda el más cercano a tres horas distintas. Verde si está a 200 metros o menos, rojo si está lejos.</li>
           <li>De noche el mapa se oscurece para que se note la hora.</li></ul></div></details>
         <details><summary>¿De dónde salen estos datos?</summary><div>
-          <p>Del registro oficial de desfibriladores de la Comunidad de Madrid, con su horario, la población del INE y las calles de OpenStreetMap. Lo contamos en <a href="#metodo">Cómo lo calculamos</a>.</p>
+          <p>Del registro oficial de desfibriladores de la Comunidad de Madrid, con su horario, la población del INE y las calles de OpenStreetMap. Lo contamos en <a href="#metodo">Administraciones, Método</a>.</p>
           <p>Si un aparato no tiene un horario claro, no lo contamos como abierto. Puede que haya alguno más de los que mostramos.</p></div></details>
       </div>
       <p class="nota" style="margin-top:16px">Herramienta no oficial, sin relación con la Comunidad de Madrid. Ante una emergencia, llama siempre al 112.</p>
@@ -619,7 +619,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <li><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b>13.673</b>, todos con coordenadas. Quitamos los <b>2.206</b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
         <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de 2.331 formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Lo convertimos en una tabla de 7 días por 24 horas. <b>3.226</b> abren siempre y <b>4.543</b> no tienen un horario que se pueda leer, así que no los contamos como abiertos.</p></div></li>
         <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a 200 metros o menos de su centro, andando por la calle. Lo calculamos para las 168 horas de la semana.</p></div></li>
-        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a menos de 300 metros pedimos la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y le sumamos lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b>20,6 %</b> de los vecinos tiene uno abierto (en línea recta salía el 45,6 %) y un domingo a las 3, el <b>9,6 %</b> (frente al 25,9 %). Por eso toda la web, también "Dónde actuar", mide andando.</p></div></li>
+        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a menos de 300 metros pedimos la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y le sumamos lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b>20,6 %</b> de los vecinos tiene uno abierto (en línea recta salía el 45,6 %) y un domingo a las 3, el <b>9,6 %</b> (frente al 25,9 %). Por eso toda la web, también "Dónde poner más", mide andando.</p></div></li>
         <li><div><h4>Dónde poner los siguientes</h4><p>Elegimos de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y repetimos con lo que queda. De día buscamos entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas o en cualquier punto del mapa.</p></div></li>
       </ol>
       </div></details>
@@ -959,7 +959,7 @@ function construirMunicipio(){
     ${porTipo.length?`<h2 class="seccion">Dónde están sus aparatos</h2><ul class="barras">${porTipo.map(x=>`<li><span>${x.tp}</span><span class="v">${x.n}</span><span class="barra"><i style="width:${100*x.s/maxT}%"></i><i style="width:${100*(x.n-x.s)/maxT}%"></i></span></li>`).join('')}</ul><p class="nota" style="margin-top:8px">Negro: abiertos las 24 horas. Gris: con horario o sin él.</p>`:''}
     <h2 class="seccion">Lo que más ayudaría</h2>
     ${aqui.length?`<p class="nota" style="font-size:14px;color:var(--gris-1);margin-bottom:10px">Entre las mejores farmacias y gasolineras de la Comunidad para un aparato nuevo, ${aqui.length===1?'una está':aqui.length+' están'} aquí.</p><ol class="sitios">${aqui.map(d=>sitioHTML(d,d.i).replace('class="sitio"','class="sitio" data-modo="'+d.momento+'"')).join('')}</ol>`
-      :`<p class="nota" style="font-size:14px;color:var(--gris-1)">De madrugada está en el puesto <b>${orden.indexOf(m)+1}</b> de 179 por vecinos cubiertos. Prueba a poner un aparato aquí en <button class="enlace" id="irActuar">Dónde actuar</button>.</p>`}`;
+      :`<p class="nota" style="font-size:14px;color:var(--gris-1)">De madrugada está en el puesto <b>${orden.indexOf(m)+1}</b> de 179 por vecinos cubiertos. Prueba a poner un aparato aquí en <button class="enlace" id="irActuar">Dónde poner más</button>.</p>`}`;
   actualizarMunicipio();$('lado').scrollTop=0;
   $('volver').onclick=cerrarMunicipio;
   $('huella').onclick=e=>{const b=e.target.closest('[data-t]');if(b){parar();ponerT(+b.dataset.t)}};
