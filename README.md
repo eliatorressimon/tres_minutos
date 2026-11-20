@@ -9,7 +9,7 @@ Equipo: Elia Torres Simón y Clara Juarros.
 ## Qué hemos encontrado
 
 - Medido andando por la calle, que es como se llega de verdad, un martes a las 11:00 solo el 20,6 % de la población tiene un desfibrilador abierto a 200 metros o menos. Un domingo a las 3:00, el 9,6 %. Con 300 m andando, el 39,0 % y el 22,3 %.
-- En línea recta saldría bastante más: el 45,5 % y el 25,9 %. La distancia andando es, en la mediana, 1,5 veces la recta.
+- En línea recta saldría bastante más: el 45,6 % y el 25,9 %. La distancia andando es, en la mediana, 1,5 veces la recta.
 - De los 13.673 aparatos del registro, 2.206 tienen como horario "autobús urbano": van en autobuses de Madrid capital y no cubren un barrio fijo.
 - 4.543 aparatos no indican su horario o lo indican de una forma que no se puede interpretar.
 - 15 municipios no tienen ningún desfibrilador fijo registrado. El mayor es El Molar, con 9.805 habitantes.

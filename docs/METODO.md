@@ -9,7 +9,7 @@ El registro guarda el horario de cada desfibrilador como texto libre: "L-V 8-20 
 - "Horario de oficina", "laboral", "comercial": de lunes a viernes de 9:00 a 18:00.
 - Rangos de horas con o sin días: se asignan a los días que se nombran, ya sean rangos ("L-V", "martes a sábado") o días sueltos con su abreviatura ("S 9-14", "D: 10-15", "sábados"). Si no se nombra ninguno y solo hay un rango, se entiende todos los días.
 
-Revisando la tabla de "L-V 8:00-15:00 / S 9-14" vimos que el sábado salía vacío: las abreviaturas de una letra sueltas ("S", "D") no se reconocían, y "S y D" se partía en dos. Al arreglarlo cambiaron las tablas de 273 aparatos, sobre todo en fin de semana. La cobertura del martes a las 11:00 en línea recta pasó del 45,2 % al 45,5 %, y la del domingo a las 3:00 no cambió.
+Revisando la tabla de "L-V 8:00-15:00 / S 9-14" vimos que el sábado salía vacío: las abreviaturas de una letra sueltas ("S", "D") no se reconocían, y "S y D" se partía en dos. Al arreglarlo cambiaron las tablas de 273 aparatos, sobre todo en fin de semana. La cobertura del martes a las 11:00 en línea recta subió unas décimas, hasta el 45,6 %, y la del domingo a las 3:00 no cambió.
 - "Autobús urbano" o "durante el servicio de transporte": aparato móvil, se deja fuera.
 - "Según eventos", "partidos", "competiciones": solo abierto en actos, no cuenta.
 - Vacío o ilegible: desconocido, no cuenta como abierto.
@@ -49,7 +49,7 @@ Solo 4.878 parejas quedan a 300 m o menos andando. La mediana de la distancia an
 
 | | 100 m | 200 m | 300 m |
 |---|---|---|---|
-| Martes 11:00, línea recta | 17,8 % | 45,5 % | 66,3 % |
+| Martes 11:00, línea recta | 17,7 % | 45,6 % | 66,3 % |
 | Martes 11:00, andando | 5,0 % | 20,6 % | 39,0 % |
 | Domingo 3:00, línea recta | 7,9 % | 25,9 % | 42,7 % |
 | Domingo 3:00, andando | 2,0 % | 9,6 % | 22,3 % |
