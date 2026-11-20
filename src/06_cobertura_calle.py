@@ -1,9 +1,10 @@
-"""Paso 9. Cobertura con 100, 200 y 300 metros, en línea recta y andando por la calle.
+"""Paso 6. Cobertura con 100, 200 y 300 metros, en línea recta y andando por la calle.
 
 Repite el cálculo del paso 4 para seis variantes: tres distancias y dos formas de medir. Andando,
 una sección está cubierta si algún aparato abierto queda a esa distancia o menos por la red de calles
-(paso 8). Así se ve cuánto cambia el resultado según lo exigentes que seamos.
-Salidas: datos/elaborados/cobertura_variantes.csv y web/variantes.json (la web la carga al cambiar el selector)
+(paso 5). Así se ve cuánto cambia el resultado según lo exigentes que seamos.
+Salidas: datos/elaborados/cobertura_variantes.csv, datos/elaborados/cubiertas_andando.npy (200 m andando,
+lo usan los pasos 7 y 8) y web/variantes.json (la web la carga al empezar)
 """
 import base64
 import json
@@ -59,6 +60,8 @@ for medida, funcion in [('recta', cerca_recta), ('andando', cerca_andando)]:
                     'pct_poblacion_fuera_capital': round(100 * pob[c & fuera].sum() / pob[fuera].sum(), 1),
                     'pct_mayores_65': round(100 * may[c].sum() / may.sum(), 1)}
             filas.append(fila)
+        if (medida, r) == ('andando', 200):
+            np.save(ELABORADOS / 'cubiertas_andando.npy', cubiertas)
         if (medida, r) != ('recta', 200):   # esa ya va en datos.json
             web[f'{medida}-{r}'] = {'cov': [base64.b64encode(np.packbits(c).tobytes()).decode() for c in cubiertas]}
         print(f'{medida:8} {r} m   martes 11:00 {filas[-168 + 35]["pct_poblacion"]:5.1f} %   domingo 3:00 {filas[-168 + 147]["pct_poblacion"]:5.1f} %')

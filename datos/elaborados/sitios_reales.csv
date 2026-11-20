@@ -1,21 +1,21 @@
 orden,momento,tipo,nombre,direccion,municipio,lon,lat,vecinos_nuevos,mayores_65_nuevos
-1,domingo 3:00,Gasolinera 24 h,Galp,"Calle Bravo Murillo, 229",Madrid,-3.701833,40.45725,6002,1169
-2,domingo 3:00,Gasolinera 24 h,Repsol,"Avenida Canillejas A Vicalvaro, 147",Madrid,-3.611222,40.424806,5473,1182
-3,domingo 3:00,Gasolinera 24 h,Repsol,"Cl Gl.Corregidor Sancho De Cord, S.",Madrid,-3.652028,40.407389,4881,1633
-4,domingo 3:00,Gasolinera 24 h,Ballenoil,"Calle Ofelia Nieto, 65",Madrid,-3.709222,40.461444,5072,977
-5,domingo 3:00,Gasolinera 24 h,Repsol,"Vía Complutense, 41",Alcalá de Henares,-3.36225,40.486278,4689,1340
-6,domingo 3:00,Gasolinera 24 h,Bp San Fernando - La Presa,"Calle La Presa, S/N",San Fernando de Henares,-3.528917,40.430556,4687,713
-7,domingo 3:00,Gasolinera 24 h,Bp,"Avenida Fuenlabrada, 16",Leganés,-3.761944,40.332306,3728,1004
-8,domingo 3:00,Gasolinera 24 h,Repsol,"Avenida Oporto, Sn",Madrid,-3.730083,40.387417,3635,675
-9,domingo 3:00,Gasolinera 24 h,Star Petroleum,"Calle Seseña, 40",Madrid,-3.764917,40.397444,3297,783
-10,domingo 3:00,Gasolinera 24 h,Ballenoil,"Calle Antonio Machado, S/N",Madrid,-3.721222,40.464306,3067,884
-1,martes 11:00,Farmacia,Farmacia,Calle Castellón de la Plana 10,Getafe,-3.71774408198662,40.312213889645015,8206,2501
-2,martes 11:00,Farmacia,Farmacia,Calle de Almonacid 38,Madrid,-3.6600624067185117,40.39677412363223,8945,1509
-3,martes 11:00,Farmacia,Farmacia,Plaza de Santo Domingo 9,Alcorcón,-3.8270007071686334,40.34454867429936,8079,2080
-4,martes 11:00,Farmacia,Farmacia,Calle de Dolores Barranco 44,Madrid,-3.706091513391317,40.38332759563035,8659,1148
-5,martes 11:00,Farmacia,Farmacia,Calle de la Macarena 1,Parla,-3.7667426707294642,40.23920774355155,8437,1312
-6,martes 11:00,Farmacia,Farmacia,Calle del Avefría 32,Madrid,-3.7315697126345686,40.383686248415174,8301,1290
-7,martes 11:00,Farmacia,Farmacia,Calle de los Hermanos Pinzón 2,Móstoles,-3.855649205485524,40.32264218370715,7161,1690
-8,martes 11:00,Farmacia,Farmacia,Avda de Nuestra Señora de Valvanera 100,Madrid,-3.738134273872657,40.39166963675457,7276,1498
-9,martes 11:00,Farmacia,Farmacia,Calle Moraña 23,Leganés,-3.7553631561445617,40.33223977948491,6551,2123
-10,martes 11:00,Farmacia,Farmacia,Calle Olimpiada 1,Alcorcón,-3.8168394799057928,40.34489151692474,6318,2336
+1,domingo 3:00,Gasolinera 24 h,Galp,"Calle Bravo Murillo, 229",Madrid,-3.701833,40.45725,4631,874
+2,domingo 3:00,Gasolinera 24 h,Ballenoil,"Carretera M-233 Km. 6,800",Villalbilla,-3.280639,40.434417,3686,254
+3,domingo 3:00,Gasolinera 24 h,Repsol,"Avenida Oporto, Sn",Madrid,-3.730083,40.387417,3247,607
+4,domingo 3:00,Gasolinera 24 h,Ballenoil,"Avenida Nuestra Sra. De Fatima, 22",Madrid,-3.745806,40.385278,2786,563
+5,domingo 3:00,Gasolinera 24 h,Repsol,"Cl Paseo Acacias, 8",Madrid,-3.705389,40.404417,2237,452
+6,domingo 3:00,Gasolinera 24 h,Alcampo Fuenlabrada,"Cc. Loranca Alcampo Fuenlabrada (Av. Pablo Iglesias, S/N, Ciudad Loranca)",Fuenlabrada,-3.830417,40.301917,2518,156
+7,domingo 3:00,Gasolinera 24 h,Ballenoil,"Avenida Andalucia, 7",Valdemoro,-3.6735,40.1895,2363,269
+8,domingo 3:00,Gasolinera 24 h,Repsol,"Cl Mateo Inurria, 4",Madrid,-3.68575,40.466667,1968,474
+9,domingo 3:00,Gasolinera 24 h,Shell,"Calle Alberto Aguilera, 18",Madrid,-3.7085,40.43,1925,478
+10,domingo 3:00,Gasolinera 24 h,Bp Maria,"Avenida Quitapesares, 1",Villaviciosa de Odón,-3.902889,40.350389,1840,375
+1,martes 11:00,Farmacia,Farmacia,Calle de Marcenado 29,Madrid,-3.673560968960819,40.447485033245364,5232,1090
+2,martes 11:00,Farmacia,Farmacia,Calle Lope de Rueda 1,Alcalá de Henares,-3.35833013514417,40.48920952219662,4988,1296
+3,martes 11:00,Farmacia,Farmacia,Calle de San Nicolás 7,San Sebastián de los Reyes,-3.6312435220128507,40.54985683190042,4896,1023
+4,martes 11:00,Farmacia,Farmacia,Calle Valdemoro 12,Getafe,-3.732024345326312,40.30128669765663,4488,1210
+5,martes 11:00,Farmacia,Farmacia,Calle de La Bañeza 3,Madrid,-3.712041220966706,40.476471403877966,4478,1085
+6,martes 11:00,Farmacia,Farmacia,Calle de Portugalete 17,Madrid,-3.634865577108484,40.42676577614932,4501,961
+7,martes 11:00,Farmacia,Farmacia,Calle del Matadero 3,Alcorcón,-3.8268144711612297,40.34636426032745,4252,1156
+8,martes 11:00,Farmacia,Farmacia,Calle de Antonio Salvador 64,Madrid,-3.703684489763591,40.385080302172355,4721,662
+9,martes 11:00,Farmacia,Farmacia,Psaje de Colón 2,Valdemoro,-3.6747996578810866,40.19170343783978,4619,751
+10,martes 11:00,Farmacia,Farmacia,Calle de Miramadrid 18,Madrid,-3.7070232425566187,40.38141945221145,4683,674

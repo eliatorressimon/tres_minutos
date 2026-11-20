@@ -1,4 +1,4 @@
-"""Paso 6. Prepara web/datos.json, el único fichero que lee la web.
+"""Paso 9. Prepara web/datos.json, el único fichero que lee la web.
 
 Incluye: centros de sección con población, desfibriladores fijos con su horario, municipio y tipo de sitio, qué secciones están
 cubiertas en cada una de las 168 horas (comprimido en bits), la curva de la semana, los polígonos

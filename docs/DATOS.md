@@ -56,7 +56,7 @@ Una fila por hora de la semana (168).
 Una fila por municipio: población, % cubierto el martes a las 11:00 y el domingo a las 3:00, y si tiene algún desfibrilador fijo.
 
 ### `nuevos_sitios.csv`
-Los diez puntos propuestos, en orden de elección, con los vecinos y mayores de 65 que añaden a la cobertura del domingo a las 3:00.
+Los diez puntos propuestos, en orden de elección, con los vecinos y mayores de 65 que añaden a la cobertura andando del domingo a las 3:00.
 
 ### `sitios_reales.csv`
 Las diez mejores farmacias (martes 11:00) y las diez mejores gasolineras 24 h (domingo 3:00).
@@ -85,6 +85,19 @@ Una fila por pareja de sección y aparato que están a 300 m o menos andando (4.
 
 ### `cobertura_variantes.csv`
 Una fila por hora de la semana para cada forma de medir (`medida`: `recta` o `andando`) y cada distancia (`radio_m`: 100, 200 o 300), con las mismas columnas de porcentaje que `cobertura_semana.csv`.
+
+### `distancias_candidatos.csv`
+Una fila por pareja de sitio candidato y sección que están a 200 m o menos andando (7.342). La usan los pasos 7 y 8.
+
+| Columna | Significado |
+|---|---|
+| `tipo` | `Sitio ideal` (el centro de una sección), `Farmacia` o `Gasolinera 24 h` |
+| `id` | Código de la sección (sitio ideal), número de la farmacia en el registro o `lon,lat` de la gasolinera |
+| `cod_ine_seccion` | Sección que quedaría cubierta |
+| `metros_andando` | Distancia a pie, calculada igual que en `distancias_calle.csv` |
+
+### `cubiertas_andando.npy`
+Matriz de 168 × 4.417 (horas de la semana por secciones) con `True` si la sección está cubierta a 200 m o menos andando. La genera el paso 6 y parten de ella los pasos 7 y 8. No se sube al repositorio.
 
 ### `municipios.csv`
 Código, nombre y población de 2024 de los 179 municipios.

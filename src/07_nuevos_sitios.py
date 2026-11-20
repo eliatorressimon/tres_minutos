@@ -1,20 +1,22 @@
-"""Paso 5. Dónde poner los próximos aparatos de 24 horas.
+"""Paso 7. Dónde poner los próximos aparatos de 24 horas, si pudiéramos elegir cualquier sitio.
 
 Problema de máxima cobertura resuelto de forma voraz: en cada paso elegimos el centro de sección que,
 con un aparato 24 h, añade más vecinos cubiertos el domingo a las 3:00, contando dos veces a los mayores de 65.
+Una sección queda cubierta si está a RADIO_M metros o menos andando por la calle (paso 5).
 (La versión voraz garantiza al menos un 63 % del óptimo; para diez aparatos es más que suficiente.)
 Salida: datos/elaborados/nuevos_sitios.csv
 """
 import numpy as np
 import pandas as pd
-from scipy.spatial import cKDTree
-from config import ELABORADOS, RADIO_M, NUEVOS_APARATOS
+from config import ELABORADOS, NUEVOS_APARATOS
+from candidatos import secciones_a_pie
 
 sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
-cubiertas = np.load(ELABORADOS / 'cubiertas_por_hora.npy')[147].copy()   # domingo 3:00
+cubiertas = np.load(ELABORADOS / 'cubiertas_andando.npy')[147].copy()   # domingo 3:00, andando
 p65, pob = sec['mayores_65'].fillna(0).values, sec['poblacion'].fillna(0).values
 peso = pob + p65   # los mayores de 65 cuentan doble
-candidatos = cKDTree(sec[['x', 'y']].values).query_ball_point(sec[['x', 'y']].values, RADIO_M)
+a_pie = secciones_a_pie('Sitio ideal', sec)
+candidatos = [a_pie.get(c, []) for c in sec['cod_ine_seccion']]
 
 elegidos = []
 for k in range(NUEVOS_APARATOS):

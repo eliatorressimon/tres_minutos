@@ -8,14 +8,16 @@ Equipo: Elia Torres Simón y Clara Juarros.
 
 ## Qué hemos encontrado
 
-- Un martes a las 11:00, el 45,2 % de la población tiene un desfibrilador abierto a menos de 200 m en línea recta. Un domingo a las 3:00, el 25,9 %. Fuera de Madrid capital, la cifra pasa del 30,7 % al 13,4 %.
-- Medido andando por la calle, la cobertura se queda en menos de la mitad: el 20,5 % un martes a las 11:00 y el 9,6 % un domingo a las 3:00. Con 300 m andando, el 38,8 % y el 22,3 %.
+- Medido andando por la calle, que es como se llega de verdad, un martes a las 11:00 solo el 20,5 % de la población tiene un desfibrilador abierto a 200 metros o menos. Un domingo a las 3:00, el 9,6 %. Con 300 m andando, el 38,8 % y el 22,3 %.
+- En línea recta saldría bastante más: el 45,2 % y el 25,9 %. La distancia andando es, en la mediana, 1,5 veces la recta.
 - De los 13.673 aparatos del registro, 2.206 tienen como horario "autobús urbano": van en autobuses de Madrid capital y no cubren un barrio fijo.
 - 4.543 aparatos no indican su horario o lo indican de una forma que no se puede interpretar.
 - 15 municipios no tienen ningún desfibrilador fijo registrado. El mayor es El Molar, con 9.805 habitantes.
-- Diez aparatos de 24 horas bien colocados darían cobertura de madrugada a unas 86.440 personas más, 20.820 de ellas mayores de 65 años.
-- Si cada una de las 2.954 farmacias de la Comunidad tuviera un desfibrilador, un martes a las 11:00 la cobertura pasaría del 45,2 % al 71,6 %: 1,84 millones de personas más.
-- Las gasolineras abiertas 24 horas sirven de poco de madrugada: aunque las 550 tuvieran uno, la cobertura del domingo a las 3:00 solo pasaría del 25,9 % al 28,4 %, porque están en carreteras y avenidas y no donde vive la gente.
+- Si cada una de las 2.954 farmacias de la Comunidad tuviera un desfibrilador, un martes a las 11:00 la cobertura andando pasaría del 20,5 % al 45,6 %: 1,76 millones de personas más. Las diez mejores ya suman 46.858.
+- Las gasolineras abiertas 24 horas sirven de poco de madrugada: aunque las 550 tuvieran uno, la cobertura del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %, porque están en carreteras y avenidas y no donde vive la gente.
+- Diez aparatos de 24 horas en el mejor sitio posible darían cobertura de madrugada a 54.195 personas más, 9.892 de ellas mayores de 65 años.
+
+Por qué importan tres minutos y 200 metros, con todas las fuentes: [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md).
 
 ## Estructura
 
@@ -28,6 +30,7 @@ web/              la web: index.html, datos.json y variantes.json (otras distanc
 docs/
   DATOS.md        fuentes y diccionario de cada fichero elaborado
   METODO.md       cómo se calcula todo y qué límites tiene
+  POR_QUE_IMPORTA.md  contexto médico y legal, con fuentes
 ```
 
 ## Cómo reproducirlo
@@ -44,11 +47,11 @@ python 01_descargar.py                 # baja los datos originales
 python 02_limpiar_desfibriladores.py   # limpia el registro y traduce los horarios
 python 03_poblacion_secciones.py       # centro y población de cada sección censal
 python 04_cobertura.py                 # cobertura en las 168 horas de la semana
-python 05_nuevos_sitios.py             # dónde poner los próximos aparatos
-python 07_sitios_reales.py             # las mejores farmacias y gasolineras 24 h
-python 08_distancias_calle.py          # distancias andando por la calle (pide unas 90 rutas a OSRM)
-python 09_cobertura_calle.py           # cobertura con 100, 200 y 300 m, en línea recta y andando
-python 06_exportar_web.py              # genera web/datos.json
+python 05_distancias_calle.py          # distancias andando por la calle (unas 210 peticiones a OSRM)
+python 06_cobertura_calle.py           # cobertura con 100, 200 y 300 m, en línea recta y andando
+python 07_nuevos_sitios.py             # los diez mejores sitios posibles para aparatos de 24 h
+python 08_sitios_reales.py             # las diez mejores farmacias y gasolineras 24 h
+python 09_exportar_web.py              # genera web/datos.json
 ```
 
 Para ver la web en local:
