@@ -210,6 +210,22 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
 .equipo strong{display:block;font:700 14.5px/1.25 var(--sans)}
 .equipo span{font-size:12.5px;color:var(--gris-2)}
 
+.cercano{margin-top:18px;background:#fff;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);box-shadow:inset 3px 0 0 var(--rojo);padding:14px}
+.cercano h3{font:750 16px/1.25 var(--sans);display:flex;align-items:center;gap:8px}
+.cercano h3::before{content:"";width:12px;height:12px;background:var(--rojo);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.cercano>p{font-size:13.5px;color:var(--gris-1);margin:4px 0 10px;line-height:1.45}
+.cercano .acciones{margin-top:0;flex-wrap:wrap}
+.ruta{margin-top:12px;animation:aparecer .35s var(--entrar)}
+.ruta-cifras{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.ruta-cifras div{background:var(--hueso);padding:8px 10px}
+.ruta-cifras strong{display:block;font:750 20px/1.1 var(--sans);font-variation-settings:"wdth" 110}
+.ruta-cifras span{font-size:11.5px;color:var(--gris-2)}
+.ruta-veredicto{font:700 15px/1.3 var(--sans);padding:8px 10px;border-left:4px solid var(--c);background:color-mix(in srgb,var(--c) 8%,#fff)}
+.ruta dl{margin:10px 0 0;font-size:13px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.ruta dt{color:var(--gris-2)}
+.ruta dd{margin:0}
+.aviso-112{margin-top:10px;font-size:12.5px;color:var(--gris-2)}
+.aviso-112 b{color:var(--rojo)}
 /* mapa: leyenda, controles, monitor */
 .leyenda{position:absolute;top:14px;left:14px;z-index:3;background:rgba(255,255,255,.95);box-shadow:inset 3px 0 0 var(--rojo);clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%);padding:10px 12px;font-size:12.5px;line-height:1.4;max-width:250px;animation:fundido .6s 1s both}
 .leyenda div{display:flex;gap:8px;align-items:center}
@@ -307,6 +323,12 @@ h2.seccion::after{content:"";flex:1;height:10px;background:linear-gradient(var(-
             <div class="hora"><output id="horaTxt">11:00</output><input type="range" id="hora" min="0" max="23" step="1" aria-label="Hora del día"><button class="boton-ahora" id="btnAhora">Ahora</button></div>
           </div>
         </div>
+      </div>
+      <div class="cercano" id="cercano">
+        <h3>¿Dónde está el más cercano?</h3>
+        <p>Te buscamos el desfibrilador abierto más cercano a la hora elegida y la ruta andando por las calles.</p>
+        <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="enlace" id="btnTocar">o toca un punto del mapa</button></div>
+        <div id="rutaRes"></div>
       </div>
       <div class="buscador">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 15 15"/></svg>
@@ -435,7 +457,7 @@ const movil=()=>innerWidth<=820;
 
 let D=null,T=35,vista='ahora',sel=-1,hover=-1,poniendo=false,en3d=true;
 let zoom=8,bearing=0,pitch=0,zoomPintado=8,cache={k:''};
-let cub=[],extra=new Set(),mios=[],curvaG=[],curvaM=[],abiertosT=[],MAD=-1,polis=[];
+let camRuta=null,buscandoPunto=false,cub=[],extra=new Set(),mios=[],curvaG=[],curvaM=[],abiertosT=[],MAD=-1,polis=[];
 
 /* ---------- datos ---------- */
 function decode(b64,n){const s=atob(b64),o=new Uint8Array(n);for(let i=0;i<n;i++)o[i]=(s.charCodeAt(i>>3)>>(7-(i&7)))&1;return o}
@@ -468,7 +490,7 @@ function iniciarMapa(){
   try{mapa=new maplibregl.Map({container:'mapa',style:'https://tiles.openfreemap.org/styles/positron',center:[v.longitude,v.latitude],zoom:v.zoom,interactive:false,attributionControl:false,maxPitch:85,fadeDuration:0})}catch(e){mapa=null}
   dk=new deck.Deck({parent:$('deck'),initialViewState:v,controller:{dragRotate:true,touchRotate:true},
     onViewStateChange:({viewState:x})=>{sincronizar(x);return x},
-    getCursor:({isHovering,isDragging})=>poniendo?'crosshair':isDragging?'grabbing':isHovering?'pointer':'grab',
+    getCursor:({isHovering,isDragging})=>poniendo||buscandoPunto?'crosshair':isDragging?'grabbing':isHovering?'pointer':'grab',
     onHover:alPasar,onClick:alPulsar,layers:[]});
   sincronizar(v);
   new ResizeObserver(()=>{if(mapa)mapa.resize()}).observe(escena);
@@ -499,6 +521,10 @@ function capas(){
       getColor:[255,255,255,255],fontFamily:'JetBrains Mono, monospace',fontWeight:700,background:true,getBackgroundColor:[...NEGRO,255],backgroundPadding:[7,4],
       getBorderColor:[255,255,255,255],getBorderWidth:1.5,getPixelOffset:d=>[[0,0],[16,-8],[-14,10]][(d.i-1)%3],billboard:true,sizeUnits:'pixels',parameters:{depthTest:false,depthCompare:'always'}}));
   }
+  if(camRuta){
+    L.push(new deck.PathLayer({id:'ruta',data:[camRuta],getPath:d=>d.camino,getColor:[...ROJO,255],getWidth:5,widthUnits:'pixels',capRounded:false,jointRounded:false,parameters:{depthTest:false,depthCompare:'always'}}),
+      new deck.ScatterplotLayer({id:'rutaPuntos',data:[{p:camRuta.desde,t:0},{p:camRuta.hasta,t:1}],getPosition:d=>d.p,getRadius:8,radiusUnits:'pixels',getFillColor:d=>d.t?[...ROJO,255]:[...NEGRO,255],stroked:true,getLineColor:[255,255,255,255],lineWidthUnits:'pixels',getLineWidth:2.5,parameters:{depthTest:false,depthCompare:'always'}}));
+  }
   if(mios.length){
     L.push(new deck.ScatterplotLayer({id:'radio',data:mios,getPosition:d=>d.p,getRadius:200,stroked:true,getFillColor:[...NEGRO,25],getLineColor:[...NEGRO,230],lineWidthMinPixels:1.5}),
       new deck.ScatterplotLayer({id:'miosP',data:mios,getPosition:d=>d.p,getRadius:30,radiusMinPixels:5,getFillColor:[...NEGRO,255],stroked:true,getLineColor:[255,255,255,255],lineWidthMinPixels:1.5}));
@@ -519,6 +545,7 @@ function alPasar(info){
   if(m!==hover){hover=m;pintar()}
 }
 function alPulsar(info){
+  if(buscandoPunto&&info.coordinate){buscandoPunto=false;$('deck').classList.remove('poniendo');buscarCercano(info.coordinate);return}
   if(poniendo&&info.coordinate){ponerAparato(info.coordinate);return}
   const o=info.object,id=info.layer&&info.layer.id;if(o==null)return;
   if(id==='col')abrirMunicipio(D.secs[o][4]);else if(id==='munis')abrirMunicipio(o.m);else if(id==='nuevos')irASitio(o.i-1);
@@ -526,6 +553,7 @@ function alPulsar(info){
 
 /* ---------- hora ---------- */
 function ponerT(t){
+  if(camRuta&&((t+168)%168)!==camRuta.t){camRuta=null;$('rutaRes').innerHTML='<p class="nota">Has cambiado la hora: vuelve a buscar para ver el más cercano abierto ahora.</p>'}
   T=(t+168)%168;const d=Math.floor(T/24),h=T%24,c=curvaG[T],esAhora=T===ahoraT();
   document.querySelectorAll('#dias button').forEach((b,i)=>b.setAttribute('aria-pressed',i===d));
   $('hora').value=h;$('horaTxt').textContent=hh(h);$('btnAhora').classList.toggle('es',esAhora);
@@ -676,6 +704,44 @@ function resultadoSim(){const base=mios.reduce((a,d)=>a+d.g,0);$('resSim').hidde
 $('btnPoner').onclick=()=>{poniendo=!poniendo;$('btnPoner').setAttribute('aria-pressed',poniendo);$('btnPoner').textContent=poniendo?'Toca el mapa. Pulsa aquí para terminar':'Colocar en el mapa';$('deck').classList.toggle('poniendo',poniendo);if(poniendo&&zoom<11)volar({zoom:12.3})};
 $('btnQuitar').onclick=()=>{extra.clear();mios=[];calcular();tira();ponerT(T);$('btnQuitar').hidden=true;$('resSim').hidden=true;$('simCab').textContent=''};
 
+
+/* ---------- el más cercano abierto ---------- */
+const DENTRO=c=>c[0]>-4.7&&c[0]<-2.9&&c[1]>39.8&&c[1]<41.25;
+$('btnCerca').onclick=()=>{
+  if(!navigator.geolocation){modoTocar('Tu navegador no da la ubicación. Toca un punto del mapa.');return}
+  $('rutaRes').innerHTML='<p class="nota">Buscando dónde estás…</p>';
+  navigator.geolocation.getCurrentPosition(p=>{const c=[p.coords.longitude,p.coords.latitude];
+    if(!DENTRO(c)){modoTocar('Parece que no estás en la Comunidad de Madrid. Toca un punto del mapa para probar.');return}buscarCercano(c)},
+    ()=>modoTocar('No tenemos permiso para ver tu ubicación. Toca un punto del mapa.'),{enableHighAccuracy:true,timeout:9000,maximumAge:60000});
+};
+$('btnTocar').onclick=()=>modoTocar('Toca en el mapa el sitio desde el que quieres buscar.');
+function modoTocar(msg){if(poniendo)$('btnPoner').click();buscandoPunto=true;$('deck').classList.add('poniendo');$('rutaRes').innerHTML=`<p class="nota" style="margin-top:10px">${msg}</p>`;if(zoom<11)volar({zoom:11.5})}
+async function buscarCercano(c){
+  const cand=cache.dea.map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,3);
+  if(!cand.length){$('rutaRes').innerHTML='<p class="nota">No hay ningún aparato abierto a esta hora.</p>';return}
+  $('rutaRes').innerHTML='<p class="nota" style="margin-top:10px">Calculando la ruta andando…</p>';
+  const pedir=async x=>{try{const r=await fetch(`https://routing.openstreetmap.de/routed-foot/route/v1/driving/${c[0]},${c[1]};${x.d[0]},${x.d[1]}?overview=full&geometries=geojson`);const j=await r.json();
+    if(j.code!=='Ok')throw 0;const ro=j.routes[0];return {...x,dist:ro.distance,camino:ro.geometry.coordinates}}catch(e){return {...x,dist:x.m*1.35,camino:[c,[x.d[0],x.d[1]]],recta:true}}};
+  const rs=(await Promise.all(cand.map(pedir))).sort((a,b)=>a.dist-b.dist),b=rs[0];
+  const camino=[c,...b.camino,[b.d[0],b.d[1]]];
+  camRuta={desde:c,hasta:[b.d[0],b.d[1]],camino,t:T};
+  const andar=b.dist/1.35/60,correr=b.dist/2.8/60,idaVuelta=2*correr;
+  const ok=idaVuelta<=3,c2=ok?'#5c7a5a':idaVuelta<=5?'#b5651d':'#d6142f';
+  const est=b.d[2]===0?'Abierto las 24 horas':'Abierto a esta hora';
+  const hor=D.horarios_texto[b.d[6]]||'';
+  const mm=v=>v<1?'menos de 1 min':Math.round(v)+' min';
+  $('rutaRes').innerHTML=`<div class="ruta">
+    <div class="ruta-veredicto" style="--c:${c2}">${ok?'Da tiempo: ida y vuelta corriendo en unos '+mm(idaVuelta):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
+    <div class="ruta-cifras"><div><strong>${fmt(b.dist)} m</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
+    <dl><dt>Sitio</dt><dd>${D.tipos[b.d[5]]==="Otros sitios"?"Sin tipo concreto":D.tipos[b.d[5]]}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Estado</dt><dd>${est}, ${etiquetaT(T).toLowerCase()}</dd>${hor?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
+    <div class="acciones" style="margin-top:12px"><a class="enlace" href="https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${b.d[1]},${b.d[0]}&travelmode=walking" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
+    <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p></div>`;
+  $('btnBorrarRuta').onclick=()=>{camRuta=null;$('rutaRes').innerHTML='';pintar()};
+  let x0=Math.min(...camino.map(p=>p[0])),x1=Math.max(...camino.map(p=>p[0])),y0=Math.min(...camino.map(p=>p[1])),y1=Math.max(...camino.map(p=>p[1]));
+  const {w,h}=caja(),span=Math.max(x1-x0,(y1-y0)*1.31,.002);const z=Math.min(17,Math.log2((Math.min(w,h)-240)*360/(512*span)));
+  volar({longitude:(x0+x1)/2,latitude:(y0+y1)/2,zoom:z,pitch:0,bearing:0},1300);pintar();
+}
+
 /* ---------- navegación ---------- */
 function mostrar(v){vista=v;
   document.querySelectorAll('.pestanas [data-vista]').forEach(b=>b.dataset.vista===(v==='municipio'?vistaAntes:v)?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'));
@@ -698,7 +764,7 @@ $('hora').oninput=e=>{parar();ponerT(Math.floor(T/24)*24+ +e.target.value)};
 $('dias').innerHTML=DIAS.map((d,i)=>`<button data-d="${i}" aria-label="${d}">${'LMXJVSD'[i]}</button>`).join('');
 $('dias').onclick=e=>{const b=e.target.closest('[data-d]');if(b){parar();ponerT(+b.dataset.d*24+T%24)}};
 addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;
-  if(e.key==='Escape'){if(poniendo)$('btnPoner').click();else if(sel>=0)cerrarMunicipio()}
+  if(e.key==='Escape'){if(buscandoPunto){buscandoPunto=false;$('deck').classList.remove('poniendo')}else if(poniendo)$('btnPoner').click();else if(sel>=0)cerrarMunicipio()}
   if(e.key==='ArrowRight'){parar();ponerT(T+1)}if(e.key==='ArrowLeft'){parar();ponerT(T-1)}});
 
 let sug=[],sugI=0;

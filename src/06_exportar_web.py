@@ -41,6 +41,7 @@ TIPOS = {  # nombres cortos para la ficha de cada municipio
     'Centros residenciales de mayores con 200 plazas': 'Residencias de mayores'}
 tipos = sorted(set(TIPOS.values()))
 horarios, pos, filas_dea = [], {}, []
+textos, pos_texto = [], {}  # horario tal como viene escrito, para enseñarlo en la web
 for (_, d), tabla in zip(dea.iterrows(), tablas):
     k = -1
     if d['estado_horario'] == 'horario':
@@ -50,6 +51,10 @@ for (_, d), tabla in zip(dea.iterrows(), tablas):
             horarios.append(clave)
     filas_dea.append([round(float(d['lon']), 5), round(float(d['lat']), 5), codigo_estado[d['estado_horario']], k,
                       idx.get('28' + str(d['municipio_codigo']), -1), tipos.index(TIPOS.get(d['tipo_establecimiento'], 'Otros sitios'))])
+    texto = ' '.join(str(d['horario_acceso']).split()) if isinstance(d['horario_acceso'], str) else ''
+    filas_dea[-1].append(pos_texto.setdefault(texto, len(textos)))
+    if filas_dea[-1][-1] == len(textos):
+        textos.append(texto)
 
 # si un aparato no trae municipio, se le asigna el de la sección más cercana
 from scipy.spatial import cKDTree
@@ -84,6 +89,7 @@ datos = {
     'curva': semana[['aparatos_abiertos', 'pct_poblacion', 'pct_poblacion_fuera_capital', 'pct_mayores_65']].values.tolist(),
     'poligonos': poligonos,
     'tipos': tipos,
+    'horarios_texto': textos,
     'nuevos': [{'lon': r.lon, 'lat': r.lat, 'muni': r.municipio, 'personas': int(r.vecinos_nuevos), 'mayores': int(r.mayores_65_nuevos)}
                for r in nuevos.itertuples()],
     'municipios': [[r.municipio, int(r.poblacion), r.pct_martes_11h, r.pct_domingo_3h, int(r.tiene_desfibrilador_fijo)]
