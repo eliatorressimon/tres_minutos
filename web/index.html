@@ -453,7 +453,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
     <button data-tab="admin"><span class="largo">Administraciones</span><span class="corto">Administración</span></button>
     <button data-tab="info"><span class="largo">Información</span><span class="corto">Info</span></button>
   </nav>
-  <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><div class="lectura" aria-live="polite" title="Hora que estás viendo en el mapa y vecinos con un desfibrilador abierto cerca"><span class="pulso"></span><small id="lecturaE">AHORA</small><span id="lecturaT">MAR 11:00</span><b id="lecturaP">45 %</b><small>cubiertos</small></div>
+  <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><div class="lectura" aria-live="polite" title="Hora que estás viendo en el mapa y vecinos con un desfibrilador abierto cerca"><span class="pulso"></span><small id="lecturaE"></small><span id="lecturaT">MAR 11:00</span><b id="lecturaP">45 %</b><small>cubiertos</small></div>
 </header>
 
 <div class="cuerpo">
@@ -851,7 +851,7 @@ let siguiendo=true;
 function horaReal(){return new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date())}
 function textosHora(){const d=Math.floor(T/24),h=T%24,txt=siguiendo?horaReal():hh(h);
   $('horaTxt').textContent=txt;$('cajaT').textContent=DIAS[d].toUpperCase()+' '+txt;$('cajaVivo').textContent=siguiendo?'AHORA':'';
-  $('lecturaE').textContent=siguiendo?'AHORA':'VIENDO';$('lecturaT').textContent=DIAS[d].slice(0,3).toUpperCase()+' '+txt}
+  $('lecturaE').textContent=siguiendo?'':'VIENDO';$('lecturaT').textContent=DIAS[d].slice(0,3).toUpperCase()+' '+txt}
 setInterval(()=>{if(!D||!siguiendo||reloj)return;const a=ahoraT();if(a!==T&&vista!=='actuar')ponerT(a);else textosHora()},15000);
 function esfera(d,h){
   const sv=$('esfera'),W=480,base=94,alto=80,paso=W/24,ah=ahoraT(),top=Math.max(1,...curvaG.map(c=>c[0]));
