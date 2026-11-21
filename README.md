@@ -6,7 +6,7 @@ Si alguien sufre una parada cardiaca en la calle, ¿hay un desfibrilador abierto
 
 Proyecto para **DataMad 2026**, el datathon de datos abiertos de la Comunidad de Madrid.
 
-Equipo: Elia Torres Simón y Clara Juarros.
+Autora: Elia Torres Simón.
 
 ## Qué hemos encontrado
 
