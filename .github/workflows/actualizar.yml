@@ -1,0 +1,70 @@
+name: Actualizar datos y web
+
+# Cada lunes a las 5:00 UTC (6:00 en Madrid en invierno) vuelve a descargar los datos abiertos,
+# rehace todos los cálculos y, si algo ha cambiado, guarda los datos nuevos y publica la web.
+# También se puede lanzar a mano desde la pestaña Actions de GitHub.
+on:
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: actualizar
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Instalar librerías
+        run: pip install -r requirements.txt
+
+      - name: Descargar datos y calcular
+        working-directory: src
+        run: |
+          python 01_descargar.py
+          python 02_limpiar_desfibriladores.py
+          python 03_poblacion_secciones.py
+          python 04_cobertura.py
+          python 05_distancias_calle.py
+          python 06_cobertura_calle.py
+          python 07_nuevos_sitios.py
+          python 08_sitios_reales.py
+          python 09_exportar_web.py
+
+      - name: Comprobar que los datos tienen sentido
+        run: python src/comprobar.py
+
+      - name: Guardar los datos nuevos
+        id: guardar
+        run: |
+          git add datos/elaborados web
+          if git diff --cached --quiet; then
+            echo "Sin cambios en los datos."
+            echo "cambios=no" >> "$GITHUB_OUTPUT"
+          else
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Datos actualizados automáticamente ($(date -u +%F))"
+            git push
+            echo "cambios=si" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publicar la web
+        if: steps.guardar.outputs.cambios == 'si'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRES_MINUTOS }}
+          channelId: live
+          projectId: tres-minutos
