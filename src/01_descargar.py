@@ -8,8 +8,14 @@ Fuentes:
   - Oficinas de farmacia (Portal de Datos Abiertos, Comunidad de Madrid)
   - Gasolineras con su horario (Ministerio para la Transición Ecológica, servicio REST de precios de carburantes)
 """
+import shutil
 import requests
-from config import ORIGINALES, URLS
+from config import ORIGINALES, URLS, RAIZ
+
+# El servicio del Ministerio a veces no responde fuera de España (por ejemplo, desde GitHub Actions).
+# Las gasolineras de 24 horas cambian muy poco, así que si falla usamos la última copia buena.
+RESPALDO = RAIZ / 'datos' / 'respaldo'
+CON_RESPALDO = {'gasolineras.json'}
 
 CKAN = 'https://datos.comunidad.madrid/api/3/action/package_show?id='
 
@@ -33,4 +39,13 @@ if __name__ == '__main__':
     for nombre, url in URLS.items():
         if url is None:
             url = url_csv_ckan('defunciones_por_causa_y_sexo')
-        bajar(url, ORIGINALES / nombre)
+        if nombre not in CON_RESPALDO:
+            bajar(url, ORIGINALES / nombre)
+            continue
+        try:
+            bajar(url, ORIGINALES / nombre)
+            RESPALDO.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ORIGINALES / nombre, RESPALDO / nombre)
+        except requests.RequestException as e:
+            print('  No se ha podido descargar', nombre, f'({type(e).__name__}); se usa la copia de datos/respaldo/')
+            shutil.copyfile(RESPALDO / nombre, ORIGINALES / nombre)

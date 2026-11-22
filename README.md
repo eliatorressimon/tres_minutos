@@ -75,7 +75,7 @@ y abrir `http://localhost:8000` en el navegador.
 
 ## Actualización automática
 
-Cada lunes por la mañana, GitHub Actions (`.github/workflows/actualizar.yml`) vuelve a descargar los datos abiertos, ejecuta los pasos 1 a 9 y comprueba que los números tienen sentido (`src/comprobar.py`). Si el registro de desfibriladores, las farmacias o las gasolineras han cambiado, guarda los datos nuevos en el repositorio y publica la web otra vez. Si una descarga falla, se para y la web se queda como estaba. También se puede lanzar a mano desde la pestaña Actions.
+Cada lunes por la mañana, GitHub Actions (`.github/workflows/actualizar.yml`) vuelve a descargar los datos abiertos, ejecuta los pasos 1 a 9 y comprueba que los números tienen sentido (`src/comprobar.py`). Si el registro de desfibriladores, las farmacias o las gasolineras han cambiado, guarda los datos nuevos en el repositorio y publica la web otra vez. Si una descarga falla, se para y la web se queda como estaba. La única excepción son las gasolineras: el servicio del Ministerio a veces no responde desde fuera de España, y como cambian muy poco se usa la última copia buena, guardada en `datos/respaldo/`. También se puede lanzar a mano desde la pestaña Actions.
 
 ## Publicar la web
 
