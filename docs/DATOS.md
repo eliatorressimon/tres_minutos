@@ -104,8 +104,8 @@ Una fila por pareja de sitio candidato y punto de población que están a 200 m 
 
 | Columna | Significado |
 |---|---|
-| `tipo` | `Sitio ideal` (cualquier punto de población), `Farmacia`, `Gasolinera 24 h`, `Centro de salud` u `Hospital` |
-| `id` | Código del punto (sitio ideal), número de la farmacia en el registro, `lon,lat` de la gasolinera o número del centro sanitario en su registro |
+| `tipo` | `Sitio ideal` (el centro de las viviendas de una sección), `Farmacia`, `Gasolinera 24 h`, `Centro de salud` u `Hospital` |
+| `id` | Código de la sección (sitio ideal), número de la farmacia en el registro, `lon,lat` de la gasolinera o número del centro sanitario en su registro |
 | `punto` | Punto que quedaría cubierto |
 | `metros_andando` | Distancia a pie, calculada igual que en `distancias_calle.csv` |
 

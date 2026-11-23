@@ -2,13 +2,13 @@ name: Probar Catastro
 on:
   push:
     branches: [portales]
-    paths: ['.github/workflows/probar_catastro.yml', 'src/05_distancias_calle.py']
+    paths: ['.github/workflows/probar_catastro.yml', 'src/05_distancias_calle.py', 'src/07_nuevos_sitios.py']
 permissions:
   contents: write
 jobs:
   probar:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

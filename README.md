@@ -61,7 +61,7 @@ python viviendas_catastro.py           # viviendas de cada edificio, del Catastr
 python 03_poblacion_secciones.py       # centro y población de cada sección censal
 python 03b_puntos_de_poblacion.py      # reparte los vecinos de cada sección entre sus viviendas
 python 04_cobertura.py                 # cobertura en las 168 horas de la semana
-python 05_distancias_calle.py          # distancias andando por la calle (unas 1.400 peticiones a OSRM, cerca de una hora)
+python 05_distancias_calle.py          # distancias andando por la calle (unas 550 peticiones a OSRM; las ya hechas se guardan)
 python 06_cobertura_calle.py           # cobertura con 100, 200 y 300 m, en línea recta y andando
 python 07_nuevos_sitios.py             # los diez mejores sitios posibles para aparatos de 24 h
 python 08_sitios_reales.py             # las diez mejores farmacias y gasolineras 24 h

@@ -1,0 +1,31 @@
+name: Publicar la web
+
+# Publica la web cuando cambia algo de la carpeta web/ en main (por ejemplo, un arreglo del diseño),
+# sin volver a calcular los datos. Los cálculos los hace "Actualizar datos y web".
+on:
+  push:
+    branches: [main]
+    paths: ['web/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRES_MINUTOS }}
+          channelId: live
+          projectId: tres-minutos
