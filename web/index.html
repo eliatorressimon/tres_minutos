@@ -199,7 +199,15 @@ details.bloque h2.seccion:first-child{margin-top:6px}
 .caso em{font-style:normal;font-weight:650;font-size:12.5px;color:var(--rojo);margin-top:auto}
 
 /* rankings */
-.ranking{margin-bottom:22px}
+.ranking{margin-bottom:4px}
+.leer{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;counter-reset:l}
+.leer li{counter-increment:l;background:#fff;padding:10px 10px 11px;display:flex;flex-direction:column;gap:3px;box-shadow:inset 0 3px 0 var(--rojo)}
+.leer li b{font:700 13.5px/1.2 var(--sans);display:flex;gap:7px;align-items:baseline}
+.leer li b::before{content:counter(l);font:700 12px var(--mono);color:var(--rojo)}
+.leer li>span{font-size:12.5px;line-height:1.4;color:var(--gris-1)}
+.munis .buscador{margin-top:0}
+.seg-rank{margin:14px 0 10px;display:flex;flex-wrap:wrap}
+.modos.modos-2{grid-template-columns:repeat(2,1fr)}
 .ranking h3{font:700 14px/1.3 var(--sans)}
 .ranking p.nota{margin:2px 0 8px;font-size:12px}
 .ranking ol{list-style:none;margin:0;padding:0}
@@ -397,6 +405,9 @@ details.bloque h2.seccion:first-child{margin-top:6px}
 .sos-dist span{font-size:15px;color:var(--gris-1)}
 .sos-donde{margin-top:6px;font-size:14px;color:var(--gris-1);line-height:1.4}
 .sos-veredicto{margin-top:8px;font:700 13px var(--sans);padding:6px 10px;display:inline-block;background:var(--rosa);color:var(--vino)}
+.sos-planb{margin-top:10px;font-size:13px;line-height:1.45;color:var(--gris-1)}
+.sos-planb b{color:var(--vino)}
+.sos-planb button{border:0;background:none;padding:0;font:700 13px var(--sans);color:var(--rojo);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .sos-acciones{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
 .sos-acciones .boton,.sos-acciones .boton-sec{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-size:14px;min-height:44px}
 .sos-acciones svg{width:16px;height:16px;flex:none}
@@ -466,6 +477,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
     <nav class="subnav" id="subnav" aria-label="Administraciones">
       <button data-vista="ahora">Cobertura</button>
       <button data-vista="actuar">Dónde poner más</button>
+      <button data-vista="simular">Simulador</button>
       <button data-vista="metodo">Método</button>
     </nav>
 
@@ -478,6 +490,11 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       <div class="antetitulo">Para administraciones: <span data-n="registro">13.664</span> aparatos, 168 horas</div>
       <h1 class="titular">Si alguien cae ahora, ¿llega <span>a tiempo</span> un desfibrilador?</h1>
       <p class="entradilla">Hay unos <b>tres minutos</b> para ir a por uno y volver. Cada <b>marca roja</b> del mapa es un barrio donde a esta hora no hay ninguno abierto <span class="dist">a menos de 200 metros</span>.</p>
+      <ol class="leer" aria-label="Cómo se lee esta pantalla">
+        <li><b>Elige día y hora</b><span>Con los botones o tocando una barra.</span></li>
+        <li><b>Mira la cifra</b><span>Vecinos con uno abierto <span class="dist">a 200 m andando</span>.</span></li>
+        <li><b>Toca el mapa</b><span>Cada marca roja es un barrio sin ninguno.</span></li>
+      </ol>
       <div class="caja">
         <div class="caja-cab"><span id="cajaT">MARTES 11:00</span><b id="cajaVivo"></b></div>
         <div class="caja-cuerpo">
@@ -491,19 +508,18 @@ details.bloque h2.seccion:first-child{margin-top:6px}
           </div>
         </div>
       </div>
-      <div class="buscador">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 15 15"/></svg>
-        <input id="buscar" type="search" placeholder="Busca un municipio" autocomplete="off" aria-label="Busca un municipio">
-        <ul class="sugerencias" id="sugerencias" hidden></ul>
+      <div class="caja munis">
+        <div class="caja-cab"><span>POR MUNICIPIO</span><b id="munisHora"></b></div>
+        <div class="caja-cuerpo">
+          <div class="buscador">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 15 15"/></svg>
+            <input id="buscar" type="search" placeholder="Busca un municipio y abre su ficha" autocomplete="off" aria-label="Busca un municipio">
+            <ul class="sugerencias" id="sugerencias" hidden></ul>
+          </div>
+          <div class="seg seg-rank" id="segRank"><button data-k="peor" aria-pressed="true">Peor cubiertos</button><button data-k="mejor" aria-pressed="false">Mejor cubiertos</button><button data-k="sin" aria-pressed="false">Más vecinos sin uno</button></div>
+          <div id="rankings"></div>
+        </div>
       </div>
-      <details class="bloque"><summary>Cómo se lee esta pantalla<small>En tres pasos</small></summary><div class="bloque-cuerpo">
-        <ol class="como">
-          <li><b>Elige un momento.</b> Pulsa un día y mueve la barra de la hora, o pulsa una de las barras del gráfico. "Ahora" vuelve a la hora real.</li>
-          <li><b>Mira la cifra.</b> Es el porcentaje de vecinos que tienen un desfibrilador abierto a esa hora <span class="dist">a 200 metros o menos andando</span>. Las barras te dejan comparar con el resto del día: cuanto más baja, peor.</li>
-          <li><b>Busca en el mapa.</b> Cada marca roja es un barrio sin ninguno abierto cerca. Púlsala, o escribe un municipio arriba, para ver sus cifras.</li>
-        </ol>
-        <p class="nota">De noche el mapa se oscurece para que se note la hora.</p>
-      </div></details>
       <details class="bloque"><summary>Más cifras de esta hora<small>Fuera de la capital, mayores de 65 y aparatos abiertos</small></summary><div class="bloque-cuerpo">
         <ul class="apilado"><li><span>Fuera de Madrid capital</span><strong id="cFuera"></strong></li><li><span>Mayores de 65 cubiertos</span><strong id="c65"></strong></li><li><span>Aparatos abiertos</span><strong id="cAbiertos"></strong></li></ul>
       </div></details>
@@ -517,9 +533,6 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       </div></details>
       <details class="bloque"><summary>Cuatro casos que llaman la atención<small>La peor hora, la mejor, un pueblo que cambia mucho y los que no tienen ninguno</small></summary><div class="bloque-cuerpo">
         <div class="casos" id="casos"></div>
-      </div></details>
-      <details class="bloque"><summary>Municipios mejor y peor cubiertos<small>Se actualiza con la hora que elijas</small></summary><div class="bloque-cuerpo">
-        <div id="rankings"></div>
       </div></details>
     </section>
 
@@ -592,23 +605,36 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <button data-modo="ideal"><b>Sitio ideal</b><span>de madrugada</span></button>
       </div>
       <div class="hallazgo" id="hallazgo"></div>
-      <details class="bloque" open><summary>Pon tú un aparato<small>Tócalo en el mapa y mira cuántos vecinos gana</small></summary><div class="bloque-cuerpo">
-        <div class="simulador">
-        <div class="caja-cab"><span>SIMULADOR</span><b id="simCab"></b></div>
-        <div class="caja-cuerpo">
-          <p>Para decidir dónde poner el próximo: pulsa el botón y toca el mapa donde lo pondrías. Cuenta como abierto las 24 horas y verás cuántos vecinos sin cobertura gana a la hora elegida, midiendo andando por la calle. Puedes poner varios.</p>
-          <div class="acciones"><button class="boton" id="btnPoner" aria-pressed="false">Colocar en el mapa</button><button class="enlace" id="btnQuitar" hidden>Quitar los míos</button></div>
-          <div class="resultado-sim" id="resSim" hidden></div>
-        </div>
-      </div>
-      </div></details>
-      <details class="bloque"><summary id="tituloLista">Los diez primeros</summary><div class="bloque-cuerpo">
+      <details class="bloque" open><summary id="tituloLista">Los diez primeros</summary><div class="bloque-cuerpo">
         <ol class="sitios" id="sitios"></ol>
         <div class="suma"><span class="cifra" id="sumaPers"></span><p id="sumaTxt"></p></div>
       </div></details>
       <details class="bloque"><summary>Cómo se eligen</summary><div class="bloque-cuerpo"><p class="nota" style="font-size:14px">De uno en uno: se pone el que más vecinos sin cubrir gana, se da por colocado y se busca el siguiente con lo que queda. Los mayores de 65 cuentan doble porque son quienes más riesgo tienen. Se mide andando por la calle.</p></div></details>
     </section>
 
+
+    <section class="vista" id="v-simular" hidden>
+      <div class="antetitulo">Simulador</div>
+      <h1 class="titular">Pon tú <span>un aparato</span>.</h1>
+      <p class="entradilla">Toca el mapa donde lo pondrías y mira cuántos vecinos que hoy no tienen ninguno abierto cerca lo ganarían. Cuenta como abierto las 24 horas y se mide andando por la calle.</p>
+      <div class="modos modos-2" id="simHoras">
+        <button data-t="35"><b>Martes, 11:00</b><span>una hora de día</span></button>
+        <button data-t="147"><b>Domingo, 3:00</b><span>la peor hora</span></button>
+      </div>
+      <div class="simulador">
+        <div class="caja-cab"><span id="simHora">SIMULADOR</span><b id="simCab"></b></div>
+        <div class="caja-cuerpo">
+          <ol class="como">
+            <li><b>Pulsa "Colocar en el mapa".</b></li>
+            <li><b>Toca el sitio</b> donde pondrías el aparato. Puedes poner varios.</li>
+            <li><b>Mira cuántos vecinos gana</b> y cómo queda la Comunidad a esa hora.</li>
+          </ol>
+          <div class="acciones"><button class="boton" id="btnPoner" aria-pressed="false">Colocar en el mapa</button><button class="enlace" id="btnQuitar" hidden>Quitar los míos</button></div>
+          <div class="resultado-sim" id="resSim" hidden></div>
+        </div>
+      </div>
+      <p class="nota" style="margin-top:14px">Las listas con los mejores sitios ya calculados están en <a href="#actuar">Dónde poner más</a>.</p>
+    </section>
 
     <section class="vista" id="v-metodo" hidden>
       <div class="antetitulo">Datos abiertos y código</div>
@@ -690,7 +716,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
     <div id="sosMapa"></div>
     <div class="sos-ficha" id="sosFicha"><div class="sos-estado">Buscando dónde estás…</div></div>
   </div>
-  <div class="sos-pie" id="sosPie">Herramienta no oficial. Ante una emergencia, llama siempre al 112.</div>
+  <div class="sos-pie" id="sosPie">Herramienta no oficial. Ante una emergencia, llama siempre al 112. Si ya has abierto la web antes, el botón funciona también sin conexión.</div>
 </div>
 <div class="rcp" id="rcp" hidden>
   <h2>Compresiones en el pecho</h2>
@@ -868,7 +894,7 @@ let siguiendo=true;
 function horaReal(){return new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date())}
 function textosHora(){const d=Math.floor(T/24),h=T%24,txt=siguiendo?horaReal():hh(h);
   $('horaTxt').textContent=txt;$('cajaT').textContent=DIAS[d].toUpperCase()+' '+txt;$('cajaVivo').textContent=siguiendo?'AHORA':'';
-  $('lecturaE').textContent=siguiendo?'':'VIENDO';$('lecturaT').textContent=DIAS[d].slice(0,3).toUpperCase()+' '+txt}
+  $('lecturaE').textContent=siguiendo?'':'VIENDO';$('simHora').textContent='SIMULADOR, '+DIAS[d].toUpperCase()+' '+txt;if(vista==='simular')marcarSim();$('lecturaT').textContent=DIAS[d].slice(0,3).toUpperCase()+' '+txt}
 setInterval(()=>{if(!D||!siguiendo||reloj)return;const a=ahoraT();if(a!==T&&vista!=='actuar')ponerT(a);else textosHora()},15000);
 function esfera(d,h){
   const sv=$('esfera'),W=480,base=94,alto=80,paso=W/24,ah=ahoraT(),top=Math.max(1,...curvaG.map(c=>c[0]));
@@ -912,10 +938,14 @@ function rankings(){
   const ceros=b.filter(m=>curvaM[m][T]<0.05).length;
   const c=ms.filter(m=>D.totM[m]>=5000).sort((x,y)=>curvaM[y][T]-curvaM[x][T]);
   $('rankings').innerHTML=`
-    <div class="ranking"><h3>Más vecinos sin aparato cerca</h3><p class="nota">Personas sin desfibrilador abierto ${distC()}, sin contar Madrid capital (${fmt(D.sinM[MAD][T])})</p><ol>${top(a,m=>D.sinM[m][T],m=>fmt(D.sinM[m][T]))}</ol></div>
-    <div class="ranking"><h3>Peor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes${ceros>1?`. A esta hora, <b>${ceros}</b> no tienen ninguno abierto ${distC()}; aquí van los más poblados`:''}</p><ol>${top(b,m=>100-curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>
-    <div class="ranking bien"><h3>Mejor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes</p><ol>${top(c,m=>curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>`;
+    <div class="ranking" data-k="sin"><h3>Más vecinos sin aparato cerca</h3><p class="nota">Personas sin desfibrilador abierto ${distC()}, sin contar Madrid capital (${fmt(D.sinM[MAD][T])})</p><ol>${top(a,m=>D.sinM[m][T],m=>fmt(D.sinM[m][T]))}</ol></div>
+    <div class="ranking" data-k="peor"><h3>Peor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes${ceros>1?`. A esta hora, <b>${ceros}</b> no tienen ninguno abierto ${distC()}; aquí van los más poblados`:''}</p><ol>${top(b,m=>100-curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>
+    <div class="ranking bien" data-k="mejor"><h3>Mejor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes</p><ol>${top(c,m=>curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>`;
+  verRank();$('munisHora').textContent=$('cajaT').textContent;
 }
+let rankSel='peor';
+function verRank(){document.querySelectorAll('#rankings .ranking').forEach(r=>r.hidden=r.dataset.k!==rankSel);document.querySelectorAll('#segRank button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===rankSel))}
+$('segRank').onclick=e=>{const b=e.target.closest('[data-k]');if(b){rankSel=b.dataset.k;verRank()}};
 $('rankings').onclick=e=>{const b=e.target.closest('[data-m]');if(b)abrirMunicipio(+b.dataset.m)};
 
 /* ---------- municipio ---------- */
@@ -1012,6 +1042,8 @@ async function ponerAparato(c){
 function resultadoSim(){const base=mios.reduce((a,d)=>a+d.g,0);$('resSim').hidden=false;$('simCab').textContent=mios.length+(mios.length===1?' APARATO':' APARATOS');
   $('resSim').innerHTML=`<b>+${fmt(base)}</b> vecinos cubiertos al colocar${mios.length===1?'lo':'los'}. Con ${mios.length===1?'él':'ellos'}, la Comunidad queda al <b>${p1(curvaG[T][0])}</b> a esta hora.`}
 $('btnPoner').onclick=()=>{poniendo=!poniendo;$('btnPoner').setAttribute('aria-pressed',poniendo);$('btnPoner').textContent=poniendo?'Toca el mapa. Pulsa aquí para terminar':'Colocar en el mapa';$('deck').classList.toggle('poniendo',poniendo);if(poniendo&&zoom<11)volar({zoom:12.3})};
+function marcarSim(){document.querySelectorAll('#simHoras button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.t===T))}
+$('simHoras').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;parar();ponerT(+b.dataset.t);marcarSim()};
 $('btnQuitar').onclick=()=>{extra.clear();mios=[];calcular();ponerT(T);$('btnQuitar').hidden=true;$('resSim').hidden=true;$('simCab').textContent=''};
 
 
@@ -1079,7 +1111,7 @@ async function buscarCercano(c){
 }
 
 /* ---------- navegación ---------- */
-const ADMIN=['ahora','actuar','metodo','municipio'];
+const ADMIN=['ahora','actuar','simular','metodo','municipio'];
 let ultimaAdmin='ahora',ultimaInfo='info';
 function mostrar(v){vista=v;
   const tab=v==='emergencia'?'emergencia':(v==='info'||v==='saber')?'info':'admin',sub=v==='municipio'?vistaAntes:v;
@@ -1090,10 +1122,10 @@ function mostrar(v){vista=v;
   tab==='emergencia'?SOS.ver():SOS.ocultar();
   if(tab==='emergencia')return;
   document.querySelectorAll('.vista').forEach(s=>s.hidden=s.id!=='v-'+v);$('lado').scrollTop=0;
-  $('leyNuevo').hidden=v!=='actuar';if(v!=='actuar'&&poniendo)$('btnPoner').click();if(v==='ahora')rankings()}
+  $('leyNuevo').hidden=v!=='actuar';if(v!=='simular'&&poniendo)$('btnPoner').click();if(v==='simular')marcarSim();if(v==='ahora')rankings()}
 function irA(v){if(location.hash!=='#'+v)location.hash=v;else ruta()}
 function ruta(){let v=(location.hash||'#emergencia').slice(1);if(v==='sos')v='emergencia';if(v==='admin')v=ultimaAdmin;if(v==='informacion')v=ultimaInfo;
-  const nv=['emergencia','ahora','actuar','metodo','info','saber'].includes(v)?v:'emergencia',antes=vista;sel=-1;mostrar(nv);
+  const nv=['emergencia','ahora','actuar','simular','metodo','info','saber'].includes(v)?v:'emergencia',antes=vista;sel=-1;mostrar(nv);
   if(nv==='emergencia')return;
   if(D){if(nv==='actuar'&&antes!=='actuar'){parar();ponerT(horaAct());const b=vista0();volar({...b,zoom:b.zoom+.9,latitude:40.36,longitude:-3.74})}else if(antes==='actuar'&&nv!=='actuar')ponerT(ahoraT());else pintar()}}
 document.querySelectorAll('.pestanas [data-tab]').forEach(b=>b.onclick=()=>irA(b.dataset.tab==='admin'?ultimaAdmin:b.dataset.tab==='info'?ultimaInfo:b.dataset.tab));
@@ -1213,6 +1245,8 @@ const SOS=(()=>{
   const hablar=t=>{if(!voz||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=1;
     const v=speechSynthesis.getVoices().find(x=>x.lang&&x.lang.startsWith('es'));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}};
   const ficha=h=>{$('sosFicha').innerHTML=h};
+  const rumbo=(a,b)=>{const dx=(b[0]-a[0])*Math.cos(a[1]*Math.PI/180),dy=b[1]-a[1],g=(Math.atan2(dx,dy)*180/Math.PI+360)%360;
+    return 'hacia el '+['norte','noreste','este','sureste','sur','suroeste','oeste','noroeste'][Math.round(g/45)%8]};
   const enCM=c=>c[0]>-4.6&&c[0]<-3.0&&c[1]>39.85&&c[1]<41.2;
   let tapar=null;
   function ver(){clearTimeout(tapar);const e=$('sos');document.body.classList.add('en-sos');e.hidden=false;requestAnimationFrame(()=>e.classList.remove('fuera'));if(mapaS)setTimeout(()=>mapaS.resize(),50)}
@@ -1249,7 +1283,8 @@ const SOS=(()=>{
     if(!cand.length){ficha('<div class="sos-estado">Ahora no consta ningún desfibrilador abierto cerca.</div>');return}
     const pedir=async x=>{try{const r=await fetch(`https://routing.openstreetmap.de/routed-foot/route/v1/driving/${c[0]},${c[1]};${x.d[0]},${x.d[1]}?overview=full&geometries=geojson`);const j=await r.json();
       if(j.code!=='Ok')throw 0;const ro=j.routes[0];return {...x,dist:ro.distance,camino:ro.geometry.coordinates}}catch(e){return {...x,dist:x.m*1.4,camino:[c,[x.d[0],x.d[1]]],recta:true}}};
-    const b=(await Promise.all(cand.map(pedir))).sort((a,b)=>a.dist-b.dist)[0];
+    const rs=(await Promise.all(cand.map(pedir))).sort((a,b)=>a.dist-b.dist);
+    const verRes=i=>{const b=rs[i],sig=rs[i+1];
     const hasta=[b.d[0],b.d[1]],camino=[c,...b.camino,hasta];ultimo={c,b};
     pintarRuta(c,hasta,camino);
     const andar=b.dist/1.35/60,correr=b.dist/2.8/60,iv=2*correr,mm=v=>v<1?'menos de 1 min':Math.round(v)+' min';
@@ -1257,8 +1292,9 @@ const SOS=(()=>{
     const ver=iv<=3?'Da tiempo: ida y vuelta corriendo en '+(iv<1?'menos de 1 min':'unos '+Math.round(iv)+' min'):'Ida y vuelta corriendo: '+mm(iv)+'. Que vaya alguien ya';
     ficha(`<div class="sos-estado">Desfibrilador abierto más cercano${b.recta?' (distancia aproximada)':''}</div>
       <div class="sos-dist"><strong>${fmt(dist)} m</strong><span>${mm(correr)} corriendo, ${mm(andar)} andando</span></div>
-      <div class="sos-donde">${D.tipos[b.d[5]]==='Otros sitios'?'Sitio sin tipo concreto':D.tipos[b.d[5]]}, ${nombreBonito(D.munis[b.d[4]])}. ${b.d[2]===0?'Abierto las 24 horas.':'Abierto a esta hora'+(hor?': '+hor:'.')}</div>
+      <div class="sos-donde">${D.tipos[b.d[5]]==='Otros sitios'?'Sitio sin tipo concreto':D.tipos[b.d[5]]}, ${nombreBonito(D.munis[b.d[4]])}, ${rumbo(c,hasta)}. ${b.d[2]===0?'Abierto las 24 horas.':'Abierto a esta hora'+(hor?': '+hor:'.')}</div>
       <div class="sos-veredicto">${ver}</div>
+      ${sig?`<div class="sos-planb"><b>Si está cerrado o no lo encuentras:</b> hay otro a ${fmt(Math.round(sig.dist/10)*10)} m, ${rumbo(c,[sig.d[0],sig.d[1]])}. <button id="sosSig">Llévame a ese</button></div>`:''}
       <div class="sos-acciones">
         <a class="boton" href="tel:112">${'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.6 1h2.6l1.3 3.4-1.7 1.2a8.6 8.6 0 0 0 4.6 4.6l1.2-1.7 3.4 1.3v2.6c0 .9-.7 1.6-1.6 1.6A12.4 12.4 0 0 1 2 2.6C2 1.7 2.7 1 3.6 1z"/></svg>'}Llamar al 112</a>
         <a class="boton-sec" href="https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${hasta[1]},${hasta[0]}&travelmode=walking" target="_blank" rel="noopener">Ir con Google Maps</a>
@@ -1273,6 +1309,8 @@ const SOS=(()=>{
     $('sosVoz').onclick=()=>{voz=!voz;if(!voz)try{speechSynthesis.cancel()}catch(e){};$('sosVoz').textContent=voz?'Silenciar la voz':'Activar la voz'};
     $('sosRepetir').onclick=()=>hablar(frase);
     $('sosOtro').onclick=pedirPunto;
+    if(sig)$('sosSig').onclick=()=>verRes(i+1);
+    };verRes(0);
   }
   function pedirPunto(){$('sosFicha').dataset.esperaPunto='1';ficha('<div class="sos-estado">Toca en el mapa el sitio donde estás.</div>');$('sosFicha').dataset.esperaPunto='1';
     if(mapaS&&mapaS.getZoom()<11)mapaS.flyTo({center:[-3.70,40.42],zoom:11})}
@@ -1309,6 +1347,7 @@ function ponerCifras(){
   document.querySelectorAll('[data-n]').forEach(e=>{const v=r[e.dataset.n];if(v==null)return;
     e.textContent=Number.isInteger(v)?fmt(v):v.toFixed(1).replace('.',',')});
 }
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 const pVars=fetch('variantes.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).catch(e=>{console.error(e);return null});
 fetch('datos.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(async d=>{
   D=d;ponerCifras();SOS.datos();intro.preparar(D.dea);MAD=D.munis.indexOf('Madrid');

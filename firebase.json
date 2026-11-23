@@ -3,7 +3,8 @@
     "public": "web",
     "ignore": ["firebase.json", "**/.*"],
     "headers": [
-      { "source": "**/*.json", "headers": [{ "key": "Cache-Control", "value": "max-age=3600" }] }
+      { "source": "**/*.json", "headers": [{ "key": "Cache-Control", "value": "max-age=3600" }] },
+      { "source": "sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
     ]
   }
 }
