@@ -220,6 +220,8 @@ details.bloque h2.seccion:first-child{margin-top:6px}
   .inf-tab thead th{background:#ddd;font-weight:bold}
   .informe .num{text-align:right}
   .inf-graf .semana-g{width:100%;height:auto;font:7pt Arial,Helvetica,sans-serif;fill:#333}
+  .inf-graf .semana-g .hora{font:5.5pt Arial,Helvetica,sans-serif}
+  .inf-graf .semana-g .dia{font:bold 7pt Arial,Helvetica,sans-serif;fill:#000}
   .inf-txt{margin:0;font-size:10pt}
   .informe ol{padding-left:16pt}
   .informe li{margin-bottom:2pt}
@@ -271,6 +273,8 @@ details.bloque h2.seccion:first-child{margin-top:6px}
 .veredicto p{font-size:13.5px;color:var(--gris-1);margin-top:4px;line-height:1.45}
 .huella{cursor:pointer;margin-top:4px}
 .semana-g{width:100%;height:auto;display:block;font:500 10px var(--mono);fill:var(--gris-2)}
+.semana-g .hora{font-size:7.5px}
+.semana-g .dia{font:600 10px var(--sans);fill:var(--negro)}
 .barras{list-style:none;margin:0;padding:0}
 .barras li{display:grid;grid-template-columns:1fr auto;gap:4px 8px;padding:8px 0;border-bottom:1px solid var(--linea);font-size:13px}
 .barras .v{font:600 12.5px var(--mono)}
@@ -1020,13 +1024,14 @@ function abrirMunicipio(m){
   volar({longitude:(x0+x1)/2,latitude:(y0+y1)/2-(en3d?40/(ppd*1.31):0),zoom:z,pitch:en3d?45:0,bearing:0});pintar();
 }
 function graficoSemana(c,o={}){ // línea de las 168 horas, con las noches sombreadas; o.print: versión en grises para el informe
-  c=Array.from(c);const W=520,H=o.print?100:150,L=34,R=8,T0=10,B=22,w=W-L-R,h=H-T0-B,mx=Math.max(10,Math.ceil(Math.max(...c)/10)*10);
+  c=Array.from(c);const W=520,H=o.print?100:162,L=34,R=8,T0=10,B=34,w=W-L-R,h=H-T0-B,mx=Math.max(10,Math.ceil(Math.max(...c)/10)*10);
   const x=t=>L+w*(t+.5)/168,y=v=>T0+h*(1-v/mx),col=o.print?'#000':'var(--rojo)',rel=o.print?'#e6e6e6':'var(--rosa)',noche=o.print?'#f3f3f3':'#f4ecea';
   let g='';
   for(let d=0;d<7;d++){const x0=L+w*d/7;
     g+=`<rect x="${x0}" y="${T0}" width="${w*7/168}" height="${h}" fill="${noche}"/><rect x="${x0+w*22/168}" y="${T0}" width="${w*2/168}" height="${h}" fill="${noche}"/>`;
     if(d)g+=`<line x1="${x0}" x2="${x0}" y1="${T0}" y2="${T0+h}" stroke="${o.print?'#999':'var(--linea)'}" stroke-width="1"/>`;
-    g+=`<text x="${x0+w/14}" y="${H-6}" text-anchor="middle">${['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'][d]}</text>`}
+    for(const hh of [0,6,12,18])g+=`<line x1="${x(d*24+hh)}" x2="${x(d*24+hh)}" y1="${T0+h}" y2="${T0+h+3}" stroke="${o.print?'#666':'var(--gris-2)'}"/><text class="hora" x="${x(d*24+hh)}" y="${T0+h+12}" text-anchor="middle">${hh}</text>`;
+    g+=`<text class="dia" x="${x0+w/14}" y="${H-4}" text-anchor="middle">${['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'][d]}</text>`}
   for(const v of [0,mx/2,mx])g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="${o.print?'#bbb':'var(--linea)'}" stroke-dasharray="${v?'2 3':''}"/><text x="${L-5}" y="${y(v)+3.5}" text-anchor="end">${Math.round(v)} %</text>`;
   const pts=c.map((v,t)=>`${x(t).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
   g+=`<polygon points="${x(0)},${y(0)} ${pts} ${x(167)},${y(0)}" fill="${rel}" opacity=".7"/><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="${o.print?1.2:1.8}" stroke-linejoin="round"/>`;
@@ -1056,7 +1061,7 @@ function informe(m){ // una página para imprimir o guardar en PDF, pensada para
     <table class="inf-tab"><thead><tr><th>Momento</th><th class="num">Población cubierta</th><th class="num">Personas sin aparato cerca</th></tr></thead><tbody>${mom.map(([t,et])=>`<tr><td>${et}</td><td class="num">${p1(c[t])}</td><td class="num">${sinT(t)}</td></tr>`).join('')}</tbody></table>
     <h2>3. Distribución semanal</h2>
     <div class="inf-graf">${graficoSemana(c,{print:true})}</div>
-    <p class="inf-nota">Porcentaje de población cubierta en cada hora de la semana, de lunes a domingo. En gris, las horas de noche (de 22:00 a 7:00).</p>
+    <p class="inf-nota">Población cubierta en cada hora; bajo cada día, las 0, 6, 12 y 18 h. En gris, la noche (de 22 a 7 h).</p>
     <h2>4. Valoración</h2>
     <p class="inf-txt"><b>${v.t}.</b> ${v.p}</p>
     <h2>5. Actuaciones propuestas</h2>
@@ -1083,7 +1088,7 @@ function construirMunicipio(){
     <div class="caja"><div class="caja-cab"><span id="mT"></span><b id="mVivo"></b></div><div class="caja-cuerpo"><div class="cifra-fila"><span class="cifra" id="mPct"></span><p id="mTxt"></p></div></div></div>
     <h2 class="seccion">Su semana, hora a hora</h2>
     <div class="huella" id="huella"></div>
-    <p class="nota" style="margin-top:4px">Vecinos cubiertos en cada hora, de lunes a domingo. Sombreadas, las horas de noche. Pulsa el gráfico para ver esa hora en el mapa.</p>
+    <p class="nota" style="margin-top:4px">Vecinos cubiertos en cada hora (0, 6, 12 y 18 h de cada día). Sombreadas, las horas de noche. Pulsa el gráfico para ver esa hora en el mapa.</p>
     ${porTipo.length?`<h2 class="seccion">Dónde están sus aparatos</h2><ul class="barras">${porTipo.map(x=>`<li><span>${x.tp}</span><span class="v">${x.n}</span><span class="barra"><i style="width:${100*x.s/maxT}%"></i><i style="width:${100*(x.n-x.s)/maxT}%"></i></span></li>`).join('')}</ul><p class="nota" style="margin-top:8px">Negro: abiertos las 24 horas. Gris: con horario o sin él.</p>`:''}
     <h2 class="seccion">Lo que más ayudaría</h2>
     ${aqui.length?`<p class="nota" style="font-size:14px;color:var(--gris-1);margin-bottom:10px">Entre las mejores farmacias y gasolineras de la Comunidad para un aparato nuevo, ${aqui.length===1?'una está':aqui.length+' están'} aquí.</p><ol class="sitios">${aqui.map(d=>sitioHTML(d,d.i).replace('class="sitio"','class="sitio" data-modo="'+d.momento+'"')).join('')}</ol>`
