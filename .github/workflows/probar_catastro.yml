@@ -16,9 +16,8 @@ jobs:
           grep -io 'href="[^"]*VALDEMORILLO[^"]*"\|[^<>]*VALDEMORILLO[^<>]*' atom.xml | head
           U=$(grep -o 'https[^"<]*\.xml' atom.xml | grep -i 28 | head -3); echo "$U"
       - run: |
-          F=$(grep -o 'https[^"<]*atom[^"<]*\.xml' atom.xml | grep -v 'atom_28.xml' | head -200 | grep -i '28160\|valdemorillo' | head -1)
-          echo "feed $F"; [ -n "$F" ] && curl -s -m 60 -o m.xml "$F" && cat m.xml | head -c 2000; echo
-          Z=$(grep -o 'https[^"<]*\.zip' m.xml | head -1); echo "zip $Z"
-          curl -s -m 120 -o b.zip "$Z"; ls -la b.zip; unzip -l b.zip
-          unzip -o -q b.zip -d b; for f in b/*building*.gml b/*BU*.gml; do [ -f "$f" ] && head -c 6000 "$f"; done; ls b
-          grep -o 'numberOfDwellings>[0-9]*' b/*.gml | sort | uniq -c | sort -rn | head
+          curl -s -m 180 -o b.zip "https://www.catastro.hacienda.gob.es/INSPIRE/Buildings/28/28160-VALDEMORILLO/A.ES.SDGC.BU.28160.zip"; ls -la b.zip; unzip -l b.zip
+          unzip -o -q b.zip -d b; ls -la b
+          for f in b/*.gml; do echo "== $f"; head -c 5000 "$f"; echo; done
+          grep -ho 'numberOfDwellings>[0-9]*' b/*.gml | sort | uniq -c | sort -rn | head
+          grep -ho 'currentUse>[^<]*' b/*.gml | sort | uniq -c | sort -rn | head
