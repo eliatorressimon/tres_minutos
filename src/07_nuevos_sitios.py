@@ -11,12 +11,12 @@ import pandas as pd
 from config import ELABORADOS, NUEVOS_APARATOS
 from candidatos import secciones_a_pie
 
-sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
+sec = pd.read_csv(ELABORADOS / 'puntos.csv', dtype={'punto': str, 'cod_ine_seccion': str, 'cod_ine_muni': str})
 cubiertas = np.load(ELABORADOS / 'cubiertas_andando.npy')[147].copy()   # domingo 3:00, andando
 p65, pob = sec['mayores_65'].fillna(0).values, sec['poblacion'].fillna(0).values
 peso = pob + p65   # los mayores de 65 cuentan doble
 a_pie = secciones_a_pie('Sitio ideal', sec)
-candidatos = [a_pie.get(c, []) for c in sec['cod_ine_seccion']]
+candidatos = [a_pie.get(c, []) for c in sec['punto']]
 
 elegidos = []
 for k in range(NUEVOS_APARATOS):

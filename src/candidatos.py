@@ -59,9 +59,9 @@ def centros_sanitarios():
 
 def secciones_a_pie(tipo, sec):
     """Para cada sitio de un tipo, las secciones (posición en secciones.csv) a RADIO_M o menos andando (paso 5)."""
-    d = pd.read_csv(ELABORADOS / 'distancias_candidatos.csv', dtype={'id': str, 'cod_ine_seccion': str})
-    pos = {c: i for i, c in enumerate(sec['cod_ine_seccion'])}
+    d = pd.read_csv(ELABORADOS / 'distancias_candidatos.csv', dtype={'id': str, 'punto': str})
+    pos = {c: i for i, c in enumerate(sec['punto'])}
     res = {}
-    for i, s in zip(d.loc[d['tipo'] == tipo, 'id'], d.loc[d['tipo'] == tipo, 'cod_ine_seccion']):
+    for i, s in zip(d.loc[d['tipo'] == tipo, 'id'], d.loc[d['tipo'] == tipo, 'punto']):
         res.setdefault(i, []).append(pos[s])
     return res

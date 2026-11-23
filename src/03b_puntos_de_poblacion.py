@@ -19,8 +19,8 @@ from shapely.geometry import shape
 from pyproj import Transformer
 from config import ORIGINALES, ELABORADOS, CRS_METROS, RAIZ
 
-CELDA = 100   # metros
-JUNTOS = 100  # metros
+CELDA = 150   # metros
+JUNTOS = 150  # metros
 
 sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
 viv = pd.read_csv(RAIZ / 'datos' / 'respaldo' / 'viviendas_catastro.csv.gz')

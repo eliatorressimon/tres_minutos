@@ -15,7 +15,7 @@ import pandas as pd
 from config import ELABORADOS, NUEVOS_APARATOS
 from candidatos import farmacias, gasolineras_24h, centros_sanitarios, secciones_a_pie
 
-sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
+sec = pd.read_csv(ELABORADOS / 'puntos.csv', dtype={'punto': str, 'cod_ine_seccion': str, 'cod_ine_muni': str})
 cubiertas_semana = np.load(ELABORADOS / 'cubiertas_andando.npy')
 pob, p65 = sec['poblacion'].fillna(0).values, sec['mayores_65'].fillna(0).values
 peso = pob + p65                       # los mayores de 65 cuentan doble

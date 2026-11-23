@@ -85,23 +85,23 @@ def andando(origen, destino, max_m):
 
 
 if __name__ == '__main__':
-    sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
+    sec = pd.read_csv(ELABORADOS / 'puntos.csv', dtype={'punto': str, 'cod_ine_seccion': str, 'cod_ine_muni': str})
     dea = pd.read_csv(ELABORADOS / 'desfibriladores.csv', dtype=str)
     dea['fila_dea'] = np.arange(len(dea))   # fila en desfibriladores.csv (hay un código repetido)
     dea = con_metros(dea[dea['fijo'].eq('True') & dea['estado_horario'].isin(['24h', 'horario'])])
 
     # 1. secciones y desfibriladores
     p = andando(sec, dea, MAX_DEA_M)
-    pd.DataFrame([{'cod_ine_seccion': sec.at[i, 'cod_ine_seccion'], 'fila_dea': int(dea.at[j, 'fila_dea']),
+    pd.DataFrame([{'punto': sec.at[i, 'punto'], 'fila_dea': int(dea.at[j, 'fila_dea']),
                    'codigo_dea': dea.at[j, 'codigo_dea'], 'metros_linea_recta': r, 'metros_andando': m}
                   for i, j, r, m in p]).to_csv(ELABORADOS / 'distancias_calle.csv', index=False)
     print(len(p), 'parejas sección y aparato a', MAX_DEA_M, 'm o menos andando')
 
     # 2. sitios candidatos y secciones
-    ideal = pd.DataFrame({'id': sec['cod_ine_seccion'], 'tipo': 'Sitio ideal', 'lon': sec['lon'], 'lat': sec['lat']})
+    ideal = pd.DataFrame({'id': sec['punto'], 'tipo': 'Sitio ideal', 'lon': sec['lon'], 'lat': sec['lat']})
     cand = con_metros(pd.concat([ideal, farmacias()[['id', 'tipo', 'lon', 'lat']], gasolineras_24h()[['id', 'tipo', 'lon', 'lat']],
                                 centros_sanitarios()[['id', 'tipo', 'lon', 'lat']]]))
     p = andando(cand, sec, RADIO_M)
-    pd.DataFrame([{'tipo': cand.at[i, 'tipo'], 'id': cand.at[i, 'id'], 'cod_ine_seccion': sec.at[j, 'cod_ine_seccion'],
+    pd.DataFrame([{'tipo': cand.at[i, 'tipo'], 'id': cand.at[i, 'id'], 'punto': sec.at[j, 'punto'],
                    'metros_andando': m} for i, j, r, m in p]).to_csv(ELABORADOS / 'distancias_candidatos.csv', index=False)
     print(len(p), 'parejas sitio y sección a', RADIO_M, 'm o menos andando')

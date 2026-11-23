@@ -679,8 +679,8 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       <ol class="pasos">
         <li><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b><span data-n="registro">13.664</span></b>, todos con coordenadas. Se quitan los <b><span data-n="movil">2.206</span></b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
         <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de <span data-n="formas">2.336</span> formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Se convierte en una tabla de 7 días por 24 horas. <b><span data-n="siempre">3.229</span></b> abren siempre y <b><span data-n="desconocido">4.534</span></b> no tienen un horario que se pueda leer, así que no cuentan como abiertos.</p></div></li>
-        <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a 200 metros o menos de su centro, andando por la calle. Se calcula para las 168 horas de la semana.</p></div></li>
-        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a 300 metros o menos se pide la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y se le suma lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b><span data-n="andando_martes">20,7</span> %</b> de los vecinos tiene uno abierto (en línea recta salía el <span data-n="recta_martes">45,5</span> %) y un domingo a las 3, el <b><span data-n="andando_domingo">9,6</span> %</b> (frente al <span data-n="recta_domingo">25,9</span> %). Por eso toda la web, también "Dónde poner más", mide andando.</p></div></li>
+        <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Dentro de cada sección, los vecinos se reparten entre sus edificios según las viviendas que tienen en el <b>Catastro</b>, así que en un pueblo de urbanizaciones no se pone a todo el mundo en el centro de la sección. Un vecino está cubierto a una hora si tiene un aparato abierto a 200 metros o menos de su casa, andando por la calle. Se calcula para las 168 horas de la semana.</p></div></li>
+        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de grupo de casas y aparato a 300 metros o menos se pide la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y se le suma lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b><span data-n="andando_martes">20,7</span> %</b> de los vecinos tiene uno abierto (en línea recta salía el <span data-n="recta_martes">45,5</span> %) y un domingo a las 3, el <b><span data-n="andando_domingo">9,6</span> %</b> (frente al <span data-n="recta_domingo">25,9</span> %). Por eso toda la web, también "Dónde poner más", mide andando.</p></div></li>
         <li><div><h4>Dónde poner los siguientes</h4><p>Se elige de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y se repite con lo que queda. De día se busca entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas o en cualquier punto del mapa.</p></div></li>
       </ol>
       </div></details>
@@ -690,12 +690,13 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <div><strong>1:30</strong>Otro corre al desfibrilador más cercano: 200 metros.</div>
         <div><strong>3:00</strong>Vuelve con él y lo enciende. El aparato guía la descarga.</div>
       </div>
-      <p class="nota" style="margin-top:10px">Ir y volver 400 metros a paso rápido cabe en unos tres minutos. Por eso se miden 200 metros andando desde el centro de cada sección censal. En "Cobertura", dentro de "Probar con otra distancia", puedes probar con 100 o 300 metros, o medir en línea recta. Por qué importan esos minutos, con todas las fuentes, está en <a href="https://github.com/eliatorressimon/tres_minutos/blob/main/docs/POR_QUE_IMPORTA.md" target="_blank" rel="noopener">este documento</a>.</p>
+      <p class="nota" style="margin-top:10px">Ir y volver 400 metros a paso rápido cabe en unos tres minutos. Por eso se miden 200 metros andando desde las casas de los vecinos. En "Cobertura", dentro de "Probar con otra distancia", puedes probar con 100 o 300 metros, o medir en línea recta. Por qué importan esos minutos, con todas las fuentes, está en <a href="https://github.com/eliatorressimon/tres_minutos/blob/main/docs/POR_QUE_IMPORTA.md" target="_blank" rel="noopener">este documento</a>.</p>
       </div></details>
       <details class="bloque"><summary>Fuentes<small>De dónde sale cada dato</small></summary><div class="bloque-cuerpo">
       <ul class="fuentes">
         <li><a href="https://datos.comunidad.madrid/catalogo/dataset/desfibriladores_externos_fuera_ambito_sanitario" target="_blank" rel="noopener">Desfibriladores externos fuera del ámbito sanitario</a>, Comunidad de Madrid</li>
         <li>Secciones censales (seccionado de 2019), Comunidad de Madrid</li>
+        <li>Edificios y número de viviendas de cada uno (servicio INSPIRE de edificios), Dirección General del Catastro</li>
         <li>Población por sección censal y por municipio, 2019 y 2024 (tabla 31105), INE</li>
         <li>Oficinas de farmacia, Comunidad de Madrid, y gasolineras con su horario, Ministerio para la Transición Ecológica</li>
         <li>Centros, servicios y establecimientos sanitarios, Comunidad de Madrid</li>
@@ -887,8 +888,8 @@ function capas(){
       getPosition:i=>[S[i][0],S[i][1]],getElevation:i=>S[i][2],
       getFillColor:i=>{const s=S[i],k=Math.min(1,s[3]/Math.max(1,s[2])/.33);return [...mezcla(ROJO,ROJO_O,k*.7),plano?Math.round(120+Math.min(135,s[2]/12)):250]},
       material:{ambient:.7,diffuse:.45,shininess:10},updateTriggers:{getFillColor:plano}}),
-    new deck.ScatterplotLayer({id:'dea',data:cache.dea,visible:zoom>12,getPosition:d=>[d[0],d[1]],getRadius:9,radiusMinPixels:2.5,stroked:true,
-      getLineColor:[255,255,255,255],lineWidthMinPixels:1,getFillColor:nk>.5?[255,255,255,255]:[...NEGRO,255],updateTriggers:{getFillColor:nk>.5}})
+    new deck.ScatterplotLayer({id:'dea',data:cache.dea,visible:zoom>10,getPosition:d=>[d[0],d[1]],getRadius:9,radiusMinPixels:zoom>12?3.5:2,stroked:true,
+      getLineColor:[255,255,255,255],lineWidthMinPixels:1,getFillColor:[...NEGRO,255]})
   ];
   if(vista==='actuar'){
     L.push(new deck.TextLayer({id:'nuevos',data:listaAct().map((d,i)=>({...d,i:i+1})),pickable:true,getPosition:d=>[d.lon,d.lat],getText:d=>String(d.i),getSize:14,
@@ -1056,7 +1057,7 @@ function informe(m){ // una página para imprimir o guardar en PDF, pensada para
     <h1>Informe de cobertura de desfibriladores externos</h1>
     <p class="inf-mun">Municipio: <b>${n}</b></p>
     <h2>1. Datos generales</h2>
-    <table class="inf-kv">${fila('Población (estimación 2024)',fmt(mun[1])+' habitantes')}${fila('Desfibriladores fijos registrados',fmt(suyos.length))}${fila('Abiertos las 24 horas',fmt(h24))}${fila('Sin horario legible en el registro',fmt(desc))}${fila('Criterio de cobertura','Aparato abierto a esa hora '+distC()+' del centro de la sección censal')}</table>
+    <table class="inf-kv">${fila('Población (estimación 2024)',fmt(mun[1])+' habitantes')}${fila('Desfibriladores fijos registrados',fmt(suyos.length))}${fila('Abiertos las 24 horas',fmt(h24))}${fila('Sin horario legible en el registro',fmt(desc))}${fila('Criterio de cobertura','Aparato abierto a esa hora '+distC()+' de las viviendas')}</table>
     <h2>2. Población cubierta en momentos de referencia</h2>
     <table class="inf-tab"><thead><tr><th>Momento</th><th class="num">Población cubierta</th><th class="num">Personas sin aparato cerca</th></tr></thead><tbody>${mom.map(([t,et])=>`<tr><td>${et}</td><td class="num">${p1(c[t])}</td><td class="num">${sinT(t)}</td></tr>`).join('')}</tbody></table>
     <h2>3. Distribución semanal</h2>
@@ -1067,7 +1068,7 @@ function informe(m){ // una página para imprimir o guardar en PDF, pensada para
     <h2>5. Actuaciones propuestas</h2>
     <ol class="inf-txt">${que.map(x=>`<li>${x}</li>`).join('')}</ol>
     <h2>6. Fuentes y método</h2>
-    <p class="inf-nota">Registro de desfibriladores externos fuera del ámbito sanitario y secciones censales (Portal de Datos Abiertos de la Comunidad de Madrid); población por sección censal (INE, tabla 31105); distancias a pie sobre la red de calles de OpenStreetMap. Un aparato sin horario legible no se cuenta como abierto, por lo que las cifras son un mínimo. Método completo y datos: tres-minutos.web.app y github.com/eliatorressimon/tres_minutos.</p>
+    <p class="inf-nota">Registro de desfibriladores externos fuera del ámbito sanitario y secciones censales (Portal de Datos Abiertos de la Comunidad de Madrid); población por sección censal (INE, tabla 31105), repartida entre los edificios según sus viviendas (Catastro); distancias a pie sobre la red de calles de OpenStreetMap. Un aparato sin horario legible no se cuenta como abierto, por lo que las cifras son un mínimo. Método completo y datos: tres-minutos.web.app y github.com/eliatorressimon/tres_minutos.</p>
     <div class="inf-pie">Documento generado automáticamente a partir de datos abiertos. No tiene carácter oficial ni relación con la Comunidad de Madrid.</div>`;
   window.print();
 }
@@ -1131,7 +1132,7 @@ function sitios(){
 $('modos').onclick=e=>{const b=e.target.closest('[data-modo]');if(!b)return;modoAct=b.dataset.modo;sitios();parar();ponerT(horaAct());const v=vista0();volar({...v,zoom:v.zoom+.9,latitude:40.38,longitude:-3.72})};
 $('sitios').onclick=e=>{const b=e.target.closest('[data-i]');if(b)irASitio(+b.dataset.i)};
 function irASitio(i){const d=listaAct()[i];if(vista!=='actuar')irA('actuar');if(T!==horaAct())ponerT(horaAct());volar({longitude:d.lon,latitude:d.lat,zoom:14.5,pitch:en3d?50:0})}
-async function aPie(c,ids){ // distancias andando desde c a varias secciones (OSRM); null si no responde
+async function aPie(c,ids){ // distancias andando desde c a varios grupos de casas (OSRM); null si no responde
   if(!ids.length)return [];
   const pts=[c,...ids.map(i=>D.secs[i])].map(p=>p[0].toFixed(5)+','+p[1].toFixed(5)).join(';');
   try{const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');
@@ -1140,6 +1141,7 @@ async function aPie(c,ids){ // distancias andando desde c a varias secciones (OS
   catch(e){console.error(e);return null}}
 async function ponerAparato(c){
   const S=D.secs;let gan=[];for(let i=0;i<S.length;i++)if(!extra.has(i)&&metros(S[i],c)<=RADIO)gan.push(i);
+  if(gan.length>99)gan=gan.sort((x,y)=>metros(S[x],c)-metros(S[y],c)).slice(0,99); // el servidor de rutas admite 100 puntos por petición
   if(MEDIDA==='andando'){$('resSim').hidden=false;$('resSim').textContent='Midiendo andando por la calle…';
     const d=await aPie(c,gan);if(d)gan=gan.filter((_,k)=>d[k]<=RADIO)}
   const g=gan.filter(i=>!cubierta(i,T)).reduce((a,i)=>a+S[i][2],0);

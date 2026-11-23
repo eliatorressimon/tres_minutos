@@ -12,7 +12,7 @@ from config import ELABORADOS, RADIO_M, CRS_METROS
 
 DIAS = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
 
-sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
+sec = pd.read_csv(ELABORADOS / 'puntos.csv', dtype={'punto': str, 'cod_ine_seccion': str, 'cod_ine_muni': str})
 dea = pd.read_csv(ELABORADOS / 'desfibriladores.csv', dtype=str)
 tablas = np.load(ELABORADOS / 'horarios_semana.npy')
 

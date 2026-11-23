@@ -23,7 +23,7 @@ concurrency:
 jobs:
   actualizar:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
 
@@ -39,8 +39,10 @@ jobs:
         working-directory: src
         run: |
           python 01_descargar.py
+          python viviendas_catastro.py
           python 02_limpiar_desfibriladores.py
           python 03_poblacion_secciones.py
+          python 03b_puntos_de_poblacion.py
           python 04_cobertura.py
           python 05_distancias_calle.py
           python 06_cobertura_calle.py
