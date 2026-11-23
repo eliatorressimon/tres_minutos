@@ -1426,9 +1426,13 @@ const SOS=(()=>{
     $('sosInicio').hidden=true;$('sosPie').hidden=true;$('sosRuta').hidden=false;
     hablar('Buscando el desfibrilador más cercano. Si nadie lo ha hecho, llama al uno uno dos.');
     if(!navigator.geolocation){abrirMapaS();pedirPunto();return}
-    navigator.geolocation.getCurrentPosition(p=>{const c=[p.coords.longitude,p.coords.latitude];abrirMapaS(c);buscar(c)},
-      ()=>{abrirMapaS();ficha('<div class="sos-estado">No se puede saber dónde estás. Toca en el mapa el sitio donde estás, o llama al 112.</div><div class="sos-acciones"><a class="boton" href="tel:112">Llamar al 112</a></div>');$('sosFicha').dataset.esperaPunto='1'},
-      {enableHighAccuracy:true,timeout:10000,maximumAge:30000});
+    const bien=p=>{const c=[p.coords.longitude,p.coords.latitude];abrirMapaS(c);buscar(c)};
+    const mal=e=>{abrirMapaS();const neg=e&&e.code===1;
+      ficha('<div class="sos-estado">'+(neg?'El navegador no deja usar tu ubicación (está bloqueada para esta web). Toca en el mapa el sitio donde estás, o llama al 112.':'No se puede saber dónde estás. Toca en el mapa el sitio donde estás, o llama al 112.')+'</div><div class="sos-acciones"><a class="boton" href="tel:112">Llamar al 112</a></div>');$('sosFicha').dataset.esperaPunto='1'};
+    // primero con GPS; si tarda o falla (un ordenador no tiene GPS), otra vez con la ubicación aproximada por wifi
+    navigator.geolocation.getCurrentPosition(bien,e=>{if(e&&e.code===1)return mal(e);
+      navigator.geolocation.getCurrentPosition(bien,mal,{enableHighAccuracy:false,timeout:15000,maximumAge:300000})},
+      {enableHighAccuracy:true,timeout:8000,maximumAge:60000});
   }
   // metrónomo de reanimación: 110 por minuto, con sonido y el cuadro que late
   function empezarRCP(){
