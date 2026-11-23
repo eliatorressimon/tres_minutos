@@ -1,0 +1,24 @@
+name: Probar Catastro
+on:
+  push:
+    branches: [portales]
+    paths: ['.github/workflows/probar_catastro.yml', 'src/probar_catastro.py']
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -s -m 60 -o atom.xml -w '%{http_code}\n' https://www.catastro.hacienda.gob.es/INSPIRE/buildings/28/ES.SDGC.BU.atom_28.xml || true
+          ls -la atom.xml; head -c 3000 atom.xml; echo
+          grep -o 'https[^"<]*\.zip' atom.xml | head -5
+          grep -io 'href="[^"]*VALDEMORILLO[^"]*"\|[^<>]*VALDEMORILLO[^<>]*' atom.xml | head
+          U=$(grep -o 'https[^"<]*\.xml' atom.xml | grep -i 28 | head -3); echo "$U"
+      - run: |
+          F=$(grep -o 'https[^"<]*atom[^"<]*\.xml' atom.xml | grep -v 'atom_28.xml' | head -200 | grep -i '28160\|valdemorillo' | head -1)
+          echo "feed $F"; [ -n "$F" ] && curl -s -m 60 -o m.xml "$F" && cat m.xml | head -c 2000; echo
+          Z=$(grep -o 'https[^"<]*\.zip' m.xml | head -1); echo "zip $Z"
+          curl -s -m 120 -o b.zip "$Z"; ls -la b.zip; unzip -l b.zip
+          unzip -o -q b.zip -d b; for f in b/*building*.gml b/*BU*.gml; do [ -f "$f" ] && head -c 6000 "$f"; done; ls b
+          grep -o 'numberOfDwellings>[0-9]*' b/*.gml | sort | uniq -c | sort -rn | head
