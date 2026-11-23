@@ -18,11 +18,15 @@ Un aparato solo cuenta como abierto a una hora si su horario lo dice. Por eso la
 
 ## 2. Población
 
-Cada sección censal se representa por su centroide (calculado con la fórmula del área con signo). La población por sección es la del INE para 2019, que usa el mismo seccionado, reescalada para que cada municipio sume su población de 2024. En los municipios donde el INE no da datos de 2019 por sección, la población se reparte por superficie.
+La población por sección censal es la del INE para 2019, que usa el mismo seccionado, reescalada para que cada municipio sume su población de 2024. En los municipios donde el INE no da datos de 2019 por sección, la población se reparte por superficie.
+
+Dentro de cada sección, la población se reparte entre sus edificios según el número de viviendas que tienen en el Catastro (servicio INSPIRE de edificios, `src/viviendas_catastro.py`, unos 497.000 edificios con vivienda). Al principio todos los vecinos de una sección se ponían en su centro. En Madrid capital, donde una sección es poco más que una manzana, eso apenas cambia nada. Pero en un pueblo de urbanizaciones una sección mide varios kilómetros: en Valdemorillo, por ejemplo, 14.000 vecinos estaban en solo cinco puntos y ninguno de sus ocho aparatos de 24 horas quedaba a menos de 600 m de ellos.
+
+Ahora (`src/03b_puntos_de_poblacion.py`), si todas las viviendas de una sección están a 150 m o menos de su centro, la sección sigue siendo un solo punto, colocado en el centro de sus viviendas. Si no, sus edificios se agrupan en cuadrados de 150 m y cada cuadrado es un punto con su parte de los vecinos. Las secciones sin viviendas en el Catastro se quedan en su centro geométrico. Salen unos 44.000 puntos de población. Los mayores de 65 se reparten igual.
 
 ## 3. Cobertura
 
-Una sección está cubierta a una hora si hay al menos un aparato abierto a 200 m o menos de su centro. Primero se calcula en línea recta, con un árbol k-d (`scipy.spatial.cKDTree`) en coordenadas UTM, para las 168 horas de la semana (`src/04_cobertura.py`). Después se repite andando por la calle (apartado 6), que es la medida que usa la web por defecto.
+Un punto de población está cubierto a una hora si hay al menos un aparato abierto a 200 m o menos. Primero se calcula en línea recta, con un árbol k-d (`scipy.spatial.cKDTree`) en coordenadas UTM, para las 168 horas de la semana (`src/04_cobertura.py`). Después se repite andando por la calle (apartado 6), que es la medida que usa la web por defecto.
 
 Ir y volver 400 m a paso rápido cabe en unos tres minutos. Por qué tres minutos, con las fuentes: [POR_QUE_IMPORTA.md](POR_QUE_IMPORTA.md).
 
@@ -37,13 +41,13 @@ Problema de máxima cobertura: elegir k puntos que cubran a la mayor cantidad de
 - De día (martes a las 11:00): las 2.954 oficinas de farmacia del registro de la Comunidad.
 - De madrugada (domingo a las 3:00): las 550 gasolineras cuyo horario en la API del Ministerio es `L-D: 24H` o `L-D: 00:00-23:59`.
 
-Para cada grupo se eligen los diez mejores y se calcula también qué pasaría si todos los locales tuvieran uno. Las distancias de cada local a las secciones se miden andando (apartado 6). Con todas las farmacias, la cobertura del martes a las 11:00 pasaría del 20,7 % al 45,7 %. Con todas las gasolineras de 24 horas, la del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %.
+Para cada grupo se eligen los diez mejores y se calcula también qué pasaría si todos los locales tuvieran uno. Las distancias de cada local a los puntos de población se miden andando (apartado 6). Con todas las farmacias, la cobertura del martes a las 11:00 pasaría del 20,7 % al 45,7 %. Con todas las gasolineras de 24 horas, la del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %.
 
 Los centros sanitarios no están en el registro, que solo recoge los aparatos de fuera del ámbito sanitario, pero tienen el suyo. `src/08_sitios_reales.py` calcula también cuánto subiría la cobertura si se contaran: los centros de salud y consultorios de atención primaria, de lunes a viernes de 8:00 a 21:00, y los hospitales generales, con urgencias las 24 horas. El horario no viene en los datos; es el habitual de estos centros en la Comunidad. La web lo enseña aparte y no lo mezcla con el mapa principal, que usa solo el registro.
 
 ## 6. Andando por la calle
 
-En línea recta, 200 m pueden ser mucho más andando: hay que rodear manzanas, cruzar por un paso de peatones o buscar el puente sobre una vía. `src/05_distancias_calle.py` toma cada pareja de sección y aparato (fijo y con horario conocido) que está a 300 m o menos en línea recta, unas 13.600, y pide su distancia a pie por la red de calles y caminos de OpenStreetMap al servidor OSRM de routing.openstreetmap.de (servicio `table`, perfil a pie). A esa distancia se le suma lo que hay desde el centro de la sección y desde el aparato hasta la calle más cercana. Se agrupan secciones vecinas para hacer unas 90 peticiones de 100 puntos como mucho. El mismo script mide también, andando, qué secciones quedan a 200 m o menos de cada sitio candidato: el centro de cada sección, cada farmacia y cada gasolinera de 24 horas (unas 120 peticiones más).
+En línea recta, 200 m pueden ser mucho más andando: hay que rodear manzanas, cruzar por un paso de peatones o buscar el puente sobre una vía. `src/05_distancias_calle.py` toma cada pareja de punto de población y aparato (fijo y con horario conocido) que está a 300 m o menos en línea recta, y pide su distancia a pie por la red de calles y caminos de OpenStreetMap al servidor OSRM de routing.openstreetmap.de (servicio `table`, perfil a pie). A esa distancia se le suma lo que hay desde el centro de la sección y desde el aparato hasta la calle más cercana. Se agrupan secciones vecinas para hacer unas 90 peticiones de 100 puntos como mucho. El mismo script mide también, andando, qué secciones quedan a 200 m o menos de cada sitio candidato: el centro de cada sección, cada farmacia y cada gasolinera de 24 horas (unas 120 peticiones más).
 
 Solo 4.850 parejas quedan a 300 m o menos andando. La mediana de la distancia andando es 1,5 veces la distancia en línea recta.
 
@@ -65,10 +69,10 @@ La pantalla de inicio de la web es para una emergencia. Al pulsar el botón gran
 ## Límites
 
 - La distancia andando depende de OpenStreetMap y de un servidor público de rutas; si una calle está mal dibujada, la distancia sale mal.
-- Andando, el punto de partida es el centro de la sección. En una manzana cerrada ese centro cae dentro de los edificios, y lo que hay hasta la calle se suma a la distancia. Para quien vive en la fachada, la distancia real es algo menor.
+- Andando, el punto de partida es el centro de las viviendas de cada punto. En una manzana cerrada ese centro cae dentro de los edificios, y lo que hay hasta la calle se suma a la distancia. Para quien vive en la fachada, la distancia real es algo menor.
 - OpenStreetMap no recoge todos los pasos interiores, como patios o galerías comerciales.
 - "24 horas" no garantiza que se pueda entrar al edificio de madrugada.
-- En pueblos con secciones grandes, el centro de la sección es solo una aproximación de dónde vive la gente.
+- Dentro de cada sección se supone que todas las viviendas tienen el mismo número de vecinos, y que las viviendas vacías o de segunda residencia se reparten igual por toda la sección. Cada punto agrupa las casas de un cuadrado de 150 m, así que puede haber hasta unos 100 m de diferencia con la casa de cada vecino.
 - El seccionado es de 2019; las secciones creadas después no aparecen por separado.
 
 ## Próximos pasos

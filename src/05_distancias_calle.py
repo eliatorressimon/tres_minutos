@@ -44,6 +44,14 @@ def lotes(cerca, origen):
     con_algo.sort(key=lambda i: (int(origen.at[i, 'y'] // 1000), origen.at[i, 'x']))
     resultado, o_act, d_act = [], [], set()
     for i in con_algo:
+        if len(cerca[i]) >= MAX_PUNTOS:   # un punto con muchísimos destinos va solo, en varias peticiones
+            if o_act:
+                resultado.append((o_act, sorted(d_act)))
+                o_act, d_act = [], set()
+            todos = sorted(cerca[i])
+            for k in range(0, len(todos), MAX_PUNTOS - 1):
+                resultado.append(([i], todos[k:k + MAX_PUNTOS - 1]))
+            continue
         nuevos = d_act | set(cerca[i])
         if o_act and len(o_act) + 1 + len(nuevos) > MAX_PUNTOS:
             resultado.append((o_act, sorted(d_act)))
@@ -57,6 +65,18 @@ def lotes(cerca, origen):
 
 def andando(origen, destino, max_m):
     """Parejas (i de origen, j de destino, metros en línea recta, metros andando) con andando <= max_m."""
+    # varios aparatos pueden estar en el mismo sitio exacto (hay edificios con decenas): se pregunta una vez por cada sitio
+    clave = list(zip(destino['lon'].astype(float).round(6), destino['lat'].astype(float).round(6)))
+    unicos = destino.loc[~pd.Series(clave).duplicated().values].reset_index()
+    iguales = {}
+    for j, c in enumerate(clave):
+        iguales.setdefault(c, []).append(j)
+    parejas = _andando(origen, unicos, max_m)
+    return [(i, jj, r, m) for i, ju, r, m in parejas
+            for jj in iguales[(round(float(unicos.at[ju, 'lon']), 6), round(float(unicos.at[ju, 'lat']), 6))]]
+
+
+def _andando(origen, destino, max_m):
     cerca = cKDTree(destino[['x', 'y']].values).query_ball_point(origen[['x', 'y']].values, max_m)
     grupos = lotes(cerca, origen)
     print(len(grupos), 'peticiones')

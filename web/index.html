@@ -720,7 +720,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       <p class="nota" style="margin-top:8px">Separador punto y coma, coma decimal y codificación UTF-8: se abren directamente en Excel o LibreOffice.</p>
       </div></details>
       <details class="bloque"><summary>Límites<small>Lo que hay que tener en cuenta</small></summary><div class="bloque-cuerpo">
-      <div class="aviso">Se mide desde el centro de cada sección, así que para cada casa la distancia real puede ser algo mayor o menor. Y un aparato sin horario puede estar abierto aunque aquí no cuente. El código y los datos elaborados están en <a href="https://github.com/eliatorressimon/tres_minutos" target="_blank" rel="noopener">GitHub</a>, con licencia MIT.</div>
+      <div class="aviso">Se mide desde grupos de casas de 150 m como mucho, así que para cada casa la distancia real puede ser algo mayor o menor. Y un aparato sin horario puede estar abierto aunque aquí no cuente. El código y los datos elaborados están en <a href="https://github.com/eliatorressimon/tres_minutos" target="_blank" rel="noopener">GitHub</a>, con licencia MIT.</div>
       </div></details>
       <details class="bloque"><summary>Quién lo ha hecho<small>Proyecto para DataMad 2026</small></summary><div class="bloque-cuerpo">
       <div class="equipo">
@@ -814,7 +814,7 @@ const cubierta=(i,t)=>cub[t][i]===1||extra.has(i);
 function metros(a,b){const k=Math.cos(40.4*Math.PI/180);return Math.hypot((a[0]-b[0])*111320*k,(a[1]-b[1])*110540)}
 const distL=()=>MEDIDA==='recta'?`a menos de ${RADIO} metros`:`a ${RADIO} metros o menos andando`;
 const distC=()=>MEDIDA==='recta'?`a ${RADIO} m`:`a ${RADIO} m andando`;
-const NOTA_MEDIDA={recta:'Distancia en línea recta desde el centro de cada sección censal, como si se pudieran atravesar los edificios.',
+const NOTA_MEDIDA={recta:'Distancia en línea recta desde las casas, como si se pudieran atravesar los edificios.',
   andando:'Distancia andando por las calles y caminos de OpenStreetMap, rodeando edificios, vías y autopistas. Es lo que de verdad tendría que recorrer alguien.'};
 async function cambiarMedida(r,m){
   if(r===RADIO&&m===MEDIDA)return;

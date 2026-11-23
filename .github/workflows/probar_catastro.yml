@@ -2,7 +2,7 @@ name: Probar Catastro
 on:
   push:
     branches: [portales]
-    paths: ['.github/workflows/probar_catastro.yml']
+    paths: ['.github/workflows/probar_catastro.yml', 'src/05_distancias_calle.py']
 permissions:
   contents: write
 jobs:

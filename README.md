@@ -57,9 +57,11 @@ pip install -r requirements.txt
 cd src
 python 01_descargar.py                 # baja los datos originales
 python 02_limpiar_desfibriladores.py   # limpia el registro y traduce los horarios
+python viviendas_catastro.py           # viviendas de cada edificio, del Catastro (solo la primera vez)
 python 03_poblacion_secciones.py       # centro y población de cada sección censal
+python 03b_puntos_de_poblacion.py      # reparte los vecinos de cada sección entre sus viviendas
 python 04_cobertura.py                 # cobertura en las 168 horas de la semana
-python 05_distancias_calle.py          # distancias andando por la calle (unas 210 peticiones a OSRM)
+python 05_distancias_calle.py          # distancias andando por la calle (unas 1.400 peticiones a OSRM, cerca de una hora)
 python 06_cobertura_calle.py           # cobertura con 100, 200 y 300 m, en línea recta y andando
 python 07_nuevos_sitios.py             # los diez mejores sitios posibles para aparatos de 24 h
 python 08_sitios_reales.py             # las diez mejores farmacias y gasolineras 24 h
@@ -101,6 +103,7 @@ firebase deploy --only hosting
 | [Centros, servicios y establecimientos sanitarios](https://datos.comunidad.madrid/dataset/centros_servicios_establecimientos_sanitarios) | Comunidad de Madrid | Centros de salud y hospitales, que tienen desfibrilador aunque no estén en el registro |
 | [Precios de carburantes en estaciones de servicio (API REST)](https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/help) | Ministerio para la Transición Ecológica | Gasolineras con horario de 24 horas como sitios candidatos de noche |
 | [Indicadores demográficos por sección censal (tabla 31105)](https://www.ine.es/jaxiT3/Tabla.htm?t=31105) | INE | Población y porcentaje de mayores de 65 por sección |
+| [Edificios (servicio INSPIRE)](https://www.catastro.hacienda.gob.es/webinspire/index.html) | Dirección General del Catastro | Número de viviendas de cada edificio, para repartir a los vecinos dentro de cada sección |
 
 Las cifras sobre paradas cardiacas (incidencia, tiempos de llegada de la ambulancia, supervivencia) vienen del informe EuReCa THREE del Consejo Europeo de Resucitación y de una revisión de 41 estudios sobre desfibriladores usados por testigos. Están citadas, con enlaces, en [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md).
 

@@ -14,6 +14,8 @@ Se descargan con `src/01_descargar.py`. No se suben al repositorio.
 | `centros_sanitarios.csv` | Centros, servicios y establecimientos sanitarios, Portal de Datos Abiertos de la Comunidad de Madrid | Separador `;`. Una fila por cada servicio de cada centro: se agrupa por `centro_nro_registro`. Coordenadas en ETRS89 / UTM 30N. Solo se usan los centros de salud, los consultorios de atención primaria y los hospitales generales. |
 | `defunciones_causa.csv` | Defunciones por causa de muerte y sexo, Portal de Datos Abiertos de la Comunidad de Madrid | Solo se usa como contexto. |
 
+Además, `src/viviendas_catastro.py` baja del servicio INSPIRE de edificios del Catastro un fichero por municipio (179) y guarda de cada edificio con viviendas el centro de su contorno y el número de viviendas en `datos/respaldo/viviendas_catastro.csv.gz` (unos 497.000 edificios y 2,97 millones de viviendas). Esa copia sí se sube al repositorio, porque la descarga es de varios GB y el Catastro cambia poco; para renovarla basta con borrarla.
+
 ## Elaborados (`datos/elaborados/`)
 
 ### `desfibriladores.csv`
@@ -41,6 +43,16 @@ Una fila por sección censal (4.417).
 | `lon`, `lat` | El mismo centro en grados |
 | `poblacion` | Habitantes estimados en 2024 |
 | `mayores_65` | Habitantes de 65 o más años estimados |
+
+### `puntos.csv`
+Una fila por punto de población (unos 44.000). Cada sección censal se reparte entre sus viviendas del Catastro: si están todas a 150 m o menos de su centro es un solo punto; si no, un punto por cada cuadrado de 150 m con viviendas (paso 3b). Es la unidad de cálculo de los pasos 4 a 9.
+
+| Columna | Significado |
+|---|---|
+| `punto` | Código de la sección, un guion y un número |
+| `cod_ine_seccion`, `cod_ine_muni`, `municipio` | Sección y municipio |
+| `x`, `y`, `lon`, `lat` | Centro de las viviendas del punto |
+| `poblacion`, `mayores_65` | La parte de los vecinos de la sección que le toca según sus viviendas |
 
 ### `cobertura_semana.csv`
 Una fila por hora de la semana (168).
@@ -75,30 +87,30 @@ Las diez mejores farmacias (martes 11:00) y las diez mejores gasolineras 24 h (d
 Qué pasaría si todos los locales de cada grupo tuvieran un aparato: número de locales, % cubierto antes y después y vecinos nuevos. Las dos últimas filas cuentan los centros de salud y hospitales, que ya tienen aparato aunque no estén en el registro.
 
 ### `distancias_calle.csv`
-Una fila por pareja de sección y aparato que están a 300 m o menos andando (4.850 con el registro del 23 de noviembre).
+Una fila por pareja de punto de población y aparato que están a 300 m o menos andando.
 
 | Columna | Significado |
 |---|---|
-| `cod_ine_seccion` | Sección censal |
+| `punto` | Punto de población (`puntos.csv`) |
 | `fila_dea`, `codigo_dea` | Aparato: fila en `desfibriladores.csv` (un código del registro está repetido) y su código |
-| `metros_linea_recta` | Distancia en línea recta entre el centro de la sección y el aparato |
+| `metros_linea_recta` | Distancia en línea recta entre el punto y el aparato |
 | `metros_andando` | Distancia a pie por la red de calles de OpenStreetMap, más lo que hay hasta la calle desde cada punto |
 
 ### `cobertura_variantes.csv`
 Una fila por hora de la semana para cada forma de medir (`medida`: `recta` o `andando`) y cada distancia (`radio_m`: 100, 200 o 300), con las mismas columnas de porcentaje que `cobertura_semana.csv`.
 
 ### `distancias_candidatos.csv`
-Una fila por pareja de sitio candidato y sección que están a 200 m o menos andando (7.317 con el registro del 23 de noviembre, antes de sumar los centros sanitarios). La usan los pasos 7 y 8.
+Una fila por pareja de sitio candidato y punto de población que están a 200 m o menos andando. La usan los pasos 7 y 8.
 
 | Columna | Significado |
 |---|---|
-| `tipo` | `Sitio ideal` (el centro de una sección), `Farmacia`, `Gasolinera 24 h`, `Centro de salud` u `Hospital` |
-| `id` | Código de la sección (sitio ideal), número de la farmacia en el registro, `lon,lat` de la gasolinera o número del centro sanitario en su registro |
-| `cod_ine_seccion` | Sección que quedaría cubierta |
+| `tipo` | `Sitio ideal` (cualquier punto de población), `Farmacia`, `Gasolinera 24 h`, `Centro de salud` u `Hospital` |
+| `id` | Código del punto (sitio ideal), número de la farmacia en el registro, `lon,lat` de la gasolinera o número del centro sanitario en su registro |
+| `punto` | Punto que quedaría cubierto |
 | `metros_andando` | Distancia a pie, calculada igual que en `distancias_calle.csv` |
 
 ### `cubiertas_andando.npy`
-Matriz de 168 × 4.417 (horas de la semana por secciones) con `True` si la sección está cubierta a 200 m o menos andando. La genera el paso 6 y parten de ella los pasos 7 y 8. No se sube al repositorio.
+Matriz de 168 horas de la semana por puntos de población con `True` si el punto está cubierto a 200 m o menos andando. La genera el paso 6 y parten de ella los pasos 7 y 8. No se sube al repositorio.
 
 ### `municipios.csv`
 Código, nombre y población de 2024 de los 179 municipios.
