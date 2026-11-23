@@ -2,22 +2,29 @@ name: Probar Catastro
 on:
   push:
     branches: [portales]
-    paths: ['.github/workflows/probar_catastro.yml', 'src/probar_catastro.py']
+    paths: ['.github/workflows/probar_catastro.yml', 'src/probar_catastro.py', 'src/viviendas_catastro.py', 'src/03b_puntos_de_poblacion.py']
 jobs:
   probar:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          curl -s -m 60 -o atom.xml -w '%{http_code}\n' https://www.catastro.hacienda.gob.es/INSPIRE/buildings/28/ES.SDGC.BU.atom_28.xml || true
-          ls -la atom.xml; head -c 3000 atom.xml; echo
-          grep -o 'https[^"<]*\.zip' atom.xml | head -5
-          grep -io 'href="[^"]*VALDEMORILLO[^"]*"\|[^<>]*VALDEMORILLO[^<>]*' atom.xml | head
-          U=$(grep -o 'https[^"<]*\.xml' atom.xml | grep -i 28 | head -3); echo "$U"
-      - run: |
-          curl -s -m 180 -o b.zip "https://www.catastro.hacienda.gob.es/INSPIRE/Buildings/28/28160-VALDEMORILLO/A.ES.SDGC.BU.28160.zip"; ls -la b.zip; unzip -l b.zip
-          unzip -o -q b.zip -d b; ls -la b
-          for f in b/*.gml; do echo "== $f"; head -c 5000 "$f"; echo; done
-          grep -ho 'numberOfDwellings>[0-9]*' b/*.gml | sort | uniq -c | sort -rn | head
-          grep -ho 'currentUse>[^<]*' b/*.gml | sort | uniq -c | sort -rn | head
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - working-directory: src
+        run: |
+          python viviendas_catastro.py
+          python 01_descargar.py
+          python 02_limpiar_desfibriladores.py
+          python 03_poblacion_secciones.py
+          python 03b_puntos_de_poblacion.py
+          python probar_catastro.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: viviendas
+          path: |
+            datos/respaldo/viviendas_catastro.csv.gz
+            datos/elaborados/puntos.csv
