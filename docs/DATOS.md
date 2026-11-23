@@ -7,9 +7,9 @@ Se descargan con `src/01_descargar.py`. No se suben al repositorio.
 | Fichero | Fuente | Notas |
 |---|---|---|
 | `desfibriladores.csv` | Registro de desfibriladores externos fuera del ámbito sanitario, Portal de Datos Abiertos de la Comunidad de Madrid | Separador `;`, coordenadas con coma decimal. El horario (`horario_acceso`) es texto libre. |
-| `secciones_censales.zip` | Secciones censales, Portal de Datos Abiertos de la Comunidad de Madrid | Shapefile del seccionado de 2019 en ETRS89 / UTM 30N. En Collado Villalba, Majadahonda y Pinto el campo `CDTSECCION` viene vacío, por eso usamos `CDGSECCION`. |
+| `secciones_censales.zip` | Secciones censales, Portal de Datos Abiertos de la Comunidad de Madrid | Shapefile del seccionado de 2019 en ETRS89 / UTM 30N. En Collado Villalba, Majadahonda y Pinto el campo `CDTSECCION` viene vacío, por eso se usa `CDGSECCION`. |
 | `ine_31105.csv` | INE, Atlas de distribución de renta de los hogares, indicadores demográficos | Números con punto de miles y coma decimal. En secciones de pueblos muy pequeños el valor de 2019 es 0. |
-| `oficinas_farmacia.csv` | Oficinas de farmacia, Portal de Datos Abiertos de la Comunidad de Madrid | Trae el nombre del titular; no lo usamos ni lo guardamos en los elaborados. |
+| `oficinas_farmacia.csv` | Oficinas de farmacia, Portal de Datos Abiertos de la Comunidad de Madrid | Trae el nombre del titular; no se usa ni se guarda en los elaborados. |
 | `gasolineras.json` | API REST de precios de carburantes del Ministerio para la Transición Ecológica (filtro Comunidad de Madrid, código 13) | Hay que pedirla con la cabecera `Accept: application/json`. Coordenadas con coma decimal; el horario es texto como `L-D: 24H`. |
 | `defunciones_causa.csv` | Defunciones por causa de muerte y sexo, Portal de Datos Abiertos de la Comunidad de Madrid | Solo se usa como contexto. |
 
@@ -87,7 +87,7 @@ Una fila por pareja de sección y aparato que están a 300 m o menos andando (4.
 Una fila por hora de la semana para cada forma de medir (`medida`: `recta` o `andando`) y cada distancia (`radio_m`: 100, 200 o 300), con las mismas columnas de porcentaje que `cobertura_semana.csv`.
 
 ### `distancias_candidatos.csv`
-Una fila por pareja de sitio candidato y sección que están a 200 m o menos andando (7.342). La usan los pasos 7 y 8.
+Una fila por pareja de sitio candidato y sección que están a 200 m o menos andando (7.317 con el registro del 23 de noviembre). La usan los pasos 7 y 8.
 
 | Columna | Significado |
 |---|---|

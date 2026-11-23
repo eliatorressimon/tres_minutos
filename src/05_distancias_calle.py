@@ -94,7 +94,7 @@ if __name__ == '__main__':
     pd.DataFrame([{'cod_ine_seccion': sec.at[i, 'cod_ine_seccion'], 'fila_dea': int(dea.at[j, 'fila_dea']),
                    'codigo_dea': dea.at[j, 'codigo_dea'], 'metros_linea_recta': r, 'metros_andando': m}
                   for i, j, r, m in p]).to_csv(ELABORADOS / 'distancias_calle.csv', index=False)
-    print(len(p), 'parejas sección–aparato a', MAX_DEA_M, 'm o menos andando')
+    print(len(p), 'parejas sección y aparato a', MAX_DEA_M, 'm o menos andando')
 
     # 2. sitios candidatos y secciones
     ideal = pd.DataFrame({'id': sec['cod_ine_seccion'], 'tipo': 'Sitio ideal', 'lon': sec['lon'], 'lat': sec['lat']})
@@ -102,4 +102,4 @@ if __name__ == '__main__':
     p = andando(cand, sec, RADIO_M)
     pd.DataFrame([{'tipo': cand.at[i, 'tipo'], 'id': cand.at[i, 'id'], 'cod_ine_seccion': sec.at[j, 'cod_ine_seccion'],
                    'metros_andando': m} for i, j, r, m in p]).to_csv(ELABORADOS / 'distancias_candidatos.csv', index=False)
-    print(len(p), 'parejas sitio–sección a', RADIO_M, 'm o menos andando')
+    print(len(p), 'parejas sitio y sección a', RADIO_M, 'm o menos andando')

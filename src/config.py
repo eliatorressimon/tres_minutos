@@ -6,7 +6,7 @@ ORIGINALES = RAIZ / 'datos' / 'originales'
 ELABORADOS = RAIZ / 'datos' / 'elaborados'
 WEB = RAIZ / 'web'
 
-RADIO_M = 200        # distancia máxima, en metros y en línea recta, para considerar cubierta una sección
+RADIO_M = 200        # distancia máxima en metros para considerar cubierta una sección (andando por la calle; en línea recta solo en el paso 4)
 NUEVOS_APARATOS = 10 # cuántos sitios nuevos proponemos
 CRS_METROS = 25830   # ETRS89 / UTM 30N, el sistema en metros que usa la Comunidad de Madrid
 

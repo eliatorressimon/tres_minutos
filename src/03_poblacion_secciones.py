@@ -6,6 +6,7 @@
 Salida: datos/elaborados/secciones.csv
 """
 import zipfile, tempfile
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import shapefile  # pyshp
@@ -29,7 +30,7 @@ def centroide(puntos, partes):
 # 1. geometría
 with tempfile.TemporaryDirectory() as tmp:
     zipfile.ZipFile(ORIGINALES / 'secciones_censales.zip').extractall(tmp)
-    shp = next(p for p in __import__('pathlib').Path(tmp).glob('*.shp'))
+    shp = next(Path(tmp).glob('*.shp'))
     lector = shapefile.Reader(str(shp), encoding='latin1')
     filas = []
     for reg in lector.iterShapeRecords():

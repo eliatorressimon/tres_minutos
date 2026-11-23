@@ -56,12 +56,14 @@ jobs:
           else
             git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
               commit -m "Datos actualizados automáticamente ($(date -u +%F))"
+            git pull --rebase
             git push
             echo "cambios=si" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Publicar la web
-        if: steps.guardar.outputs.cambios == 'si'
+        # se publica si han cambiado los datos o si se ha lanzado a mano (por ejemplo, tras cambiar la web)
+        if: steps.guardar.outputs.cambios == 'si' || github.event_name == 'workflow_dispatch'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}

@@ -458,7 +458,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
     <button data-tab="admin"><span class="largo">Administraciones</span><span class="corto">Administración</span></button>
     <button data-tab="info"><span class="largo">Información</span><span class="corto">Info</span></button>
   </nav>
-  <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><div class="lectura" aria-live="polite" title="Hora que estás viendo en el mapa y vecinos con un desfibrilador abierto cerca"><span class="pulso"></span><small id="lecturaE"></small><span id="lecturaT">MAR 11:00</span><b id="lecturaP">45 %</b><small>cubiertos</small></div>
+  <svg class="cab-ecg" viewBox="0 0 1000 14" preserveAspectRatio="none" aria-hidden="true"><path class="base" d="M0 13H1000"/><path class="viaje" d="M0 13H300l6-9 8 9 4-12 6 12H700l6-9 8 9 4-12 6 12H1000"/></svg><div class="lectura" aria-live="polite" title="Hora que estás viendo en el mapa y vecinos con un desfibrilador abierto cerca"><span class="pulso"></span><small id="lecturaE"></small><span id="lecturaT">MAR 11:00</span><b id="lecturaP">20,7 %</b><small>cubiertos</small></div>
 </header>
 
 <div class="cuerpo">
@@ -481,7 +481,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       <div class="caja">
         <div class="caja-cab"><span id="cajaT">MARTES 11:00</span><b id="cajaVivo"></b></div>
         <div class="caja-cuerpo">
-          <div class="hora-dato"><strong id="cPct">45 %</strong><p id="cTexto"></p></div>
+          <div class="hora-dato"><strong id="cPct">20,7 %</strong><p id="cTexto"></p></div>
           <div class="barras-tit">Cada hora del <span id="barrasDia">martes</span>. Pulsa una barra para verla</div>
           <svg id="esfera" viewBox="0 0 480 116" role="img" aria-label="Barras con el porcentaje de vecinos cubiertos en cada hora del día elegido"></svg>
           <div class="reloj">
@@ -507,11 +507,11 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       <details class="bloque"><summary>Más cifras de esta hora<small>Fuera de la capital, mayores de 65 y aparatos abiertos</small></summary><div class="bloque-cuerpo">
         <ul class="apilado"><li><span>Fuera de Madrid capital</span><strong id="cFuera"></strong></li><li><span>Mayores de 65 cubiertos</span><strong id="c65"></strong></li><li><span>Aparatos abiertos</span><strong id="cAbiertos"></strong></li></ul>
       </div></details>
-      <details class="bloque"><summary>Probar con otra distancia<small>Para ver si el resultado depende de cómo medimos</small></summary><div class="bloque-cuerpo">
-            <p class="nota" style="font-size:14px;margin-bottom:12px">Contamos a un vecino como cubierto si tiene un aparato abierto a <b>200 metros andando</b>: es lo que da tiempo a ir y volver en unos tres minutos. Aquí puedes ver qué pasa con un criterio más exigente (100 m), más generoso (300 m) o midiendo en línea recta, como si se pudieran atravesar los edificios. Todo se recalcula, también el mapa.</p>
+      <details class="bloque"><summary>Probar con otra distancia<small>Para ver si el resultado depende de cómo se mide</small></summary><div class="bloque-cuerpo">
+            <p class="nota" style="font-size:14px;margin-bottom:12px">Un vecino cuenta como cubierto si tiene un aparato abierto a <b>200 metros andando</b>: es lo que da tiempo a ir y volver en unos tres minutos. Aquí puedes ver qué pasa con un criterio más exigente (100 m), más generoso (300 m) o midiendo en línea recta, como si se pudieran atravesar los edificios. Todo se recalcula, también el mapa.</p>
             <div class="medir" id="medir">
               <div class="medir-fila"><span>Distancia</span><div class="seg" id="segR"><button data-r="100" aria-pressed="false">100 m</button><button data-r="200" aria-pressed="true">200 m</button><button data-r="300" aria-pressed="false">300 m</button></div></div>
-              <div class="medir-fila"><span>Medida</span><div class="seg" id="segM"><button data-m="recta" aria-pressed="true">En línea recta</button><button data-m="andando" aria-pressed="false">Andando por la calle</button></div></div>
+              <div class="medir-fila"><span>Medida</span><div class="seg" id="segM"><button data-m="recta" aria-pressed="false">En línea recta</button><button data-m="andando" aria-pressed="true">Andando por la calle</button></div></div>
               <p class="nota" id="medirNota"></p>
             </div>
       </div></details>
@@ -529,10 +529,10 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       <div class="antetitulo">Para vecinos, familias y mayores</div>
       <h1 class="titular">¿Cómo de protegida está <span>tu calle</span>?</h1>
       <p class="entradilla">Si alguien se desploma, cada minuto sin desfibrilador cuenta. Mira si tienes uno cerca, de día y de noche.</p>
-      <button class="letra" id="btnLetra" aria-pressed="false">Aa  Letra más grande</button>
+      <button class="letra" id="btnLetra" aria-pressed="false">Aa Letra más grande</button>
       <div class="cercano" id="cercano">
         <h3>Mira tu calle</h3>
-        <p>Usa tu ubicación o toca cualquier punto del mapa: tu casa, el colegio, la casa de tus padres. Te decimos a qué distancia andando está el desfibrilador abierto más cercano, de día y de noche.</p>
+        <p>Usa tu ubicación o toca cualquier punto del mapa: tu casa, el colegio, la casa de tus padres. Verás a qué distancia andando está el desfibrilador abierto más cercano, de día y de noche.</p>
         <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="enlace" id="btnTocar">o toca un punto del mapa</button></div>
         <div id="barrio" class="barrio"></div>
         <div id="rutaRes"></div>
@@ -566,7 +566,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
           <p>En la Comunidad de Madrid, los centros educativos están obligados a tener un desfibrilador (Decreto 78/2017). Pregunta dónde está y quién sabe usarlo.</p>
           <p>Fuera del horario escolar el colegio está cerrado, así que su aparato no sirve al barrio por la tarde ni de noche.</p></div></details>
         <details><summary>Para las personas mayores</summary><div>
-          <ul><li>Los mayores de 65 son casi uno de cada cinco vecinos y quienes más riesgo tienen. Por eso en nuestros cálculos cuentan doble.</li>
+          <ul><li>Los mayores de 65 son casi uno de cada cinco vecinos y quienes más riesgo tienen. Por eso en estos cálculos cuentan doble.</li>
           <li>Guarda el <b>112</b> en marcación rápida y un contacto en "Avisar a un contacto".</li>
           <li>La pantalla de Emergencia tiene botones grandes y voz, para que no haga falta leer.</li>
           <li>Si te cuesta ver la pantalla, pulsa "Letra más grande".</li></ul></div></details>
@@ -576,8 +576,8 @@ details.bloque h2.seccion:first-child{margin-top:6px}
           <li><b>La tabla de "Tu calle":</b> a cuántos metros andando queda el más cercano a tres horas distintas. Verde si está a 200 metros o menos, rojo si está lejos.</li>
           <li>De noche el mapa se oscurece para que se note la hora.</li></ul></div></details>
         <details><summary>¿De dónde salen estos datos?</summary><div>
-          <p>Del registro oficial de desfibriladores de la Comunidad de Madrid, con su horario, la población del INE y las calles de OpenStreetMap. Lo contamos en <a href="#metodo">Administraciones, Método</a>.</p>
-          <p>Si un aparato no tiene un horario claro, no lo contamos como abierto. Puede que haya alguno más de los que mostramos.</p></div></details>
+          <p>Del registro oficial de desfibriladores de la Comunidad de Madrid, con su horario, la población del INE y las calles de OpenStreetMap. Está explicado en <a href="#metodo">Administraciones, Método</a>.</p>
+          <p>Si un aparato no tiene un horario claro, no cuenta como abierto. Puede que haya alguno más de los que salen aquí.</p></div></details>
       </div>
       <p class="nota" style="margin-top:16px">Herramienta no oficial, sin relación con la Comunidad de Madrid. Ante una emergencia, llama siempre al 112.</p>
     </section>
@@ -596,7 +596,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <div class="simulador">
         <div class="caja-cab"><span>SIMULADOR</span><b id="simCab"></b></div>
         <div class="caja-cuerpo">
-          <p>Para decidir dónde poner el próximo: pulsa el botón y toca el mapa donde lo pondrías. Cuenta como abierto las 24 horas y te decimos cuántos vecinos sin cobertura gana a la hora elegida, midiendo andando por la calle. Puedes poner varios.</p>
+          <p>Para decidir dónde poner el próximo: pulsa el botón y toca el mapa donde lo pondrías. Cuenta como abierto las 24 horas y verás cuántos vecinos sin cobertura gana a la hora elegida, midiendo andando por la calle. Puedes poner varios.</p>
           <div class="acciones"><button class="boton" id="btnPoner" aria-pressed="false">Colocar en el mapa</button><button class="enlace" id="btnQuitar" hidden>Quitar los míos</button></div>
           <div class="resultado-sim" id="resSim" hidden></div>
         </div>
@@ -606,21 +606,21 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <ol class="sitios" id="sitios"></ol>
         <div class="suma"><span class="cifra" id="sumaPers"></span><p id="sumaTxt"></p></div>
       </div></details>
-      <details class="bloque"><summary>Cómo los elegimos</summary><div class="bloque-cuerpo"><p class="nota" style="font-size:14px">De uno en uno: ponemos el que más vecinos sin cubrir gana, lo damos por colocado y buscamos el siguiente con lo que queda. Los mayores de 65 cuentan doble porque son quienes más riesgo tienen. Se mide andando por la calle.</p></div></details>
+      <details class="bloque"><summary>Cómo se eligen</summary><div class="bloque-cuerpo"><p class="nota" style="font-size:14px">De uno en uno: se pone el que más vecinos sin cubrir gana, se da por colocado y se busca el siguiente con lo que queda. Los mayores de 65 cuentan doble porque son quienes más riesgo tienen. Se mide andando por la calle.</p></div></details>
     </section>
 
 
     <section class="vista" id="v-metodo" hidden>
       <div class="antetitulo">Datos abiertos y código</div>
-      <h1 class="titular">Cómo lo <span>calculamos</span>.</h1>
+      <h1 class="titular">Cómo se <span>calcula</span>.</h1>
       <p class="entradilla">Datos abiertos de la Comunidad de Madrid, el INE y OpenStreetMap, y un cálculo para cada una de las 168 horas de la semana.</p>
       <details class="bloque" open><summary>Los cinco pasos<small>Aparatos, horarios, vecinos, distancias y nuevos sitios</small></summary><div class="bloque-cuerpo">
       <ol class="pasos">
-        <li><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b><span data-n="registro">13.664</span></b>, todos con coordenadas. Quitamos los <b><span data-n="movil">2.206</span></b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
-        <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de <span data-n="formas">2.336</span> formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Lo convertimos en una tabla de 7 días por 24 horas. <b><span data-n="siempre">3.229</span></b> abren siempre y <b><span data-n="desconocido">4.534</span></b> no tienen un horario que se pueda leer, así que no los contamos como abiertos.</p></div></li>
-        <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a 200 metros o menos de su centro, andando por la calle. Lo calculamos para las 168 horas de la semana.</p></div></li>
-        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a menos de 300 metros pedimos la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y le sumamos lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b><span data-n="andando_martes">20,7</span> %</b> de los vecinos tiene uno abierto (en línea recta salía el <span data-n="recta_martes">45,5</span> %) y un domingo a las 3, el <b><span data-n="andando_domingo">9,6</span> %</b> (frente al <span data-n="recta_domingo">25,9</span> %). Por eso toda la web, también "Dónde poner más", mide andando.</p></div></li>
-        <li><div><h4>Dónde poner los siguientes</h4><p>Elegimos de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y repetimos con lo que queda. De día buscamos entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas o en cualquier punto del mapa.</p></div></li>
+        <li><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b><span data-n="registro">13.664</span></b>, todos con coordenadas. Se quitan los <b><span data-n="movil">2.206</span></b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
+        <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de <span data-n="formas">2.336</span> formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Se convierte en una tabla de 7 días por 24 horas. <b><span data-n="siempre">3.229</span></b> abren siempre y <b><span data-n="desconocido">4.534</span></b> no tienen un horario que se pueda leer, así que no cuentan como abiertos.</p></div></li>
+        <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a 200 metros o menos de su centro, andando por la calle. Se calcula para las 168 horas de la semana.</p></div></li>
+        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a 300 metros o menos se pide la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y se le suma lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b><span data-n="andando_martes">20,7</span> %</b> de los vecinos tiene uno abierto (en línea recta salía el <span data-n="recta_martes">45,5</span> %) y un domingo a las 3, el <b><span data-n="andando_domingo">9,6</span> %</b> (frente al <span data-n="recta_domingo">25,9</span> %). Por eso toda la web, también "Dónde poner más", mide andando.</p></div></li>
+        <li><div><h4>Dónde poner los siguientes</h4><p>Se elige de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y se repite con lo que queda. De día se busca entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas o en cualquier punto del mapa.</p></div></li>
       </ol>
       </div></details>
       <details class="bloque"><summary>Por qué 200 metros<small>Ir y volver en tres minutos</small></summary><div class="bloque-cuerpo">
@@ -629,7 +629,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <div><strong>1:30</strong>Otro corre al desfibrilador más cercano: 200 metros.</div>
         <div><strong>3:00</strong>Vuelve con él y lo enciende. El aparato guía la descarga.</div>
       </div>
-      <p class="nota" style="margin-top:10px">Ir y volver 400 metros a paso rápido cabe en unos tres minutos. Por eso medimos 200 metros andando desde el centro de cada sección censal. En "Cobertura", dentro de "Cambiar la distancia", puedes probar con 100 o 300 metros, o medir en línea recta. Por qué importan esos minutos, con todas las fuentes, está en <a href="https://github.com/eliatorressimon/tres_minutos/blob/main/docs/POR_QUE_IMPORTA.md" target="_blank" rel="noopener">este documento</a>.</p>
+      <p class="nota" style="margin-top:10px">Ir y volver 400 metros a paso rápido cabe en unos tres minutos. Por eso se miden 200 metros andando desde el centro de cada sección censal. En "Cobertura", dentro de "Probar con otra distancia", puedes probar con 100 o 300 metros, o medir en línea recta. Por qué importan esos minutos, con todas las fuentes, está en <a href="https://github.com/eliatorressimon/tres_minutos/blob/main/docs/POR_QUE_IMPORTA.md" target="_blank" rel="noopener">este documento</a>.</p>
       </div></details>
       <details class="bloque"><summary>Fuentes<small>De dónde sale cada dato</small></summary><div class="bloque-cuerpo">
       <ul class="fuentes">
@@ -642,7 +642,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       </ul>
       </div></details>
       <details class="bloque"><summary>Límites<small>Lo que hay que tener en cuenta</small></summary><div class="bloque-cuerpo">
-      <div class="aviso">Medimos desde el centro de cada sección, así que para quien vive en la fachada la distancia real es algo menor. Y un aparato sin horario puede estar abierto aunque no lo contemos. El código y los datos elaborados están en <a href="https://github.com/eliatorressimon/tres_minutos" target="_blank" rel="noopener">GitHub</a>, con licencia MIT.</div>
+      <div class="aviso">Se mide desde el centro de cada sección, así que para cada casa la distancia real puede ser algo mayor o menor. Y un aparato sin horario puede estar abierto aunque aquí no cuente. El código y los datos elaborados están en <a href="https://github.com/eliatorressimon/tres_minutos" target="_blank" rel="noopener">GitHub</a>, con licencia MIT.</div>
       </div></details>
       <details class="bloque"><summary>Quién lo ha hecho<small>Proyecto para DataMad 2026</small></summary><div class="bloque-cuerpo">
       <div class="equipo">
@@ -679,7 +679,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
     <svg class="sos-ecg" viewBox="0 0 520 34" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22H170l8-12 10 12 6-20 8 28 7-8H330l8-12 10 12 6-20 8 28 7-8H520"/></svg>
     <div class="sos-ante">Emergencia</div>
     <h1>¿Alguien se ha desplomado?</h1>
-    <p class="sos-sub">Pulsa el botón. Te decimos dónde está el desfibrilador abierto más cercano y cómo llegar andando.</p>
+    <p class="sos-sub">Pulsa el botón. Te dice dónde está el desfibrilador abierto más cercano y cómo llegar andando.</p>
     <div class="sos-halo"><button class="sos-boton" id="sosBoton"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3.1A4.6 4.6 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>Pulsa aquí<small>DESFIBRILADOR MÁS CERCANO</small></button></div>
     <div class="sos-botones"><a class="sos-112" href="tel:112"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.6 1h2.6l1.3 3.4-1.7 1.2a8.6 8.6 0 0 0 4.6 4.6l1.2-1.7 3.4 1.3v2.6c0 .9-.7 1.6-1.6 1.6A12.4 12.4 0 0 1 2 2.6C2 1.7 2.7 1 3.6 1z"/></svg>Llamar al 112</a>
     <button class="sos-contacto" id="sosContacto">Avisar a un contacto</button></div>
@@ -898,7 +898,7 @@ function casos(){
   const caida=D.munis.map((_,m)=>m).filter(m=>D.totM[m]>20000&&m!==MAD).sort((a,b)=>(curvaM[b][35]-curvaM[b][147])-(curvaM[a][35]-curvaM[a][147]))[0];
   const L=[
     {i:'luna',t:'Domingo a las 3 de la madrugada',s:`Solo el ${Math.round(curvaG[147][0])} % de los vecinos tiene un aparato abierto cerca.`,f:()=>{ponerT(147);volar(vista0())}},
-    {i:'sol',t:'Martes a las 11 de la mañana',s:`El mejor momento de la semana: el ${Math.round(curvaG[35][0])} %.`,f:()=>{ponerT(35);volar(vista0())}},
+    {i:'sol',t:'Martes a las 11 de la mañana',s:`De los mejores momentos de la semana: el ${Math.round(curvaG[35][0])} %.`,f:()=>{ponerT(35);volar(vista0())}},
     {i:'pin',t:`${nombreBonito(D.munis[caida])}, de día y de noche`,s:`Del ${Math.round(curvaM[caida][35])} % un martes por la mañana al ${Math.round(curvaM[caida][147])} % de madrugada.`,f:()=>{ponerT(147);abrirMunicipio(caida)}},
     {i:'vacio',t:`${sinDea.length} municipios sin ninguno`,s:`El más grande es ${nombreBonito(D.munis[sinDea[0].i])}, con ${fmt(sinDea[0].p)} vecinos.`,f:()=>abrirMunicipio(sinDea[0].i)}];
   $('casos').innerHTML=L.map((c,k)=>`<button class="caso" data-k="${k}">${ICO[c.i]}<strong>${c.t}</strong><span>${c.s}</span><em>Ver →</em></button>`).join('');
@@ -989,7 +989,7 @@ function sitios(){
   const st=D.si_todos||[],g=st.find(x=>/gasolineras/.test(x.caso)),f=st.find(x=>/farmacias/.test(x.caso));
   const ideal=D.nuevos.reduce((a,d)=>a+d.personas,0),gas=D.reales.filter(r=>r.momento==='noche').reduce((a,d)=>a+d.personas,0);
   $('hallazgo').innerHTML=modoAct==='dia'&&f?`<div class="flecha"><span>${p1(f.pct_antes)}</span><i>→</i><span class="despues">${p1(f.pct_despues)}</span></div><p>Si <b>cada una de las ${fmt(f.locales)} farmacias</b> de la Comunidad tuviera un desfibrilador, un martes a las 11 la cobertura pasaría del ${p1(f.pct_antes)} al ${p1(f.pct_despues)}: <b>${fmt(f.vecinos_nuevos)} vecinos más</b>. Están en todos los barrios y abren de día.</p>`
-    :modoAct==='noche'&&g?`<div class="flecha"><span>${p1(g.pct_antes)}</span><i>→</i><span class="despues">${p1(g.pct_despues)}</span></div><p>Aunque <b>las ${fmt(g.locales)} gasolineras</b> abiertas las 24 horas tuvieran uno, de madrugada solo pasaríamos del ${p1(g.pct_antes)} al ${p1(g.pct_despues)}. Están en carreteras y avenidas, no donde vive la gente. Las diez mejores suman ${fmt(gas)} vecinos.</p>`
+    :modoAct==='noche'&&g?`<div class="flecha"><span>${p1(g.pct_antes)}</span><i>→</i><span class="despues">${p1(g.pct_despues)}</span></div><p>Aunque <b>las ${fmt(g.locales)} gasolineras</b> abiertas las 24 horas tuvieran uno, de madrugada la cobertura solo pasaría del ${p1(g.pct_antes)} al ${p1(g.pct_despues)}. Suelen estar en carreteras y avenidas, lejos de las casas. Las diez mejores suman ${fmt(gas)} vecinos.</p>`
     :`<div class="flecha"><span class="despues">+${fmt(ideal)}</span></div><p>Es el máximo que se puede ganar con diez aparatos abiertos las 24 horas, poniéndolos en el mejor punto posible, haya allí un local o no. Sirve para comparar: las diez mejores gasolineras ganan ${fmt(gas)}.</p>`;
 }
 $('modos').onclick=e=>{const b=e.target.closest('[data-modo]');if(!b)return;modoAct=b.dataset.modo;sitios();parar();ponerT(horaAct());const v=vista0();volar({...v,zoom:v.zoom+.9,latitude:40.38,longitude:-3.72})};
@@ -1036,7 +1036,7 @@ async function barrio(c){
 
 /* ---------- letra grande ---------- */
 const letraGuardada=()=>{try{return localStorage.getItem('tm_letra')==='1'}catch(e){return false}};
-function ponerLetra(on){document.body.classList.toggle('grande',on);$('btnLetra').setAttribute('aria-pressed',on);$('btnLetra').textContent=on?'Aa  Letra normal':'Aa  Letra más grande';try{localStorage.setItem('tm_letra',on?'1':'0')}catch(e){}}
+function ponerLetra(on){document.body.classList.toggle('grande',on);$('btnLetra').setAttribute('aria-pressed',on);$('btnLetra').textContent=on?'Aa Letra normal':'Aa Letra más grande';try{localStorage.setItem('tm_letra',on?'1':'0')}catch(e){}}
 $('btnLetra').onclick=()=>ponerLetra(!document.body.classList.contains('grande'));
 if(letraGuardada())ponerLetra(true);
 
@@ -1047,7 +1047,7 @@ $('btnCerca').onclick=()=>{
   $('rutaRes').innerHTML='<p class="nota">Buscando dónde estás…</p>';
   navigator.geolocation.getCurrentPosition(p=>{const c=[p.coords.longitude,p.coords.latitude];
     if(!DENTRO(c)){modoTocar('Parece que no estás en la Comunidad de Madrid. Toca un punto del mapa para probar.');return}buscarCercano(c)},
-    ()=>modoTocar('No tenemos permiso para ver tu ubicación. Toca un punto del mapa.'),{enableHighAccuracy:true,timeout:9000,maximumAge:60000});
+    ()=>modoTocar('La web no tiene permiso para ver tu ubicación. Toca un punto del mapa.'),{enableHighAccuracy:true,timeout:9000,maximumAge:60000});
 };
 $('btnTocar').onclick=()=>modoTocar('Toca en el mapa el sitio desde el que quieres buscar.');
 function modoTocar(msg){if(poniendo)$('btnPoner').click();buscandoPunto=true;$('deck').classList.add('poniendo');$('rutaRes').innerHTML=`<p class="nota" style="margin-top:10px">${msg}</p>`;if(zoom<11)volar({zoom:11.5})}
@@ -1241,7 +1241,7 @@ const SOS=(()=>{
   }
   async function buscar(c){
     delete $('sosFicha').dataset.esperaPunto;
-    if(!enCM(c)){ficha('<div class="sos-estado">Estás fuera de la Comunidad de Madrid. Solo tenemos los desfibriladores de la Comunidad.</div><div class="sos-acciones"><a class="boton" href="tel:112">Llamar al 112</a></div>');hablar('Estás fuera de la Comunidad de Madrid. Llama al uno uno dos.');return}
+    if(!enCM(c)){ficha('<div class="sos-estado">Estás fuera de la Comunidad de Madrid. Solo hay datos de los desfibriladores de la Comunidad.</div><div class="sos-acciones"><a class="boton" href="tel:112">Llamar al 112</a></div>');hablar('Estás fuera de la Comunidad de Madrid. Llama al uno uno dos.');return}
     ficha('<div class="sos-estado">Buscando el desfibrilador abierto más cercano…</div>');
     await listo;
     const t=ahoraT(),abiertos=D.dea.filter(d=>abierto(d,t));
@@ -1281,7 +1281,7 @@ const SOS=(()=>{
     hablar('Buscando el desfibrilador más cercano. Si nadie lo ha hecho, llama al uno uno dos.');
     if(!navigator.geolocation){abrirMapaS();pedirPunto();return}
     navigator.geolocation.getCurrentPosition(p=>{const c=[p.coords.longitude,p.coords.latitude];abrirMapaS(c);buscar(c)},
-      ()=>{abrirMapaS();ficha('<div class="sos-estado">No podemos saber dónde estás. Toca en el mapa el sitio donde estás, o llama al 112.</div><div class="sos-acciones"><a class="boton" href="tel:112">Llamar al 112</a></div>');$('sosFicha').dataset.esperaPunto='1'},
+      ()=>{abrirMapaS();ficha('<div class="sos-estado">No se puede saber dónde estás. Toca en el mapa el sitio donde estás, o llama al 112.</div><div class="sos-acciones"><a class="boton" href="tel:112">Llamar al 112</a></div>');$('sosFicha').dataset.esperaPunto='1'},
       {enableHighAccuracy:true,timeout:10000,maximumAge:30000});
   }
   // metrónomo de reanimación: 110 por minuto, con sonido y el cuadro que late
