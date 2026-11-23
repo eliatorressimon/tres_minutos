@@ -64,7 +64,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "Datos actualizados automáticamente ($(date -u +%F))"
-            git pull --rebase
+            git pull --rebase -X theirs
             git push
             echo "cambios=si" >> "$GITHUB_OUTPUT"
           fi
