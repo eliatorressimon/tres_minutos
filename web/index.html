@@ -475,7 +475,7 @@ details.bloque h2.seccion:first-child{margin-top:6px}
     </nav>
 
     <section class="vista" id="v-ahora">
-      <div class="antetitulo">Para administraciones: 13.673 aparatos, 168 horas</div>
+      <div class="antetitulo">Para administraciones: <span data-n="registro">13.664</span> aparatos, 168 horas</div>
       <h1 class="titular">Si alguien cae ahora, ¿llega <span>a tiempo</span> un desfibrilador?</h1>
       <p class="entradilla">Hay unos <b>tres minutos</b> para ir a por uno y volver. Cada <b>marca roja</b> del mapa es un barrio donde a esta hora no hay ninguno abierto <span class="dist">a menos de 200 metros</span>.</p>
       <div class="caja">
@@ -616,10 +616,10 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       <p class="entradilla">Datos abiertos de la Comunidad de Madrid, el INE y OpenStreetMap, y un cálculo para cada una de las 168 horas de la semana.</p>
       <details class="bloque" open><summary>Los cinco pasos<small>Aparatos, horarios, vecinos, distancias y nuevos sitios</small></summary><div class="bloque-cuerpo">
       <ol class="pasos">
-        <li><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b>13.673</b>, todos con coordenadas. Quitamos los <b>2.206</b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
-        <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de 2.331 formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Lo convertimos en una tabla de 7 días por 24 horas. <b>3.226</b> abren siempre y <b>4.543</b> no tienen un horario que se pueda leer, así que no los contamos como abiertos.</p></div></li>
+        <li><div><h4>Los aparatos</h4><p>Registro de desfibriladores fuera del ámbito sanitario de la Comunidad de Madrid: <b><span data-n="registro">13.664</span></b>, todos con coordenadas. Quitamos los <b><span data-n="movil">2.206</span></b> que van en autobuses de la EMT, porque se mueven.</p></div></li>
+        <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de <span data-n="formas">2.336</span> formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Lo convertimos en una tabla de 7 días por 24 horas. <b><span data-n="siempre">3.229</span></b> abren siempre y <b><span data-n="desconocido">4.534</span></b> no tienen un horario que se pueda leer, así que no los contamos como abiertos.</p></div></li>
         <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Una sección está cubierta a una hora si tiene un aparato abierto a 200 metros o menos de su centro, andando por la calle. Lo calculamos para las 168 horas de la semana.</p></div></li>
-        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a menos de 300 metros pedimos la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y le sumamos lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b>20,6 %</b> de los vecinos tiene uno abierto (en línea recta salía el 45,6 %) y un domingo a las 3, el <b>9,6 %</b> (frente al 25,9 %). Por eso toda la web, también "Dónde poner más", mide andando.</p></div></li>
+        <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de sección y aparato a menos de 300 metros pedimos la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y le sumamos lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b><span data-n="andando_martes">20,7</span> %</b> de los vecinos tiene uno abierto (en línea recta salía el <span data-n="recta_martes">45,5</span> %) y un domingo a las 3, el <b><span data-n="andando_domingo">9,6</span> %</b> (frente al <span data-n="recta_domingo">25,9</span> %). Por eso toda la web, también "Dónde poner más", mide andando.</p></div></li>
         <li><div><h4>Dónde poner los siguientes</h4><p>Elegimos de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y repetimos con lo que queda. De día buscamos entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas o en cualquier punto del mapa.</p></div></li>
       </ol>
       </div></details>
@@ -1143,7 +1143,7 @@ const intro=(()=>{
     const L=Math.min(380,W*.74),cxm=W/2,cym=H/2-30;
     if(!datosListos){const s=1+.3*Math.max(0,Math.sin(now/170))**8;cx.fillStyle='#d6142f';cx.fillRect(cxm-3*s,cym-3*s,6*s,6*s);return}
     const t=(now-t0)/1000,vis=Math.min(1,t/1.5);
-    frase.textContent=t<1.7?fmt(vis*13673)+' de 13.673 desfibriladores':t<2.9?'Leyendo sus horarios':'Preparando el mapa';
+    const reg=D&&D.resumen?D.resumen.registro:13664;frase.textContent=t<1.7?fmt(vis*reg)+' de '+fmt(reg)+' desfibriladores':t<2.9?'Leyendo sus horarios':'Preparando el mapa';
     const m=Math.max(0,Math.min(1,(t-1.7)/1)),e=m<.5?4*m*m*m:1-Math.pow(-2*m+2,3)/2;
     let lat=1;if(t>2.7){const b=((t-2.7)%.9)/.9;lat=1+.09*Math.exp(-Math.pow((b-.08)/.05,2))+.05*Math.exp(-Math.pow((b-.28)/.05,2))}
     const s=fin?Math.min(1,(now-fin)/800):0,es=1-Math.pow(1-s,3),R=L*.36*lat,kx=Math.cos(40.4*Math.PI/180)*1.0;
@@ -1303,9 +1303,15 @@ const SOS=(()=>{
 })();
 
 /* ---------- arranque ---------- */
+// Las cifras de los textos salen de datos.json, que se recalcula cada semana.
+function ponerCifras(){
+  const r=D.resumen;if(!r)return;
+  document.querySelectorAll('[data-n]').forEach(e=>{const v=r[e.dataset.n];if(v==null)return;
+    e.textContent=Number.isInteger(v)?fmt(v):v.toFixed(1).replace('.',',')});
+}
 const pVars=fetch('variantes.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).catch(e=>{console.error(e);return null});
 fetch('datos.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(async d=>{
-  D=d;SOS.datos();intro.preparar(D.dea);MAD=D.munis.indexOf('Madrid');
+  D=d;ponerCifras();SOS.datos();intro.preparar(D.dea);MAD=D.munis.indexOf('Madrid');
   cub=D.cov.map(b=>decode(b,D.secs.length));VDEC['recta-200']=cub;
   D.poligonos.forEach((ps,m)=>ps.forEach(r=>polis.push({m,r})));
   abiertosT=Array.from({length:168},(_,t)=>D.dea.reduce((a,x)=>a+(abierto(x,t)?1:0),0));

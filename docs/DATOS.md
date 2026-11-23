@@ -74,7 +74,7 @@ Las diez mejores farmacias (martes 11:00) y las diez mejores gasolineras 24 h (d
 Qué pasaría si todos los locales de cada grupo tuvieran un aparato: número de locales, % cubierto antes y después y vecinos nuevos.
 
 ### `distancias_calle.csv`
-Una fila por pareja de sección y aparato que están a 300 m o menos andando (4.878).
+Una fila por pareja de sección y aparato que están a 300 m o menos andando (4.850 con el registro del 23 de noviembre).
 
 | Columna | Significado |
 |---|---|

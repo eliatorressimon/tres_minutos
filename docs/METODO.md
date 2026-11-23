@@ -2,7 +2,7 @@
 
 ## 1. Horarios
 
-El registro guarda el horario de cada desfibrilador como texto libre: "L-V 8-20 h", "lunes a jueves de 9 a 18 y viernes de 9 a 15", "horario escolar", "24 horas / 7 días a la semana"... Hay 2.331 textos distintos. `src/horarios.py` los convierte en una tabla de 7 días por 24 horas con estas reglas:
+El registro guarda el horario de cada desfibrilador como texto libre: "L-V 8-20 h", "lunes a jueves de 9 a 18 y viernes de 9 a 15", "horario escolar", "24 horas / 7 días a la semana"... Hay 2.336 textos distintos. `src/horarios.py` los convierte en una tabla de 7 días por 24 horas con estas reglas:
 
 - "24 h", "24 horas", "permanente" y parecidos: abierto siempre.
 - "Horario escolar": de lunes a viernes de 8:00 a 17:00.
@@ -13,7 +13,7 @@ El registro guarda el horario de cada desfibrilador como texto libre: "L-V 8-20 
 - "Según eventos", "partidos", "competiciones": solo abierto en actos, no cuenta.
 - Vacío o ilegible: desconocido, no cuenta como abierto.
 
-Revisando la tabla de "L-V 8:00-15:00 / S 9-14" vimos que el sábado salía vacío: las abreviaturas de una letra sueltas ("S", "D") no se reconocían, y "S y D" se partía en dos. Al arreglarlo cambiaron las tablas de unos 270 aparatos, sobre todo en fin de semana. La cobertura del martes a las 11:00 en línea recta subió unas décimas, hasta el 45,6 %, y la del domingo a las 3:00 no cambió.
+Revisando la tabla de "L-V 8:00-15:00 / S 9-14" vimos que el sábado salía vacío: las abreviaturas de una letra sueltas ("S", "D") no se reconocían, y "S y D" se partía en dos. Al arreglarlo cambiaron las tablas de unos 270 aparatos, sobre todo en fin de semana. La cobertura del martes a las 11:00 en línea recta subió unas décimas, hasta el 45,6 % con el registro de entonces, y la del domingo a las 3:00 no cambió.
 
 Un aparato solo cuenta como abierto a una hora si su horario lo dice. Por eso las cifras son un mínimo: si todos los de horario desconocido estuvieran abiertos de madrugada, la cobertura en línea recta del domingo a las 3:00 subiría del 25,9 % al 56,6 % (lo calcula `src/04_cobertura.py`).
 
@@ -38,22 +38,22 @@ Problema de máxima cobertura: elegir k puntos que cubran a la mayor cantidad de
 - De día (martes a las 11:00): las 2.954 oficinas de farmacia del registro de la Comunidad.
 - De madrugada (domingo a las 3:00): las 550 gasolineras cuyo horario en la API del Ministerio es `L-D: 24H` o `L-D: 00:00-23:59`.
 
-Para cada grupo elegimos los diez mejores y calculamos también qué pasaría si todos los locales tuvieran uno. Las distancias de cada local a las secciones se miden andando (apartado 6). Con todas las farmacias, la cobertura del martes a las 11:00 pasaría del 20,6 % al 45,7 %. Con todas las gasolineras de 24 horas, la del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %.
+Para cada grupo elegimos los diez mejores y calculamos también qué pasaría si todos los locales tuvieran uno. Las distancias de cada local a las secciones se miden andando (apartado 6). Con todas las farmacias, la cobertura del martes a las 11:00 pasaría del 20,7 % al 45,7 %. Con todas las gasolineras de 24 horas, la del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %.
 
 ## 6. Andando por la calle
 
 En línea recta, 200 m pueden ser mucho más andando: hay que rodear manzanas, cruzar por un paso de peatones o buscar el puente sobre una vía. `src/05_distancias_calle.py` toma cada pareja de sección y aparato (fijo y con horario conocido) que está a menos de 300 m en línea recta, unas 13.600, y pide su distancia a pie por la red de calles y caminos de OpenStreetMap al servidor OSRM de routing.openstreetmap.de (servicio `table`, perfil a pie). A esa distancia se le suma lo que hay desde el centro de la sección y desde el aparato hasta la calle más cercana. Se agrupan secciones vecinas para hacer unas 90 peticiones de 100 puntos como mucho. El mismo script mide también, andando, qué secciones quedan a 200 m o menos de cada sitio candidato: el centro de cada sección, cada farmacia y cada gasolinera de 24 horas (unas 120 peticiones más).
 
-Solo 4.878 parejas quedan a 300 m o menos andando. La mediana de la distancia andando es 1,5 veces la distancia en línea recta.
+Solo 4.850 parejas quedan a 300 m o menos andando. La mediana de la distancia andando es 1,5 veces la distancia en línea recta.
 
 `src/06_cobertura_calle.py` repite el cálculo de cobertura con 100, 200 y 300 m, en línea recta y andando:
 
 | | 100 m | 200 m | 300 m |
 |---|---|---|---|
-| Martes 11:00, línea recta | 17,7 % | 45,6 % | 66,3 % |
-| Martes 11:00, andando | 5,0 % | 20,6 % | 39,0 % |
+| Martes 11:00, línea recta | 17,7 % | 45,5 % | 66,3 % |
+| Martes 11:00, andando | 5,1 % | 20,7 % | 38,7 % |
 | Domingo 3:00, línea recta | 7,9 % | 25,9 % | 42,7 % |
-| Domingo 3:00, andando | 2,0 % | 9,6 % | 22,3 % |
+| Domingo 3:00, andando | 2,0 % | 9,6 % | 22,2 % |
 
 Los sitios propuestos (pasos 7 y 8) se calculan andando con 200 m.
 

@@ -28,6 +28,21 @@ codigos = sorted(sec['cod_ine_muni'].unique())
 idx = {m: i for i, m in enumerate(codigos)}
 nombres = sec.drop_duplicates('cod_ine_muni').set_index('cod_ine_muni')['municipio']
 
+# cifras generales que la web escribe en sus textos (así se actualizan solas con cada descarga)
+var = pd.read_csv(ELABORADOS / 'cobertura_variantes.csv')
+def pct(medida, dia, hora):
+    return float(var.query('medida == @medida and radio_m == 200 and dia == @dia and hora == @hora')['pct_poblacion'].iloc[0])
+resumen = {
+    'fecha': pd.Timestamp.today().strftime('%Y-%m-%d'),
+    'registro': len(dea),
+    'movil': int(dea['estado_horario'].eq('movil').sum()),
+    'siempre': int(dea['estado_horario'].eq('24h').sum()),
+    'desconocido': int(dea['estado_horario'].eq('desconocido').sum()),
+    'formas': int(dea['horario_acceso'].nunique()),
+    'andando_martes': pct('andando', 'martes', 11), 'recta_martes': pct('recta', 'martes', 11),
+    'andando_domingo': pct('andando', 'domingo', 3), 'recta_domingo': pct('recta', 'domingo', 3),
+}
+
 # desfibriladores fijos: [lon, lat, estado, índice de su horario]
 fijos = dea['fijo'].eq('True').values
 dea, tablas = dea[fijos].reset_index(drop=True), tablas[fijos]
@@ -98,6 +113,7 @@ datos = {
                 'direccion': r.direccion, 'muni': r.municipio, 'lon': round(r.lon, 5), 'lat': round(r.lat, 5),
                 'personas': int(r.vecinos_nuevos), 'mayores': int(r.mayores_65_nuevos)} for r in reales.itertuples()],
     'si_todos': si_todos.to_dict('records'),
+    'resumen': resumen,
     'municipios': [[r.municipio, int(r.poblacion), r.pct_martes_11h, r.pct_domingo_3h, int(r.tiene_desfibrilador_fijo)]
                    for r in muni.itertuples()],
 }

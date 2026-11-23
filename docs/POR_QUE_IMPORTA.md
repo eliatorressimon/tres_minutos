@@ -48,7 +48,7 @@ Si se puede desfibrilar en los primeros 3 a 5 minutos, la supervivencia puede ll
 
 Ir y volver 400 metros a paso rápido cabe en esos tres minutos, así que el aparato tiene que estar a 200 metros o menos. Ese umbral es una decisión nuestra, no una norma. Por eso la web deja probar también con 100 y 300 metros.
 
-Además, los 200 metros se miden andando por la calle y no en línea recta: nadie atraviesa edificios. Con 200 metros andando, un martes a las 11:00 solo el 20,6 % de los vecinos de la Comunidad tiene un desfibrilador abierto, y un domingo a las 3:00 el 9,6 %. En línea recta saldría el 45,6 % y el 25,9 % (ver `METODO.md`).
+Además, los 200 metros se miden andando por la calle y no en línea recta: nadie atraviesa edificios. Con 200 metros andando, un martes a las 11:00 solo el 20,7 % de los vecinos de la Comunidad tiene un desfibrilador abierto, y un domingo a las 3:00 el 9,6 %. En línea recta saldría el 45,5 % y el 25,9 % (ver `METODO.md`).
 
 ## Lo que dice la norma en la Comunidad de Madrid
 
