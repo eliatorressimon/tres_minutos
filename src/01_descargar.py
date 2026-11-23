@@ -6,6 +6,7 @@ Fuentes:
   - Indicadores demográficos por sección censal, tabla 31105 del Atlas de distribución de renta (INE)
   - Defunciones por causa de muerte y sexo, municipios (Portal de Datos Abiertos, Comunidad de Madrid)
   - Oficinas de farmacia (Portal de Datos Abiertos, Comunidad de Madrid)
+  - Centros, servicios y establecimientos sanitarios (Portal de Datos Abiertos, Comunidad de Madrid)
   - Gasolineras con su horario (Ministerio para la Transición Ecológica, servicio REST de precios de carburantes)
 """
 import shutil

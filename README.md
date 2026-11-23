@@ -98,6 +98,7 @@ firebase deploy --only hosting
 | [Secciones censales](https://datos.comunidad.madrid/dataset/secciones_censales) | Comunidad de Madrid | Dónde vive la gente |
 | [Defunciones por causa de muerte y sexo. Municipios](https://datos.comunidad.madrid/dataset/defunciones_por_causa_y_sexo) | Comunidad de Madrid | Contexto: muertes por enfermedades del sistema circulatorio |
 | [Oficinas de farmacia](https://datos.comunidad.madrid/dataset/oficinas_farmacia) | Comunidad de Madrid | Farmacias como sitios candidatos de día |
+| [Centros, servicios y establecimientos sanitarios](https://datos.comunidad.madrid/dataset/centros_servicios_establecimientos_sanitarios) | Comunidad de Madrid | Centros de salud y hospitales, que tienen desfibrilador aunque no estén en el registro |
 | [Precios de carburantes en estaciones de servicio (API REST)](https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/help) | Ministerio para la Transición Ecológica | Gasolineras con horario de 24 horas como sitios candidatos de noche |
 | [Indicadores demográficos por sección censal (tabla 31105)](https://www.ine.es/jaxiT3/Tabla.htm?t=31105) | INE | Población y porcentaje de mayores de 65 por sección |
 

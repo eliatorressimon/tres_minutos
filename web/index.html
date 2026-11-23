@@ -531,6 +531,9 @@ details.bloque h2.seccion:first-child{margin-top:6px}
               <p class="nota" id="medirNota"></p>
             </div>
       </div></details>
+      <details class="bloque" id="bloqueSani" hidden><summary>Y si contamos los centros de salud<small>Tienen desfibrilador, pero no están en el registro</small></summary><div class="bloque-cuerpo">
+        <div id="sani"></div>
+      </div></details>
       <details class="bloque"><summary>Cuatro casos que llaman la atención<small>La peor hora, la mejor, un pueblo que cambia mucho y los que no tienen ninguno</small></summary><div class="bloque-cuerpo">
         <div class="casos" id="casos"></div>
       </div></details>
@@ -930,6 +933,12 @@ function casos(){
   $('casos').innerHTML=L.map((c,k)=>`<button class="caso" data-k="${k}">${ICO[c.i]}<strong>${c.t}</strong><span>${c.s}</span><em>Ver →</em></button>`).join('');
   $('casos').onclick=e=>{const b=e.target.closest('[data-k]');if(b){parar();L[+b.dataset.k].f()}};
 }
+function sanitarios(){ // centros de salud y hospitales: tienen aparato aunque el registro (fuera del ámbito sanitario) no los recoja
+  const st=D.si_todos||[],d=st.find(x=>/centros de salud/.test(x.caso)),n=st.find(x=>/^Contando hospitales/.test(x.caso));if(!d||!n)return;
+  $('bloqueSani').hidden=false;
+  $('sani').innerHTML=`<p class="nota" style="font-size:14px;margin-bottom:12px">El registro de la Comunidad solo recoge los desfibriladores que están <b>fuera del ámbito sanitario</b>. Los centros de salud y los hospitales tienen el suyo, pero no aparecen. Si se cuentan, con su horario habitual (centros de salud de lunes a viernes de 8 a 21, hospitales con urgencias las 24 horas):</p>
+    <ul class="apilado"><li><span>Martes, 11:00 (${fmt(d.locales)} centros)</span><strong>${p1(d.pct_antes)} → ${p1(d.pct_despues)}</strong></li><li><span>Domingo, 3:00 (${fmt(n.locales)} hospitales)</span><strong>${p1(n.pct_antes)} → ${p1(n.pct_despues)}</strong></li></ul>
+    <p class="nota" style="margin-top:10px">Serían ${fmt(d.vecinos_nuevos)} vecinos más cubiertos de día y ${fmt(n.vecinos_nuevos)} de madrugada. El mapa principal usa solo el registro, que es lo que se puede comprobar aparato por aparato.</p>`}
 function rankings(){
   const ms=D.munis.map((_,m)=>m);
   const top=(arr,v,f)=>{const L=arr.slice(0,5),mx=Math.max(...L.map(v))||1;return L.map((m,k)=>`<li><button data-m="${m}"><span class="n">${k+1}</span><span>${nombreBonito(D.munis[m])}</span><span class="v">${f(m)}</span><span class="bar"><i style="width:${(100*v(m)/mx).toFixed(1)}%"></i></span></button></li>`).join('')};
@@ -1356,7 +1365,7 @@ fetch('datos.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}
   abiertosT=Array.from({length:168},(_,t)=>D.dea.reduce((a,x)=>a+(abierto(x,t)?1:0),0));
   calcular();gMin=Math.min(...curvaG.map(c=>c[0]));gMax=Math.max(...curvaG.map(c=>c[0]));
   if(!window.deck)throw new Error('deck');
-  iniciarMapa();sitios();casos();ruta();ponerT(vista==='actuar'?horaAct():ahoraT());
+  iniciarMapa();sitios();casos();sanitarios();ruta();ponerT(vista==='actuar'?horaAct():ahoraT());
   await cambiarMedida(200,'andando');   // por defecto, la distancia de verdad: andando por la calle
   if(mapa){let h=false;const f=()=>{if(!h){h=true;intro.listo()}};mapa.once('load',f);setTimeout(f,5000)}else intro.listo();
 }).catch(e=>{console.error(e);$('introFrase').textContent='No se han podido cargar los datos. Recarga la página.'});

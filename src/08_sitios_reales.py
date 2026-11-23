@@ -6,12 +6,14 @@ El paso 7 busca puntos ideales del mapa. Aquí solo valen locales que ya existen
 Mismo método voraz que el paso 7, también andando por la calle: en cada paso elegimos el local que más
 vecinos sin cubrir gana, contando dos veces a los mayores de 65, y repetimos con los que quedan.
 También calculamos qué pasaría si TODAS las gasolineras de 24 horas, o todas las farmacias, tuvieran uno.
+Y cuánto sube la cobertura si se cuentan los centros de salud y hospitales: tienen desfibrilador, pero el
+registro no los recoge porque solo incluye los que están fuera del ámbito sanitario.
 Salidas: datos/elaborados/sitios_reales.csv y datos/elaborados/sitios_reales_resumen.csv
 """
 import numpy as np
 import pandas as pd
 from config import ELABORADOS, NUEVOS_APARATOS
-from candidatos import farmacias, gasolineras_24h, secciones_a_pie
+from candidatos import farmacias, gasolineras_24h, centros_sanitarios, secciones_a_pie
 
 sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
 cubiertas_semana = np.load(ELABORADOS / 'cubiertas_andando.npy')
@@ -37,18 +39,22 @@ def elegir(locales, hora, cuantos):
 
 def si_todos(locales, hora):
     cubiertas = cubiertas_semana[hora].copy()
-    for c in secciones_a_pie(locales['tipo'].iloc[0], sec).values():
-        cubiertas[c] = True
+    for tipo in locales['tipo'].unique():
+        a_pie = secciones_a_pie(tipo, sec)
+        for i in locales.loc[locales['tipo'] == tipo, 'id']:
+            cubiertas[a_pie.get(i, [])] = True
     antes = pob[cubiertas_semana[hora]].sum() / pob.sum()
     return {'locales': len(locales), 'pct_antes': round(100 * antes, 1), 'pct_despues': round(100 * pob[cubiertas].sum() / pob.sum(), 1),
             'vecinos_nuevos': round(pob[cubiertas].sum() - pob[cubiertas_semana[hora]].sum())}
 
 
-gas, farm = gasolineras_24h(), farmacias()
+gas, farm, sani = gasolineras_24h(), farmacias(), centros_sanitarios()
 res = pd.DataFrame(elegir(gas, 147, NUEVOS_APARATOS) + elegir(farm, 35, NUEVOS_APARATOS))
 res.to_csv(ELABORADOS / 'sitios_reales.csv', index=False)
 resumen = pd.DataFrame([{'caso': 'Todas las gasolineras 24 h, domingo 3:00', **si_todos(gas, 147)},
-                        {'caso': 'Todas las farmacias, martes 11:00', **si_todos(farm, 35)}])
+                        {'caso': 'Todas las farmacias, martes 11:00', **si_todos(farm, 35)},
+                        {'caso': 'Contando centros de salud y hospitales, martes 11:00', **si_todos(sani, 35)},
+                        {'caso': 'Contando hospitales, domingo 3:00', **si_todos(sani[sani['tipo'] == 'Hospital'], 147)}])
 resumen.to_csv(ELABORADOS / 'sitios_reales_resumen.csv', index=False)
 print(res[['orden', 'momento', 'tipo', 'nombre', 'municipio', 'vecinos_nuevos', 'mayores_65_nuevos']].to_string(index=False))
 print(resumen.to_string(index=False))

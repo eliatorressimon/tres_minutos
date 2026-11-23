@@ -11,6 +11,7 @@ Se descargan con `src/01_descargar.py`. No se suben al repositorio.
 | `ine_31105.csv` | INE, Atlas de distribución de renta de los hogares, indicadores demográficos | Números con punto de miles y coma decimal. En secciones de pueblos muy pequeños el valor de 2019 es 0. |
 | `oficinas_farmacia.csv` | Oficinas de farmacia, Portal de Datos Abiertos de la Comunidad de Madrid | Trae el nombre del titular; no se usa ni se guarda en los elaborados. |
 | `gasolineras.json` | API REST de precios de carburantes del Ministerio para la Transición Ecológica (filtro Comunidad de Madrid, código 13) | Hay que pedirla con la cabecera `Accept: application/json`. Coordenadas con coma decimal; el horario es texto como `L-D: 24H`. |
+| `centros_sanitarios.csv` | Centros, servicios y establecimientos sanitarios, Portal de Datos Abiertos de la Comunidad de Madrid | Separador `;`. Una fila por cada servicio de cada centro: se agrupa por `centro_nro_registro`. Coordenadas en ETRS89 / UTM 30N. Solo se usan los centros de salud, los consultorios de atención primaria y los hospitales generales. |
 | `defunciones_causa.csv` | Defunciones por causa de muerte y sexo, Portal de Datos Abiertos de la Comunidad de Madrid | Solo se usa como contexto. |
 
 ## Elaborados (`datos/elaborados/`)
@@ -71,7 +72,7 @@ Las diez mejores farmacias (martes 11:00) y las diez mejores gasolineras 24 h (d
 | `vecinos_nuevos`, `mayores_65_nuevos` | Lo que añade a la cobertura, después de los anteriores |
 
 ### `sitios_reales_resumen.csv`
-Qué pasaría si todos los locales de cada grupo tuvieran un aparato: número de locales, % cubierto antes y después y vecinos nuevos.
+Qué pasaría si todos los locales de cada grupo tuvieran un aparato: número de locales, % cubierto antes y después y vecinos nuevos. Las dos últimas filas cuentan los centros de salud y hospitales, que ya tienen aparato aunque no estén en el registro.
 
 ### `distancias_calle.csv`
 Una fila por pareja de sección y aparato que están a 300 m o menos andando (4.850 con el registro del 23 de noviembre).
@@ -87,12 +88,12 @@ Una fila por pareja de sección y aparato que están a 300 m o menos andando (4.
 Una fila por hora de la semana para cada forma de medir (`medida`: `recta` o `andando`) y cada distancia (`radio_m`: 100, 200 o 300), con las mismas columnas de porcentaje que `cobertura_semana.csv`.
 
 ### `distancias_candidatos.csv`
-Una fila por pareja de sitio candidato y sección que están a 200 m o menos andando (7.317 con el registro del 23 de noviembre). La usan los pasos 7 y 8.
+Una fila por pareja de sitio candidato y sección que están a 200 m o menos andando (7.317 con el registro del 23 de noviembre, antes de sumar los centros sanitarios). La usan los pasos 7 y 8.
 
 | Columna | Significado |
 |---|---|
-| `tipo` | `Sitio ideal` (el centro de una sección), `Farmacia` o `Gasolinera 24 h` |
-| `id` | Código de la sección (sitio ideal), número de la farmacia en el registro o `lon,lat` de la gasolinera |
+| `tipo` | `Sitio ideal` (el centro de una sección), `Farmacia`, `Gasolinera 24 h`, `Centro de salud` u `Hospital` |
+| `id` | Código de la sección (sitio ideal), número de la farmacia en el registro, `lon,lat` de la gasolinera o número del centro sanitario en su registro |
 | `cod_ine_seccion` | Sección que quedaría cubierta |
 | `metros_andando` | Distancia a pie, calculada igual que en `distancias_calle.csv` |
 

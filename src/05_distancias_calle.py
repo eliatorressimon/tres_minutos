@@ -9,7 +9,8 @@ porque andando nunca puede salir menos.
 Dos tablas:
   1. Cada sección con los desfibriladores (fijos y con horario conocido) a menos de 300 m.
   2. Cada sitio candidato para un aparato nuevo con las secciones a menos de 200 m: el centro de
-     cada sección (sitio ideal), las farmacias y las gasolineras de 24 horas.
+     cada sección (sitio ideal), las farmacias y las gasolineras de 24 horas. También los centros de
+     salud y hospitales, que tienen aparato aunque no estén en el registro.
 
 Agrupamos puntos vecinos en lotes de como mucho 100 y esperamos un segundo entre peticiones para no
 cargar el servidor (son unas 210 peticiones en total).
@@ -22,7 +23,7 @@ import requests
 from scipy.spatial import cKDTree
 from pyproj import Transformer
 from config import ELABORADOS, CRS_METROS, RADIO_M
-from candidatos import farmacias, gasolineras_24h
+from candidatos import farmacias, gasolineras_24h, centros_sanitarios
 
 MAX_DEA_M = 300      # hasta dónde miramos para la cobertura (el selector de la web llega a 300 m)
 MAX_PUNTOS = 100
@@ -98,7 +99,8 @@ if __name__ == '__main__':
 
     # 2. sitios candidatos y secciones
     ideal = pd.DataFrame({'id': sec['cod_ine_seccion'], 'tipo': 'Sitio ideal', 'lon': sec['lon'], 'lat': sec['lat']})
-    cand = con_metros(pd.concat([ideal, farmacias()[['id', 'tipo', 'lon', 'lat']], gasolineras_24h()[['id', 'tipo', 'lon', 'lat']]]))
+    cand = con_metros(pd.concat([ideal, farmacias()[['id', 'tipo', 'lon', 'lat']], gasolineras_24h()[['id', 'tipo', 'lon', 'lat']],
+                                centros_sanitarios()[['id', 'tipo', 'lon', 'lat']]]))
     p = andando(cand, sec, RADIO_M)
     pd.DataFrame([{'tipo': cand.at[i, 'tipo'], 'id': cand.at[i, 'id'], 'cod_ine_seccion': sec.at[j, 'cod_ine_seccion'],
                    'metros_andando': m} for i, j, r, m in p]).to_csv(ELABORADOS / 'distancias_candidatos.csv', index=False)
