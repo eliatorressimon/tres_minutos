@@ -206,33 +206,36 @@ details.bloque h2.seccion:first-child{margin-top:6px}
 .boton-informe small{font:500 12px var(--sans);color:var(--gris-2);margin-left:auto}
 .informe{display:none}
 @media print{
-  @page{size:A4;margin:16mm}
+  @page{size:A4;margin:14mm 16mm 16mm}
   body>*:not(#informe){display:none!important}
   body{background:#fff}
-  .informe{display:block;font-family:'Archivo',Arial,sans-serif;color:#3a0c15;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .informe header{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid #d6142f;padding-bottom:6px;font:500 10pt 'JetBrains Mono',monospace}
-  .informe header b{color:#d6142f}
-  .informe h1{font:800 28pt/1.1 'Archivo',Arial,sans-serif;margin:14px 0 4px}
-  .informe h2{font:700 12pt 'Archivo',Arial,sans-serif;margin:16px 0 6px}
-  .inf-sub{font-size:11pt;margin:0}
-  .inf-ver{margin-top:10px;padding:8px 10px;border-left:4px solid var(--c);background:#fbf6f3;font-size:10.5pt;line-height:1.4}
-  .informe table{width:100%;border-collapse:collapse;font-size:10.5pt}
-  .informe th,.informe td{text-align:left;padding:5px 6px;border-bottom:1px solid #e6d8d3}
-  .informe th{font:700 9pt 'JetBrains Mono',monospace;color:#5a4a4d}
-  .inf-huella{display:grid;grid-template-columns:16px repeat(24,1fr);gap:2px}
-  .inf-huella span{font:700 8pt 'JetBrains Mono',monospace}
-  .inf-huella i{height:12px;display:block}
-  .inf-nota,.inf-pie{font-size:8.5pt;color:#5a4a4d;line-height:1.4}
-  .informe ol{font-size:10.5pt;line-height:1.45;padding-left:18px}
-  .informe li{margin-bottom:5px}
-  .inf-pie{margin-top:18px;border-top:1px solid #e6d8d3;padding-top:6px}
+  .informe{display:block;font:10pt/1.45 Arial,Helvetica,sans-serif;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .inf-cab{display:flex;justify-content:space-between;font-size:8pt;color:#444;border-bottom:.5pt solid #000;padding-bottom:4pt}
+  .informe h1{font:bold 15pt/1.25 Arial,Helvetica,sans-serif;margin:12pt 0 3pt}
+  .inf-mun{font-size:11pt;margin:0 0 6pt}
+  .informe h2{font:bold 10.5pt Arial,Helvetica,sans-serif;margin:10pt 0 4pt;padding-bottom:2pt;border-bottom:.5pt solid #999}
+  .informe table{width:100%;border-collapse:collapse;font-size:9.5pt}
+  .informe th,.informe td{text-align:left;padding:2.5pt 5pt;border:.5pt solid #999;vertical-align:top}
+  .inf-kv th{width:42%;font-weight:normal;background:#eee}
+  .inf-tab thead th{background:#ddd;font-weight:bold}
+  .informe .num{text-align:right}
+  .inf-huella{display:grid;grid-template-columns:22pt repeat(24,1fr);gap:1pt;font-size:7pt;color:#333}
+  .inf-huella span{line-height:8pt}
+  .inf-huella i{height:8pt;display:block}
+  .inf-txt{margin:0;font-size:10pt}
+  .informe ol{padding-left:16pt}
+  .informe li{margin-bottom:2pt}
+  .inf-nota{font-size:8.5pt;color:#333;margin:4pt 0 0}
+  .inf-pie{position:fixed;bottom:0;left:0;right:0;font-size:7.5pt;color:#555;border-top:.5pt solid #999;padding-top:3pt}
 }
-.descargas{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-.descargas a{display:flex;flex-direction:column;gap:2px;padding:10px 12px 10px 40px;background:var(--hueso);color:var(--negro);text-decoration:none;position:relative}
-.descargas a::before{content:"\2193";position:absolute;left:14px;top:9px;font:700 16px var(--mono);color:var(--rojo)}
-.descargas a:hover{background:var(--rosa)}
-.descargas b{font:700 14px/1.25 var(--sans)}
-.descargas small{font-size:12.5px;color:var(--gris-2)}
+.descargas{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff}
+.descargas th{text-align:left;font:600 11.5px var(--mono);color:var(--gris-2);padding:7px 10px;border-bottom:1px solid var(--negro)}
+.descargas td{padding:9px 10px;border-bottom:1px solid var(--linea);vertical-align:top}
+.descargas td:nth-child(2){font:500 12px var(--mono);color:var(--gris-2);white-space:nowrap}
+.descargas td:last-child{text-align:right;white-space:nowrap}
+.descargas b{display:block;font-weight:700;color:var(--negro)}
+.descargas small{display:block;font-size:12.5px;color:var(--gris-2);margin-top:2px}
+.descargas a{color:var(--vino);font-weight:600}
 .leer{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;counter-reset:l}
 .leer li{counter-increment:l;background:#fff;padding:10px 10px 11px;display:flex;flex-direction:column;gap:3px;box-shadow:inset 0 3px 0 var(--rojo)}
 .leer li b{font:700 13.5px/1.2 var(--sans);display:flex;gap:7px;align-items:baseline}
@@ -706,14 +709,18 @@ details.bloque h2.seccion:first-child{margin-top:6px}
       </div></details>
       <details class="bloque"><summary>Descargar los datos<small>Los mismos que usa la web, en CSV, para reutilizarlos</small></summary><div class="bloque-cuerpo">
       <p class="nota" style="font-size:14px;margin-bottom:10px">Se generan de nuevo cada lunes con el registro más reciente. Qué significa cada columna: <a href="https://github.com/eliatorressimon/tres_minutos/blob/main/docs/DATOS.md" target="_blank" rel="noopener">diccionario de datos</a>.</p>
-      <ul class="descargas">
-        <li><a href="descargas/cobertura_municipio_hora.csv" download><b>Cobertura por municipio y hora</b><small>179 municipios, 168 horas, a 200 m andando</small></a></li>
-        <li><a href="descargas/desfibriladores.csv" download><b>Registro con el horario traducido</b><small>Cada aparato con su estado: 24 horas, con horario, desconocido, móvil</small></a></li>
-        <li><a href="descargas/sitios_reales.csv" download><b>Mejores farmacias y gasolineras</b><small>Las diez de cada grupo, con los vecinos que ganan</small></a></li>
-        <li><a href="descargas/nuevos_sitios.csv" download><b>Sitios ideales de madrugada</b><small>Los diez puntos propuestos</small></a></li>
-        <li><a href="descargas/cobertura_variantes.csv" download><b>Cobertura de la Comunidad hora a hora</b><small>Con 100, 200 y 300 m, en línea recta y andando</small></a></li>
-        <li><a href="descargas/sitios_reales_resumen.csv" download><b>Escenarios</b><small>Todas las farmacias, todas las gasolineras, centros de salud</small></a></li>
-      </ul>
+      <table class="descargas">
+        <thead><tr><th>Conjunto</th><th>Formato</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><b>Cobertura por municipio y hora</b><small>179 municipios por 168 horas de la semana, a 200 m andando</small></td><td>CSV</td><td><a href="descargas/cobertura_municipio_hora.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Registro con el horario traducido</b><small>Cada aparato con su tipo, municipio, coordenadas y estado del horario</small></td><td>CSV</td><td><a href="descargas/desfibriladores.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Mejores farmacias y gasolineras</b><small>Las diez de cada grupo, con los vecinos que ganarían</small></td><td>CSV</td><td><a href="descargas/sitios_reales.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Sitios ideales de madrugada</b><small>Los diez puntos propuestos</small></td><td>CSV</td><td><a href="descargas/nuevos_sitios.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Cobertura de la Comunidad por hora</b><small>Con 100, 200 y 300 m, en línea recta y andando</small></td><td>CSV</td><td><a href="descargas/cobertura_variantes.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Escenarios</b><small>Todas las farmacias, todas las gasolineras, centros de salud y hospitales</small></td><td>CSV</td><td><a href="descargas/sitios_reales_resumen.csv" download>Descargar</a></td></tr>
+        </tbody>
+      </table>
+      <p class="nota" style="margin-top:8px">Separador punto y coma, coma decimal y codificación UTF-8: se abren directamente en Excel o LibreOffice.</p>
       </div></details>
       <details class="bloque"><summary>Límites<small>Lo que hay que tener en cuenta</small></summary><div class="bloque-cuerpo">
       <div class="aviso">Se mide desde el centro de cada sección, así que para cada casa la distancia real puede ser algo mayor o menor. Y un aparato sin horario puede estar abierto aunque aquí no cuente. El código y los datos elaborados están en <a href="https://github.com/eliatorressimon/tres_minutos" target="_blank" rel="noopener">GitHub</a>, con licencia MIT.</div>
@@ -1033,14 +1040,28 @@ function informe(m){ // una página para imprimir o guardar en PDF, pensada para
   if(!suyos.length)que.push('No hay ningún aparato fijo registrado. Un primer aparato en el centro del pueblo, accesible las 24 horas, cubriría a buena parte de los vecinos.');
   if(aqui.length)que.push(`Entre los mejores sitios de la Comunidad para un aparato nuevo, ${aqui.length===1?'uno está':aqui.length+' están'} aquí: ${aqui.map(d=>`${d.tipo}${d.direccion?' ('+d.direccion+')':''}, +${fmt(d.personas)} vecinos`).join('; ')}.`);
   que.push('Probar otros puntos en el simulador de la web: tres-minutos.web.app, pestaña Administraciones.');
-  $('informe').innerHTML=`<header><b>Tres minutos</b><span>Informe de cobertura de desfibriladores</span><span>${new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})}</span></header>
-    <h1>${n}</h1><p class="inf-sub">${fmt(mun[1])} habitantes. ${fmt(suyos.length)} desfibriladores fijos en el registro de la Comunidad, ${fmt(h24)} abiertos las 24 horas.</p>
-    <div class="inf-ver" style="--c:${v.c}"><b>${v.t}</b> ${v.p}</div>
-    <h2>Vecinos con un desfibrilador abierto ${distC()}</h2>
-    <table><thead><tr><th>Momento</th><th>Cubiertos</th><th>Personas sin ninguno cerca</th></tr></thead><tbody>${mom.map(([t,et])=>`<tr><td>${et}</td><td>${p1(c[t])}</td><td>${sinT(t)}</td></tr>`).join('')}</tbody></table>
-    <h2>La semana, hora a hora</h2><div class="inf-huella">${hu}</div><p class="inf-nota">Cada casilla es una hora (de 0 a 23, de izquierda a derecha). Rojo: nadie cubierto; gris: muchos vecinos cubiertos.</p>
-    <h2>Qué se puede hacer</h2><ol>${que.map(x=>`<li>${x}</li>`).join('')}</ol>
-    <p class="inf-pie">Datos abiertos de la Comunidad de Madrid (registro de desfibriladores fuera del ámbito sanitario, secciones censales), INE y OpenStreetMap. Se cuenta que un vecino está cubierto si tiene un aparato abierto a esa hora ${distC()} del centro de su sección censal; un aparato sin horario legible no cuenta como abierto. Herramienta no oficial: tres-minutos.web.app</p>`;
+  const gris=v=>{const k=Math.max(0,Math.min(1,v/50)),g=Math.round(60+k*175);return `rgb(${g},${g},${g})`};
+  let hg='<span></span>';for(let h=0;h<24;h++)hg+=`<span>${h%3?'':h}</span>`;
+  for(let d=0;d<7;d++){hg+=`<span>${DIAS[d].slice(0,3)}</span>`;for(let h=0;h<24;h++)hg+=`<i style="background:${gris(c[d*24+h])}"></i>`}
+  const fecha=new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const fila=(a,b)=>`<tr><th>${a}</th><td>${b}</td></tr>`;
+  $('informe').innerHTML=`<div class="inf-cab"><span>Tres minutos. Cobertura de desfibriladores externos</span><span>Informe municipal. ${fecha}</span></div>
+    <h1>Informe de cobertura de desfibriladores externos</h1>
+    <p class="inf-mun">Municipio: <b>${n}</b></p>
+    <h2>1. Datos generales</h2>
+    <table class="inf-kv">${fila('Población (estimación 2024)',fmt(mun[1])+' habitantes')}${fila('Desfibriladores fijos registrados',fmt(suyos.length))}${fila('Abiertos las 24 horas',fmt(h24))}${fila('Sin horario legible en el registro',fmt(desc))}${fila('Criterio de cobertura','Aparato abierto a esa hora '+distC()+' del centro de la sección censal')}</table>
+    <h2>2. Población cubierta en momentos de referencia</h2>
+    <table class="inf-tab"><thead><tr><th>Momento</th><th class="num">Población cubierta</th><th class="num">Personas sin aparato cerca</th></tr></thead><tbody>${mom.map(([t,et])=>`<tr><td>${et}</td><td class="num">${p1(c[t])}</td><td class="num">${sinT(t)}</td></tr>`).join('')}</tbody></table>
+    <h2>3. Distribución semanal</h2>
+    <div class="inf-huella">${hg}</div>
+    <p class="inf-nota">Porcentaje de población cubierta en cada hora de la semana. Más oscuro, menos cobertura; gris claro, el 50 % o más.</p>
+    <h2>4. Valoración</h2>
+    <p class="inf-txt"><b>${v.t}.</b> ${v.p}</p>
+    <h2>5. Actuaciones propuestas</h2>
+    <ol class="inf-txt">${que.map(x=>`<li>${x}</li>`).join('')}</ol>
+    <h2>6. Fuentes y método</h2>
+    <p class="inf-nota">Registro de desfibriladores externos fuera del ámbito sanitario y secciones censales (Portal de Datos Abiertos de la Comunidad de Madrid); población por sección censal (INE, tabla 31105); distancias a pie sobre la red de calles de OpenStreetMap. Un aparato sin horario legible no se cuenta como abierto, por lo que las cifras son un mínimo. Método completo y datos: tres-minutos.web.app y github.com/eliatorressimon/tres_minutos.</p>
+    <div class="inf-pie">Documento generado automáticamente a partir de datos abiertos. No tiene carácter oficial ni relación con la Comunidad de Madrid.</div>`;
   window.print();
 }
 function cerrarMunicipio(){sel=-1;mostrar(vistaAntes==='municipio'?'ahora':vistaAntes);volar(vista0());pintar()}

@@ -105,7 +105,7 @@ Código, nombre y población de 2024 de los 179 municipios.
 
 ## Descargas (`web/descargas/`)
 
-El paso 9 copia en `web/descargas/` los ficheros elaborados que se pueden bajar desde la pestaña Método de la web: `desfibriladores.csv`, `cobertura_semana.csv`, `cobertura_variantes.csv`, `nuevos_sitios.csv`, `sitios_reales.csv` y `sitios_reales_resumen.csv`, con las columnas descritas arriba. Además genera uno propio:
+El paso 9 copia en `web/descargas/` los ficheros elaborados que se pueden bajar desde la pestaña Método de la web: `desfibriladores.csv`, `cobertura_semana.csv`, `cobertura_variantes.csv`, `nuevos_sitios.csv`, `sitios_reales.csv` y `sitios_reales_resumen.csv`, con las columnas descritas arriba pero en el formato habitual de los portales de datos españoles, para que se abran bien en Excel: separador `;`, coma decimal y UTF-8 con marca inicial. Además genera uno propio:
 
 ### `cobertura_municipio_hora.csv`
 Una fila por municipio y hora de la semana (179 × 168), con la medida principal de la web: 200 m andando.

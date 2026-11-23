@@ -4,7 +4,7 @@ Incluye: centros de sección con población, desfibriladores fijos con su horari
 cubiertas en cada una de las 168 horas (comprimido en bits), la curva de la semana, los polígonos
 municipales (uniendo las secciones de cada municipio), los sitios propuestos y el resumen por municipio.
 """
-import base64, json, shutil, zipfile, tempfile
+import base64, json, zipfile, tempfile
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -123,9 +123,13 @@ print('web/datos.json:', round((WEB / 'datos.json').stat().st_size / 1e6, 2), 'M
 # descargas: los datos elaborados que se pueden bajar desde la pestaña Método de la web
 DESCARGAS = WEB / 'descargas'
 DESCARGAS.mkdir(exist_ok=True)
+# en el formato habitual de los portales de datos españoles, para que se abran bien en Excel:
+# separador punto y coma, coma decimal y UTF-8 con marca inicial (así se ven bien las tildes)
+def guardar(df, nombre):
+    df.to_csv(DESCARGAS / nombre, index=False, sep=';', decimal=',', encoding='utf-8-sig')
 for nombre in ['desfibriladores.csv', 'cobertura_semana.csv', 'cobertura_variantes.csv', 'nuevos_sitios.csv',
                'sitios_reales.csv', 'sitios_reales_resumen.csv']:
-    shutil.copyfile(ELABORADOS / nombre, DESCARGAS / nombre)
+    guardar(pd.read_csv(ELABORADOS / nombre, dtype={'codigo_dea': str, 'municipio_codigo': str, 'cod_ine_muni': str, 'id': str}), nombre)
 # cobertura de cada municipio en cada hora de la semana, a 200 m andando (la medida principal de la web)
 andando = np.load(ELABORADOS / 'cubiertas_andando.npy')
 pob = sec['poblacion'].fillna(0).values
@@ -138,5 +142,5 @@ for m, pos_m in sec.groupby('cod_ine_muni').indices.items():
         filas.append({'cod_ine_muni': m, 'municipio': nombres[m], 'poblacion': round(total), 'dia': DIAS[t // 24], 'hora': t % 24,
                       'pct_cubierto': round(100 * cubiertos[t] / total, 1) if total else 0.0,
                       'personas_sin_cubrir': round(total - cubiertos[t])})
-pd.DataFrame(filas).to_csv(DESCARGAS / 'cobertura_municipio_hora.csv', index=False)
+guardar(pd.DataFrame(filas), 'cobertura_municipio_hora.csv')
 print('web/descargas:', len(list(DESCARGAS.iterdir())), 'ficheros')
