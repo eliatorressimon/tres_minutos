@@ -2,11 +2,13 @@ name: Probar Catastro
 on:
   push:
     branches: [portales]
-    paths: ['.github/workflows/probar_catastro.yml', 'src/probar_catastro.py', 'src/viviendas_catastro.py', 'src/03b_puntos_de_poblacion.py']
+    paths: ['.github/workflows/probar_catastro.yml']
+permissions:
+  contents: write
 jobs:
   probar:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -15,16 +17,11 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - working-directory: src
-        run: |
-          python viviendas_catastro.py
-          python 01_descargar.py
-          python 02_limpiar_desfibriladores.py
-          python 03_poblacion_secciones.py
-          python 03b_puntos_de_poblacion.py
-          python probar_catastro.py
-      - uses: actions/upload-artifact@v4
-        with:
-          name: viviendas
-          path: |
-            datos/respaldo/viviendas_catastro.csv.gz
-            datos/elaborados/puntos.csv
+        run: python viviendas_catastro.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f datos/respaldo/viviendas_catastro.csv.gz
+          git commit -m "Viviendas del Catastro"
+          git pull --rebase -X theirs
+          git push
