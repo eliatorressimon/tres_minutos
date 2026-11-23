@@ -7,7 +7,7 @@ orden,momento,tipo,nombre,direccion,municipio,lon,lat,vecinos_nuevos,mayores_65_
 6,domingo 3:00,Gasolinera 24 h,Alcampo Fuenlabrada,"Cc. Loranca Alcampo Fuenlabrada (Av. Pablo Iglesias, S/N, Ciudad Loranca)",Fuenlabrada,-3.830417,40.301917,2518,156
 7,domingo 3:00,Gasolinera 24 h,Ballenoil,"Avenida Andalucia, 7",Valdemoro,-3.6735,40.1895,2363,269
 8,domingo 3:00,Gasolinera 24 h,Repsol,"Cl Mateo Inurria, 4",Madrid,-3.68575,40.466667,1968,474
-9,domingo 3:00,Gasolinera 24 h,Shell,"Calle Alberto Aguilera, 18",Madrid,-3.7085,40.43,1925,478
+9,domingo 3:00,Gasolinera 24 h,Repsol,"Calle Alberto Aguilera, 9",Madrid,-3.708389,40.429694,1925,478
 10,domingo 3:00,Gasolinera 24 h,Bp Maria,"Avenida Quitapesares, 1",Villaviciosa de Odón,-3.902889,40.350389,1840,375
 1,martes 11:00,Farmacia,Farmacia,Calle de Marcenado 29,Madrid,-3.673560968960819,40.447485033245364,5232,1090
 2,martes 11:00,Farmacia,Farmacia,Calle Lope de Rueda 1,Alcalá de Henares,-3.35833013514417,40.48920952219662,4988,1296

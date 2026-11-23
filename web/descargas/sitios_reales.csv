@@ -1,0 +1,21 @@
+orden,momento,tipo,nombre,direccion,municipio,lon,lat,vecinos_nuevos,mayores_65_nuevos
+1,domingo 3:00,Gasolinera 24 h,Ballenoil,"Carretera M-233 Km. 6,800",Villalbilla,-3.280639,40.434417,3686,254
+2,domingo 3:00,Gasolinera 24 h,Repsol,"Avenida Oporto, Sn",Madrid,-3.730083,40.387417,3247,607
+3,domingo 3:00,Gasolinera 24 h,Ballenoil,"Avenida Nuestra Sra. De Fatima, 22",Madrid,-3.745806,40.385278,2786,563
+4,domingo 3:00,Gasolinera 24 h,Galp,"Calle Bravo Murillo, 229",Madrid,-3.701833,40.45725,2507,545
+5,domingo 3:00,Gasolinera 24 h,Repsol,"Cl Paseo Acacias, 8",Madrid,-3.705389,40.404417,2237,452
+6,domingo 3:00,Gasolinera 24 h,Alcampo Fuenlabrada,"Cc. Loranca Alcampo Fuenlabrada (Av. Pablo Iglesias, S/N, Ciudad Loranca)",Fuenlabrada,-3.830417,40.301917,2518,156
+7,domingo 3:00,Gasolinera 24 h,Ballenoil,"Avenida Andalucia, 7",Valdemoro,-3.6735,40.1895,2363,269
+8,domingo 3:00,Gasolinera 24 h,Repsol,"Cl Mateo Inurria, 4",Madrid,-3.68575,40.466667,1968,474
+9,domingo 3:00,Gasolinera 24 h,Repsol,"Calle Alberto Aguilera, 9",Madrid,-3.708389,40.429694,1925,478
+10,domingo 3:00,Gasolinera 24 h,Bp Maria,"Avenida Quitapesares, 1",Villaviciosa de Odón,-3.902889,40.350389,1840,375
+1,martes 11:00,Farmacia,Farmacia,Calle de Marcenado 29,Madrid,-3.673560968960819,40.447485033245364,5232,1090
+2,martes 11:00,Farmacia,Farmacia,Calle Lope de Rueda 1,Alcalá de Henares,-3.35833013514417,40.48920952219662,4988,1296
+3,martes 11:00,Farmacia,Farmacia,Calle de San Nicolás 7,San Sebastián de los Reyes,-3.6312435220128507,40.54985683190042,4896,1023
+4,martes 11:00,Farmacia,Farmacia,Calle Valdemoro 12,Getafe,-3.732024345326312,40.30128669765663,4488,1210
+5,martes 11:00,Farmacia,Farmacia,Calle de Portugalete 17,Madrid,-3.634865577108484,40.42676577614932,4501,961
+6,martes 11:00,Farmacia,Farmacia,Calle del Matadero 3,Alcorcón,-3.8268144711612297,40.34636426032745,4252,1156
+7,martes 11:00,Farmacia,Farmacia,Psaje de Colón 2,Valdemoro,-3.6747996578810866,40.19170343783978,4619,751
+8,martes 11:00,Farmacia,Farmacia,Calle de Miramadrid 18,Madrid,-3.7070232425566187,40.38141945221145,4683,674
+9,martes 11:00,Farmacia,Farmacia,Avda Reyes Católicos 43,Alcalá de Henares,-3.3779629375224816,40.47394795765616,4360,938
+10,martes 11:00,Farmacia,Farmacia,Calle de Álvarez Abellán 12,Madrid,-3.7323559469359844,40.38502038181398,4497,718
