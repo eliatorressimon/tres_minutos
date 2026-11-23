@@ -1104,7 +1104,7 @@ function construirMunicipio(){
 }
 function actualizarMunicipio(){if(sel<0||!$('mPct'))return;const v=curvaM[sel][T];
   $('mT').textContent=DIAS[Math.floor(T/24)].toUpperCase()+' '+hh(T%24);$('mVivo').textContent=T===ahoraT()?'AHORA':'';
-  $('mPct').innerHTML=Math.round(v)+'<small>%</small>';
+  $('mPct').innerHTML=(v>0&&v<1?p1(v).replace(' %',''):Math.round(v))+'<small>%</small>';
   $('mTxt').innerHTML=`de sus vecinos tiene un aparato abierto ${distC()}. <b>${fmt(D.sinM[sel][T])}</b> personas, no.`;
   $('huella').innerHTML=graficoSemana(curvaM[sel],{t:T})}
 
