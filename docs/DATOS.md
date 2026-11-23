@@ -102,3 +102,18 @@ Matriz de 168 × 4.417 (horas de la semana por secciones) con `True` si la secci
 
 ### `municipios.csv`
 Código, nombre y población de 2024 de los 179 municipios.
+
+## Descargas (`web/descargas/`)
+
+El paso 9 copia en `web/descargas/` los ficheros elaborados que se pueden bajar desde la pestaña Método de la web: `desfibriladores.csv`, `cobertura_semana.csv`, `cobertura_variantes.csv`, `nuevos_sitios.csv`, `sitios_reales.csv` y `sitios_reales_resumen.csv`, con las columnas descritas arriba. Además genera uno propio:
+
+### `cobertura_municipio_hora.csv`
+Una fila por municipio y hora de la semana (179 × 168), con la medida principal de la web: 200 m andando.
+
+| Columna | Significado |
+|---|---|
+| `cod_ine_muni`, `municipio` | Municipio |
+| `poblacion` | Habitantes estimados en 2024 |
+| `dia`, `hora` | Día de la semana y hora de inicio |
+| `pct_cubierto` | % de habitantes con un aparato abierto a 200 m o menos andando |
+| `personas_sin_cubrir` | Habitantes sin ninguno abierto a esa distancia |

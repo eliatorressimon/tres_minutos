@@ -7,6 +7,11 @@ on:
   schedule:
     - cron: '0 5 * * 1'
   workflow_dispatch:
+    inputs:
+      forzar:
+        description: 'Publicar aunque una cifra cambie mucho (solo si el cambio es a propósito)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -45,6 +50,8 @@ jobs:
 
       - name: Comprobar que los datos tienen sentido
         run: python src/comprobar.py
+        env:
+          FORZAR: ${{ inputs.forzar }}
 
       - name: Guardar los datos nuevos
         id: guardar

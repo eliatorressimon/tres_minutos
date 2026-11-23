@@ -200,6 +200,39 @@ details.bloque h2.seccion:first-child{margin-top:6px}
 
 /* rankings */
 .ranking{margin-bottom:4px}
+.boton-informe{margin-top:12px;width:100%;display:flex;align-items:center;gap:10px;border:0;background:var(--hueso);padding:11px 14px;font:700 14px var(--sans);color:var(--vino);text-align:left;cursor:pointer}
+.boton-informe:hover{background:var(--rosa)}
+.boton-informe svg{width:18px;height:18px;flex:none;color:var(--rojo)}
+.boton-informe small{font:500 12px var(--sans);color:var(--gris-2);margin-left:auto}
+.informe{display:none}
+@media print{
+  @page{size:A4;margin:16mm}
+  body>*:not(#informe){display:none!important}
+  body{background:#fff}
+  .informe{display:block;font-family:'Archivo',Arial,sans-serif;color:#3a0c15;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .informe header{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid #d6142f;padding-bottom:6px;font:500 10pt 'JetBrains Mono',monospace}
+  .informe header b{color:#d6142f}
+  .informe h1{font:800 28pt/1.1 'Archivo',Arial,sans-serif;margin:14px 0 4px}
+  .informe h2{font:700 12pt 'Archivo',Arial,sans-serif;margin:16px 0 6px}
+  .inf-sub{font-size:11pt;margin:0}
+  .inf-ver{margin-top:10px;padding:8px 10px;border-left:4px solid var(--c);background:#fbf6f3;font-size:10.5pt;line-height:1.4}
+  .informe table{width:100%;border-collapse:collapse;font-size:10.5pt}
+  .informe th,.informe td{text-align:left;padding:5px 6px;border-bottom:1px solid #e6d8d3}
+  .informe th{font:700 9pt 'JetBrains Mono',monospace;color:#5a4a4d}
+  .inf-huella{display:grid;grid-template-columns:16px repeat(24,1fr);gap:2px}
+  .inf-huella span{font:700 8pt 'JetBrains Mono',monospace}
+  .inf-huella i{height:12px;display:block}
+  .inf-nota,.inf-pie{font-size:8.5pt;color:#5a4a4d;line-height:1.4}
+  .informe ol{font-size:10.5pt;line-height:1.45;padding-left:18px}
+  .informe li{margin-bottom:5px}
+  .inf-pie{margin-top:18px;border-top:1px solid #e6d8d3;padding-top:6px}
+}
+.descargas{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.descargas a{display:flex;flex-direction:column;gap:2px;padding:10px 12px 10px 40px;background:var(--hueso);color:var(--negro);text-decoration:none;position:relative}
+.descargas a::before{content:"\2193";position:absolute;left:14px;top:9px;font:700 16px var(--mono);color:var(--rojo)}
+.descargas a:hover{background:var(--rosa)}
+.descargas b{font:700 14px/1.25 var(--sans)}
+.descargas small{font-size:12.5px;color:var(--gris-2)}
 .leer{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;counter-reset:l}
 .leer li{counter-increment:l;background:#fff;padding:10px 10px 11px;display:flex;flex-direction:column;gap:3px;box-shadow:inset 0 3px 0 var(--rojo)}
 .leer li b{font:700 13.5px/1.2 var(--sans);display:flex;gap:7px;align-items:baseline}
@@ -666,8 +699,20 @@ details.bloque h2.seccion:first-child{margin-top:6px}
         <li>Secciones censales (seccionado de 2019), Comunidad de Madrid</li>
         <li>Población por sección censal y por municipio, 2019 y 2024 (tabla 31105), INE</li>
         <li>Oficinas de farmacia, Comunidad de Madrid, y gasolineras con su horario, Ministerio para la Transición Ecológica</li>
+        <li>Centros, servicios y establecimientos sanitarios, Comunidad de Madrid</li>
         <li>Distancias a pie: OSRM con la red de calles de OpenStreetMap</li>
         <li>Mapa base: OpenFreeMap con datos de OpenStreetMap</li>
+      </ul>
+      </div></details>
+      <details class="bloque"><summary>Descargar los datos<small>Los mismos que usa la web, en CSV, para reutilizarlos</small></summary><div class="bloque-cuerpo">
+      <p class="nota" style="font-size:14px;margin-bottom:10px">Se generan de nuevo cada lunes con el registro más reciente. Qué significa cada columna: <a href="https://github.com/eliatorressimon/tres_minutos/blob/main/docs/DATOS.md" target="_blank" rel="noopener">diccionario de datos</a>.</p>
+      <ul class="descargas">
+        <li><a href="descargas/cobertura_municipio_hora.csv" download><b>Cobertura por municipio y hora</b><small>179 municipios, 168 horas, a 200 m andando</small></a></li>
+        <li><a href="descargas/desfibriladores.csv" download><b>Registro con el horario traducido</b><small>Cada aparato con su estado: 24 horas, con horario, desconocido, móvil</small></a></li>
+        <li><a href="descargas/sitios_reales.csv" download><b>Mejores farmacias y gasolineras</b><small>Las diez de cada grupo, con los vecinos que ganan</small></a></li>
+        <li><a href="descargas/nuevos_sitios.csv" download><b>Sitios ideales de madrugada</b><small>Los diez puntos propuestos</small></a></li>
+        <li><a href="descargas/cobertura_variantes.csv" download><b>Cobertura de la Comunidad hora a hora</b><small>Con 100, 200 y 300 m, en línea recta y andando</small></a></li>
+        <li><a href="descargas/sitios_reales_resumen.csv" download><b>Escenarios</b><small>Todas las farmacias, todas las gasolineras, centros de salud</small></a></li>
       </ul>
       </div></details>
       <details class="bloque"><summary>Límites<small>Lo que hay que tener en cuenta</small></summary><div class="bloque-cuerpo">
@@ -975,6 +1020,29 @@ function abrirMunicipio(m){
   const {w,h}=caja();const z=Math.max(9,Math.min(12,Math.min(Math.log2((w-80)*360/(512*(x1-x0))),Math.log2((h-80)*360/(512*(y1-y0)*1.31)))));const ppd=512*2**z/360;
   volar({longitude:(x0+x1)/2,latitude:(y0+y1)/2-(en3d?40/(ppd*1.31):0),zoom:z,pitch:en3d?45:0,bearing:0});pintar();
 }
+function informe(m){ // una página para imprimir o guardar en PDF, pensada para un ayuntamiento
+  const n=nombreBonito(D.munis[m]),mun=D.municipios[m],c=curvaM[m],suyos=D.dea.filter(d=>d[4]===m),v=veredicto(m);
+  const h24=suyos.filter(d=>d[2]===0).length,desc=suyos.filter(d=>d[2]===2).length;
+  let peor=0,mejor=0;for(let t=0;t<168;t++){if(c[t]<c[peor])peor=t;if(c[t]>c[mejor])mejor=t}
+  const sinT=t=>fmt(D.sinM[m][t]),mom=[[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00'],[peor,'Peor hora: '+etiquetaT(peor)],[mejor,'Mejor hora: '+etiquetaT(mejor)]];
+  let hu='';for(let d=0;d<7;d++){hu+=`<span>${'LMXJVSD'[d]}</span>`;for(let h=0;h<24;h++)hu+=`<i style="background:${colorV(c[d*24+h])}"></i>`}
+  const aqui=D.reales.filter(d=>d.muni===D.munis[m]||d.muni===n);
+  const que=[];
+  if(desc)que.push(`Pedir a los titulares de los <b>${fmt(desc)}</b> aparatos sin horario legible que lo declaren en el registro (días y horas). Hoy no cuentan como abiertos.`);
+  if(c[35]-c[147]>5)que.push(`De madrugada la cobertura cae del ${p1(c[35])} al ${p1(c[147])}. Lo que más ayuda es un aparato accesible desde la calle las 24 horas, en una columna exterior o en la fachada de un edificio público.`);
+  if(!suyos.length)que.push('No hay ningún aparato fijo registrado. Un primer aparato en el centro del pueblo, accesible las 24 horas, cubriría a buena parte de los vecinos.');
+  if(aqui.length)que.push(`Entre los mejores sitios de la Comunidad para un aparato nuevo, ${aqui.length===1?'uno está':aqui.length+' están'} aquí: ${aqui.map(d=>`${d.tipo}${d.direccion?' ('+d.direccion+')':''}, +${fmt(d.personas)} vecinos`).join('; ')}.`);
+  que.push('Probar otros puntos en el simulador de la web: tres-minutos.web.app, pestaña Administraciones.');
+  $('informe').innerHTML=`<header><b>Tres minutos</b><span>Informe de cobertura de desfibriladores</span><span>${new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})}</span></header>
+    <h1>${n}</h1><p class="inf-sub">${fmt(mun[1])} habitantes. ${fmt(suyos.length)} desfibriladores fijos en el registro de la Comunidad, ${fmt(h24)} abiertos las 24 horas.</p>
+    <div class="inf-ver" style="--c:${v.c}"><b>${v.t}</b> ${v.p}</div>
+    <h2>Vecinos con un desfibrilador abierto ${distC()}</h2>
+    <table><thead><tr><th>Momento</th><th>Cubiertos</th><th>Personas sin ninguno cerca</th></tr></thead><tbody>${mom.map(([t,et])=>`<tr><td>${et}</td><td>${p1(c[t])}</td><td>${sinT(t)}</td></tr>`).join('')}</tbody></table>
+    <h2>La semana, hora a hora</h2><div class="inf-huella">${hu}</div><p class="inf-nota">Cada casilla es una hora (de 0 a 23, de izquierda a derecha). Rojo: nadie cubierto; gris: muchos vecinos cubiertos.</p>
+    <h2>Qué se puede hacer</h2><ol>${que.map(x=>`<li>${x}</li>`).join('')}</ol>
+    <p class="inf-pie">Datos abiertos de la Comunidad de Madrid (registro de desfibriladores fuera del ámbito sanitario, secciones censales), INE y OpenStreetMap. Se cuenta que un vecino está cubierto si tiene un aparato abierto a esa hora ${distC()} del centro de su sección censal; un aparato sin horario legible no cuenta como abierto. Herramienta no oficial: tres-minutos.web.app</p>`;
+  window.print();
+}
 function cerrarMunicipio(){sel=-1;mostrar(vistaAntes==='municipio'?'ahora':vistaAntes);volar(vista0());pintar()}
 function construirMunicipio(){
   const m=sel,n=nombreBonito(D.munis[m]),mun=D.municipios[m],suyos=D.dea.filter(d=>d[4]===m),h24=suyos.filter(d=>d[2]===0).length,v=veredicto(m);
@@ -989,6 +1057,7 @@ function construirMunicipio(){
     <h1 class="titular">${n}</h1>
     <p class="entradilla">${fmt(suyos.length)} desfibriladores fijos${suyos.length?`, ${fmt(h24)} de ellos abiertos las 24 horas`:''}.</p>
     <div class="veredicto" style="--c:${v.c}"><strong>${v.t}</strong><p>${v.p}</p></div>
+    <button class="boton-informe" id="btnInforme"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1h6l3 3v5H4zM2 9h12v5H2z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Informe para el ayuntamiento <small>imprimir o guardar en PDF</small></button>
     <div class="caja"><div class="caja-cab"><span id="mT"></span><b id="mVivo"></b></div><div class="caja-cuerpo"><div class="cifra-fila"><span class="cifra" id="mPct"></span><p id="mTxt"></p></div></div></div>
     <h2 class="seccion">Su semana, hora a hora</h2>
     <div class="huella" id="huella">${hu}</div>
@@ -997,11 +1066,12 @@ function construirMunicipio(){
     ${porTipo.length?`<h2 class="seccion">Dónde están sus aparatos</h2><ul class="barras">${porTipo.map(x=>`<li><span>${x.tp}</span><span class="v">${x.n}</span><span class="barra"><i style="width:${100*x.s/maxT}%"></i><i style="width:${100*(x.n-x.s)/maxT}%"></i></span></li>`).join('')}</ul><p class="nota" style="margin-top:8px">Negro: abiertos las 24 horas. Gris: con horario o sin él.</p>`:''}
     <h2 class="seccion">Lo que más ayudaría</h2>
     ${aqui.length?`<p class="nota" style="font-size:14px;color:var(--gris-1);margin-bottom:10px">Entre las mejores farmacias y gasolineras de la Comunidad para un aparato nuevo, ${aqui.length===1?'una está':aqui.length+' están'} aquí.</p><ol class="sitios">${aqui.map(d=>sitioHTML(d,d.i).replace('class="sitio"','class="sitio" data-modo="'+d.momento+'"')).join('')}</ol>`
-      :`<p class="nota" style="font-size:14px;color:var(--gris-1)">De madrugada está en el puesto <b>${orden.indexOf(m)+1}</b> de 179 por vecinos cubiertos. Prueba a poner un aparato aquí en <button class="enlace" id="irActuar">Dónde poner más</button>.</p>`}`;
+      :`<p class="nota" style="font-size:14px;color:var(--gris-1)">De madrugada está en el puesto <b>${orden.indexOf(m)+1}</b> de 179 por vecinos cubiertos. Prueba a poner un aparato aquí en el <button class="enlace" id="irActuar">Simulador</button>.</p>`}`;
   actualizarMunicipio();$('lado').scrollTop=0;
   $('volver').onclick=cerrarMunicipio;
   $('huella').onclick=e=>{const b=e.target.closest('[data-t]');if(b){parar();ponerT(+b.dataset.t)}};
-  const ir=$('irActuar');if(ir)ir.onclick=()=>{sel=-1;irA('actuar')};
+  const ir=$('irActuar');if(ir)ir.onclick=()=>{sel=-1;irA('simular')};
+  $('btnInforme').onclick=()=>informe(m);
   $('v-municipio').querySelectorAll('.sitio').forEach(b=>b.onclick=()=>{sel=-1;modoAct=b.dataset.modo;sitios();irASitio(+b.dataset.i)});
 }
 function actualizarMunicipio(){if(sel<0||!$('mPct'))return;const v=curvaM[sel][T];
@@ -1370,5 +1440,6 @@ fetch('datos.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}
   if(mapa){let h=false;const f=()=>{if(!h){h=true;intro.listo()}};mapa.once('load',f);setTimeout(f,5000)}else intro.listo();
 }).catch(e=>{console.error(e);$('introFrase').textContent='No se han podido cargar los datos. Recarga la página.'});
 </script>
+<div id="informe" class="informe" aria-hidden="true"></div>
 </body>
 </html>

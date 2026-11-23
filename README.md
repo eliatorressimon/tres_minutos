@@ -28,7 +28,7 @@ Por qué importan tres minutos y 200 metros, con todas las fuentes: [docs/POR_QU
 La web tiene tres pestañas, pensadas para tres tipos de público:
 
 - **Emergencia.** Es la pantalla de inicio. Un botón localiza a quien lo pulsa, busca el desfibrilador abierto más cercano a esa hora, dibuja la ruta a pie y lee en voz alta la distancia. También tiene un botón para llamar al 112, un metrónomo de 110 compresiones por minuto para guiar la reanimación y un aviso a un contacto por WhatsApp o SMS con la ubicación.
-- **Administraciones.** Para ayuntamientos y la Comunidad. Un mapa de los barrios sin ningún aparato abierto cerca, que cambia hora a hora durante la semana (100, 200 o 300 metros, andando o en línea recta), con la ficha de cada municipio; un simulador para colocar un aparato en el mapa y ver cuántos vecinos gana; las diez mejores farmacias, gasolineras de 24 horas y puntos de madrugada para poner uno nuevo; y el método.
+- **Administraciones.** Para ayuntamientos y la Comunidad. Un mapa de los barrios sin ningún aparato abierto cerca, que cambia hora a hora durante la semana (100, 200 o 300 metros, andando o en línea recta), con la ficha de cada municipio y un informe imprimible para su ayuntamiento; un simulador para colocar un aparato en el mapa y ver cuántos vecinos gana; las diez mejores farmacias, gasolineras de 24 horas y puntos de madrugada para poner uno nuevo; el método y la descarga de los datos elaborados en CSV.
 - **Información.** Para vecinos, familias y personas mayores, en dos partes. En "Tu calle" se toca un punto del mapa o se usa la ubicación y sale a cuántos metros andando queda el desfibrilador más cercano un martes por la mañana, un sábado por la tarde y un domingo de madrugada. También explica qué hacer si alguien se desploma y si cualquiera puede usar un desfibrilador. "Para decidir" recoge qué mirar al buscar casa o colegio, consejos para mayores y qué significa cada cosa del mapa. Tiene un botón para agrandar la letra.
 
 ## Estructura
@@ -38,7 +38,7 @@ datos/
   originales/     datos tal y como se descargan (no se suben; se obtienen con el paso 1)
   elaborados/     datos limpios y calculados en este proyecto (ver docs/DATOS.md)
 src/              código, un fichero por paso
-web/              la web: index.html, datos.json y variantes.json (otras distancias, se carga al usar el selector)
+web/              la web: index.html, datos.json, variantes.json (otras distancias) y descargas/ (CSV para bajar)
 docs/
   DATOS.md        fuentes y diccionario de cada fichero elaborado
   METODO.md       cómo se calcula todo y qué límites tiene
@@ -77,7 +77,7 @@ y abrir `http://localhost:8000` en el navegador.
 
 ## Actualización automática
 
-Cada lunes por la mañana, GitHub Actions (`.github/workflows/actualizar.yml`) vuelve a descargar los datos abiertos, ejecuta los pasos 1 a 9 y comprueba que los números tienen sentido (`src/comprobar.py`). Si el registro de desfibriladores, las farmacias o las gasolineras han cambiado, guarda los datos nuevos en el repositorio y publica la web otra vez. Si una descarga falla, se para y la web se queda como estaba. La única excepción son las gasolineras: el servicio del Ministerio a veces no responde desde fuera de España, y como cambian muy poco se usa la última copia buena, guardada en `datos/respaldo/`. También se puede lanzar a mano desde la pestaña Actions.
+Cada lunes por la mañana, GitHub Actions (`.github/workflows/actualizar.yml`) vuelve a descargar los datos abiertos, ejecuta los pasos 1 a 9 y comprueba que los números tienen sentido (`src/comprobar.py`). Si el registro de desfibriladores, las farmacias o las gasolineras han cambiado, guarda los datos nuevos en el repositorio y publica la web otra vez. Si una descarga falla, o si una cifra cambia de golpe respecto a la semana anterior (más de 5 puntos de cobertura o más de un 20 % de aparatos), se para y la web se queda como estaba. Si el cambio es a propósito, se puede lanzar a mano marcando la opción de forzar. La única excepción son las gasolineras: el servicio del Ministerio a veces no responde desde fuera de España, y como cambian muy poco se usa la última copia buena, guardada en `datos/respaldo/`. También se puede lanzar a mano desde la pestaña Actions.
 
 ## Publicar la web
 
