@@ -33,7 +33,6 @@ var = pd.read_csv(ELABORADOS / 'cobertura_variantes.csv')
 def pct(medida, dia, hora):
     return float(var.query('medida == @medida and radio_m == 200 and dia == @dia and hora == @hora')['pct_poblacion'].iloc[0])
 resumen = {
-    'fecha': pd.Timestamp.today().strftime('%Y-%m-%d'),
     'registro': len(dea),
     'movil': int(dea['estado_horario'].eq('movil').sum()),
     'siempre': int(dea['estado_horario'].eq('24h').sum()),
