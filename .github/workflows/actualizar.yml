@@ -35,8 +35,23 @@ jobs:
       - name: Instalar librerías
         run: pip install -r requirements.txt
 
+      - name: Servidor de rutas a pie con el mapa de la Comunidad de Madrid
+        # OSRM propio con el mapa de OpenStreetMap de Geofabrik: así no se carga el servidor público
+        run: |
+          mkdir -p osrm && cd osrm
+          curl -sSfL -o madrid.osm.pbf https://download.geofabrik.de/europe/spain/madrid-latest.osm.pbf
+          IMG=ghcr.io/project-osrm/osrm-backend:v5.27.1
+          docker run --rm -v "$PWD:/data" $IMG osrm-extract -p /opt/foot.lua /data/madrid.osm.pbf
+          docker run --rm -v "$PWD:/data" $IMG osrm-partition /data/madrid.osrm
+          docker run --rm -v "$PWD:/data" $IMG osrm-customize /data/madrid.osrm
+          docker run -d --name osrm -p 5000:5000 -v "$PWD:/data" $IMG osrm-routed --algorithm mld --max-table-size 1000 /data/madrid.osrm
+          for i in $(seq 1 60); do curl -sf "http://localhost:5000/route/v1/foot/-3.70,40.42;-3.69,40.42" > /dev/null && break; sleep 2; done
+          curl -s "http://localhost:5000/route/v1/foot/-3.70,40.42;-3.69,40.42?overview=false" | head -c 300
+
       - name: Descargar datos y calcular
         working-directory: src
+        env:
+          OSRM_URL: http://localhost:5000
         run: |
           python 01_descargar.py
           python viviendas_catastro.py

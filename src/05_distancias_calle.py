@@ -1,21 +1,24 @@
 """Paso 5. Distancias andando por la calle.
 
 En línea recta se atraviesan edificios, vías de tren y autopistas. Aquí pedimos la distancia a pie
-por la red de calles y caminos de OpenStreetMap al servidor OSRM de routing.openstreetmap.de
-(servicio 'table', perfil a pie). A esa distancia le sumamos lo que hay desde cada punto hasta la
+por la red de calles y caminos de OpenStreetMap a un servidor de rutas OSRM (servicio 'table', perfil a pie).
+En GitHub Actions se monta un servidor OSRM propio con el mapa de la Comunidad de Madrid de Geofabrik
+(ver .github/workflows/actualizar.yml) y se le indica con la variable OSRM_URL. Sin ella se usa el servidor
+público de routing.openstreetmap.de, despacio y con pausas, porque limita cuántas preguntas se le hacen. A esa distancia le sumamos lo que hay desde cada punto hasta la
 calle más cercana, que OSRM no cuenta. Solo preguntamos por parejas que están cerca en línea recta,
 porque andando nunca puede salir menos.
 
 Dos tablas:
-  1. Cada sección con los desfibriladores (fijos y con horario conocido) a menos de 300 m.
-  2. Cada sitio candidato para un aparato nuevo con las secciones a menos de 200 m: el centro de
-     cada sección (sitio ideal), las farmacias y las gasolineras de 24 horas. También los centros de
+  1. Cada punto de población con los desfibriladores (fijos y con horario conocido) a menos de 300 m.
+  2. Cada sitio candidato para un aparato nuevo con los puntos de población a menos de 200 m: el centro
+     de las viviendas de cada sección (sitio ideal), las farmacias y las gasolineras de 24 horas. También los centros de
      salud y hospitales, que tienen aparato aunque no estén en el registro.
 
-Agrupamos puntos vecinos en lotes de como mucho 100 y esperamos un segundo entre peticiones para no
-cargar el servidor (son unas 210 peticiones en total).
+Agrupamos puntos vecinos en lotes de como mucho 100 (unas 550 peticiones en total). Las distancias ya
+preguntadas se guardan en datos/respaldo/rutas_a_pie.csv.gz y no se vuelven a pedir.
 Salidas: datos/elaborados/distancias_calle.csv y datos/elaborados/distancias_candidatos.csv
 """
+import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 import numpy as np
@@ -28,7 +31,9 @@ from candidatos import farmacias, gasolineras_24h, centros_sanitarios, centros_s
 
 MAX_DEA_M = 300      # hasta dónde miramos para la cobertura (el selector de la web llega a 300 m)
 MAX_PUNTOS = 100
-OSRM = 'https://routing.openstreetmap.de/routed-foot/table/v1/driving/'
+OSRM_BASE = os.environ.get('OSRM_URL', 'https://routing.openstreetmap.de/routed-foot')
+OSRM = OSRM_BASE.rstrip('/') + '/table/v1/driving/'
+PROPIO = 'localhost' in OSRM_BASE or '127.0.0.1' in OSRM_BASE
 a_metros = Transformer.from_crs(4326, CRS_METROS, always_xy=True)
 
 
@@ -98,10 +103,15 @@ def guardar_cache():
         .to_csv(CACHE_F, index=False, compression='gzip')
 
 
-def pedir(url, params, intentos=4):
+def pedir(url, params, intentos=8):
     for k in range(intentos):
         try:
-            r = requests.get(url, params=params, timeout=90)
+            r = requests.get(url, params=params, timeout=120)
+            if r.status_code == 429:   # demasiadas preguntas: esperar lo que pida el servidor
+                espera = int(r.headers.get('Retry-After', 60))
+                print('   el servidor pide esperar', espera, 's')
+                time.sleep(min(espera, 300))
+                continue
             r.raise_for_status()
             return r.json()
         except requests.RequestException as e:
@@ -109,6 +119,7 @@ def pedir(url, params, intentos=4):
                 raise
             print('   reintento', k + 1, type(e).__name__)
             time.sleep(15 * (k + 1))
+    raise RuntimeError('El servidor de rutas no responde')
 
 
 def _andando(origen, destino, max_m):
@@ -125,11 +136,12 @@ def _andando(origen, destino, max_m):
         r = pedir(OSRM + ';'.join(f'{lo:.6f},{la:.6f}' for lo, la in puntos),
                   {'sources': ';'.join(map(str, range(n))), 'destinations': ';'.join(map(str, range(n, len(puntos)))),
                    'annotations': 'distance'})
-        time.sleep(1)
+        if not PROPIO:
+            time.sleep(2)
         return r
 
-    # tres peticiones a la vez: el servidor tarda en responder, pero no lo saturamos
-    with ThreadPoolExecutor(max_workers=3) as hilos:
+    # con el servidor propio, cuatro peticiones a la vez; con el público, de una en una
+    with ThreadPoolExecutor(max_workers=4 if PROPIO else 1) as hilos:
         for k, ((o_idx, d_idx), j) in enumerate(zip(grupos, hilos.map(una, grupos))):
             for a, i in enumerate(o_idx):
                 dentro = set(cerca[i])
