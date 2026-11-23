@@ -4,3 +4,4 @@ datos/elaborados/*.npy
 __pycache__/
 .venv/
 .DS_Store
+osrm/

@@ -17,16 +17,16 @@ from config import ELABORADOS, WEB, CRS_METROS
 RADIOS = [100, 200, 300]
 DIAS = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']
 
-sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
+sec = pd.read_csv(ELABORADOS / 'puntos.csv', dtype={'punto': str, 'cod_ine_seccion': str, 'cod_ine_muni': str})
 dea = pd.read_csv(ELABORADOS / 'desfibriladores.csv', dtype=str)
 tablas = np.load(ELABORADOS / 'horarios_semana.npy').reshape(len(dea), 168)
-calle = pd.read_csv(ELABORADOS / 'distancias_calle.csv', dtype={'cod_ine_seccion': str})
+calle = pd.read_csv(ELABORADOS / 'distancias_calle.csv', dtype={'punto': str})
 
 a_metros = Transformer.from_crs(4326, CRS_METROS, always_xy=True)
 fijos = np.flatnonzero(dea['fijo'].eq('True').values)
 dx, dy = a_metros.transform(dea['lon'].astype(float).values[fijos], dea['lat'].astype(float).values[fijos])
 arbol = cKDTree(sec[['x', 'y']].values)
-pos_sec = {c: i for i, c in enumerate(sec['cod_ine_seccion'])}
+pos_sec = {c: i for i, c in enumerate(sec['punto'])}
 
 pob, may = sec['poblacion'].values, sec['mayores_65'].values
 fuera = sec['cod_ine_muni'].ne('28079').values
@@ -41,7 +41,7 @@ def cerca_andando(r):
     """Lo mismo, pero medido andando por la calle."""
     c = calle[calle['metros_andando'] <= r]
     res = {}
-    for fila, s in zip(c['fila_dea'], c['cod_ine_seccion']):
+    for fila, s in zip(c['fila_dea'], c['punto']):
         res.setdefault(fila, []).append(pos_sec[s])
     return res
 

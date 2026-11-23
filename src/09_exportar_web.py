@@ -14,7 +14,7 @@ from shapely.ops import unary_union
 from pyproj import Transformer
 from config import ORIGINALES, ELABORADOS, WEB, CRS_METROS
 
-sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype={'cod_ine_seccion': str, 'cod_ine_muni': str})
+sec = pd.read_csv(ELABORADOS / 'puntos.csv', dtype={'punto': str, 'cod_ine_seccion': str, 'cod_ine_muni': str})
 dea = pd.read_csv(ELABORADOS / 'desfibriladores.csv', dtype=str)
 tablas = np.load(ELABORADOS / 'horarios_semana.npy')
 cubiertas = np.load(ELABORADOS / 'cubiertas_por_hora.npy')

@@ -12,14 +12,15 @@ Autora: Elia Torres Simón.
 
 Cifras con el registro descargado el 23 de noviembre de 2026. La web se actualiza cada semana, así que puede mostrar números algo distintos.
 
-- Medido andando por la calle, que es como se llega de verdad, un martes a las 11:00 solo el 20,7 % de la población tiene un desfibrilador abierto a 200 metros o menos. Un domingo a las 3:00, el 9,6 %. Con 300 m andando, el 38,7 % y el 22,2 %.
-- En línea recta saldría bastante más: el 45,5 % y el 25,9 %. La distancia andando es, en la mediana, 1,5 veces la recta.
+- Medido andando por la calle, que es como se llega de verdad, un martes a las 11:00 solo el 20,7 % de la población tiene un desfibrilador abierto a 200 metros o menos. Un domingo a las 3:00, el 10,4 %. Con 300 m andando, el 42,6 % y el 24,5 %.
+- En línea recta saldría bastante más: el 48,6 % y el 28,2 %. La distancia andando es, en la mediana, 1,5 veces la recta.
 - De los 13.664 aparatos del registro, 2.206 tienen como horario "autobús urbano": van en autobuses de Madrid capital y no cubren un barrio fijo.
 - 4.534 aparatos no indican su horario o lo indican de una forma que no se puede interpretar.
 - 15 municipios no tienen ningún desfibrilador fijo registrado. El mayor es El Molar, con 9.805 habitantes.
-- Si cada una de las 2.954 farmacias de la Comunidad tuviera un desfibrilador, un martes a las 11:00 la cobertura andando pasaría del 20,7 % al 45,7 %: 1,75 millones de personas más. Las diez mejores ya suman 46.516, por unos 25.000 euros en cinco años contando compra y mantenimiento: unos 54 céntimos por persona (cuentas y fuentes en [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md)).
-- Las gasolineras abiertas 24 horas sirven de poco de madrugada: aunque las 550 tuvieran uno, la cobertura del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %, porque están en carreteras y avenidas y no donde vive la gente.
-- Diez aparatos de 24 horas en el mejor sitio posible darían cobertura de madrugada a 54.195 personas más, 9.892 de ellas mayores de 65 años.
+- Si cada una de las 2.954 farmacias de la Comunidad tuviera un desfibrilador, un martes a las 11:00 la cobertura andando pasaría del 20,7 % al 50,7 %: 2,1 millones de personas más. Las diez mejores ya suman 48.747, por unos 25.000 euros en cinco años contando compra y mantenimiento: unos 51 céntimos por persona (cuentas y fuentes en [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md)).
+- Las gasolineras abiertas 24 horas sirven de poco de madrugada: aunque las 550 tuvieran uno, la cobertura del domingo a las 3:00 solo pasaría del 10,4 % al 11,4 %, porque están en carreteras y avenidas y no donde vive la gente.
+- Diez aparatos de 24 horas en el mejor sitio posible darían cobertura de madrugada a 52.522 personas más, 11.139 de ellas mayores de 65 años.
+- Los vecinos de cada sección censal se reparten entre sus casas según las viviendas de cada edificio en el Catastro. Antes se ponían todos en el centro de la sección, y en los pueblos de urbanizaciones eso escondía aparatos: 155 municipios salían con un 0 % de madrugada y ahora son 69.
 
 Por qué importan tres minutos y 200 metros, con todas las fuentes: [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md).
 
@@ -57,9 +58,11 @@ pip install -r requirements.txt
 cd src
 python 01_descargar.py                 # baja los datos originales
 python 02_limpiar_desfibriladores.py   # limpia el registro y traduce los horarios
+python viviendas_catastro.py           # viviendas de cada edificio, del Catastro (solo la primera vez)
 python 03_poblacion_secciones.py       # centro y población de cada sección censal
+python 03b_puntos_de_poblacion.py      # reparte los vecinos de cada sección entre sus viviendas
 python 04_cobertura.py                 # cobertura en las 168 horas de la semana
-python 05_distancias_calle.py          # distancias andando por la calle (unas 210 peticiones a OSRM)
+python 05_distancias_calle.py          # distancias andando por la calle (unas 550 peticiones a OSRM; las ya hechas se guardan)
 python 06_cobertura_calle.py           # cobertura con 100, 200 y 300 m, en línea recta y andando
 python 07_nuevos_sitios.py             # los diez mejores sitios posibles para aparatos de 24 h
 python 08_sitios_reales.py             # las diez mejores farmacias y gasolineras 24 h
@@ -101,6 +104,7 @@ firebase deploy --only hosting
 | [Centros, servicios y establecimientos sanitarios](https://datos.comunidad.madrid/dataset/centros_servicios_establecimientos_sanitarios) | Comunidad de Madrid | Centros de salud y hospitales, que tienen desfibrilador aunque no estén en el registro |
 | [Precios de carburantes en estaciones de servicio (API REST)](https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/help) | Ministerio para la Transición Ecológica | Gasolineras con horario de 24 horas como sitios candidatos de noche |
 | [Indicadores demográficos por sección censal (tabla 31105)](https://www.ine.es/jaxiT3/Tabla.htm?t=31105) | INE | Población y porcentaje de mayores de 65 por sección |
+| [Edificios (servicio INSPIRE)](https://www.catastro.hacienda.gob.es/webinspire/index.html) | Dirección General del Catastro | Número de viviendas de cada edificio, para repartir a los vecinos dentro de cada sección |
 
 Las cifras sobre paradas cardiacas (incidencia, tiempos de llegada de la ambulancia, supervivencia) vienen del informe EuReCa THREE del Consejo Europeo de Resucitación y de una revisión de 41 estudios sobre desfibriladores usados por testigos. Están citadas, con enlaces, en [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md).
 

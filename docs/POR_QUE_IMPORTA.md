@@ -48,7 +48,7 @@ Si se puede desfibrilar en los primeros 3 a 5 minutos, la supervivencia puede ll
 
 Ir y volver 400 metros a paso rápido cabe en esos tres minutos, así que el aparato tiene que estar a 200 metros o menos. Ese umbral lo he elegido yo, no es una norma. Por eso la web deja probar también con 100 y 300 metros.
 
-Además, los 200 metros se miden andando por la calle y no en línea recta: nadie atraviesa edificios. Con 200 metros andando, un martes a las 11:00 solo el 20,7 % de los vecinos de la Comunidad tiene un desfibrilador abierto, y un domingo a las 3:00 el 9,6 %. En línea recta saldría el 45,5 % y el 25,9 % (ver `METODO.md`).
+Además, los 200 metros se miden andando por la calle y no en línea recta: nadie atraviesa edificios. Con 200 metros andando, un martes a las 11:00 solo el 20,7 % de los vecinos de la Comunidad tiene un desfibrilador abierto, y un domingo a las 3:00 el 10,4 %. En línea recta saldría el 48,6 % y el 28,2 % (ver `METODO.md`).
 
 ## Lo que dice la norma en la Comunidad de Madrid
 
@@ -75,8 +75,8 @@ En 2024 murieron en la Comunidad de Madrid 11.747 personas por enfermedades del 
 
 Un desfibrilador nuevo cuesta en España entre unos 1.000 y 2.100 euros [7], y el mantenimiento anual, entre 110 y 300 euros [8][7]. Los electrodos caducan cada dos a cinco años y la batería cada cuatro a siete [7], así que cuento cinco años de vida útil. En total, cada aparato cuesta entre unos 1.550 y 3.600 euros en cinco años. Para las cuentas uso un valor intermedio de 2.500 euros.
 
-- Las diez mejores farmacias (`datos/elaborados/sitios_reales.csv`) darían cobertura un martes a las 11:00 a 46.516 personas más por unos 25.000 euros: unos 54 céntimos por persona en cinco años.
-- Un aparato en cada una de las 2.954 farmacias costaría unos 7,4 millones de euros en cinco años para 1,75 millones de personas más: unos 4,2 euros por persona.
+- Las diez mejores farmacias (`datos/elaborados/sitios_reales.csv`) darían cobertura un martes a las 11:00 a 48.747 personas más por unos 25.000 euros: unos 51 céntimos por persona en cinco años.
+- Un aparato en cada una de las 2.954 farmacias costaría unos 7,4 millones de euros en cinco años para 2,1 millones de personas más: unos 3,5 euros por persona.
 
 Son cifras orientativas, con precios de distribuidores y sin contar descuentos por compra conjunta ni la formación del personal.
 
