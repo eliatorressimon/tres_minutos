@@ -17,7 +17,7 @@ Cifras con el registro descargado el 23 de noviembre de 2026. La web se actualiz
 - De los 13.664 aparatos del registro, 2.206 tienen como horario "autobús urbano": van en autobuses de Madrid capital y no cubren un barrio fijo.
 - 4.534 aparatos no indican su horario o lo indican de una forma que no se puede interpretar.
 - 15 municipios no tienen ningún desfibrilador fijo registrado. El mayor es El Molar, con 9.805 habitantes.
-- Si cada una de las 2.954 farmacias de la Comunidad tuviera un desfibrilador, un martes a las 11:00 la cobertura andando pasaría del 20,7 % al 45,7 %: 1,75 millones de personas más. Las diez mejores ya suman 46.516.
+- Si cada una de las 2.954 farmacias de la Comunidad tuviera un desfibrilador, un martes a las 11:00 la cobertura andando pasaría del 20,7 % al 45,7 %: 1,75 millones de personas más. Las diez mejores ya suman 46.516, por unos 25.000 euros en cinco años contando compra y mantenimiento: unos 54 céntimos por persona (cuentas y fuentes en [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md)).
 - Las gasolineras abiertas 24 horas sirven de poco de madrugada: aunque las 550 tuvieran uno, la cobertura del domingo a las 3:00 solo pasaría del 9,6 % al 10,4 %, porque están en carreteras y avenidas y no donde vive la gente.
 - Diez aparatos de 24 horas en el mejor sitio posible darían cobertura de madrugada a 54.195 personas más, 9.892 de ellas mayores de 65 años.
 

@@ -71,6 +71,15 @@ Quien instala un aparato tiene que comunicarlo a la Consejería de Sanidad en 15
 
 En 2024 murieron en la Comunidad de Madrid 11.747 personas por enfermedades del sistema circulatorio, la segunda causa de muerte después de los tumores [6]. No todas son paradas cardiacas fuera del hospital, pero da una idea del peso de estas enfermedades.
 
+## Cuánto costaría
+
+Un desfibrilador nuevo cuesta en España entre unos 1.000 y 2.100 euros [7], y el mantenimiento anual, entre 110 y 300 euros [8][7]. Los electrodos caducan cada dos a cinco años y la batería cada cuatro a siete [7], así que contamos cinco años de vida útil. En total, cada aparato cuesta entre unos 1.550 y 3.600 euros en cinco años. Para las cuentas usamos un valor intermedio de 2.500 euros.
+
+- Las diez mejores farmacias (`datos/elaborados/sitios_reales.csv`) darían cobertura un martes a las 11:00 a 46.516 personas más por unos 25.000 euros: unos 54 céntimos por persona en cinco años.
+- Un aparato en cada una de las 2.954 farmacias costaría unos 7,4 millones de euros en cinco años para 1,75 millones de personas más: unos 4,2 euros por persona.
+
+Son cifras orientativas, con precios de distribuidores y sin contar descuentos por compra conjunta ni la formación del personal.
+
 ## Qué hemos comprobado y qué no
 
 - Las cifras de EuReCa THREE las hemos leído en la nota de Europa Press [1], no en el artículo científico, que no hemos encontrado publicado.
@@ -86,5 +95,8 @@ En 2024 murieron en la Comunidad de Madrid 11.747 personas por enfermedades del 
 4. RCEMLearning (Royal College of Emergency Medicine). "Defibrillation", módulo *Virtual Journal Club*, julio de 2021. https://www.rcemlearning.co.uk/modules/july-virtual-journal-club-a-practical-risk-score-for-early-prediction-of-neurological-outcome-after-out-of-hospital-cardiac-arrest-miracle2/lessons/background-5/topic/defibrillation/
 5. Decreto 78/2017, de 12 de septiembre, del Consejo de Gobierno, por el que se regula la instalación y utilización de desfibriladores externos fuera del ámbito sanitario y se crea su Registro. BOCM núm. 219, 14 de septiembre de 2017. https://www.bocm.es/boletin/CM_Orden_BOCM/2017/09/14/BOCM-20170914-1.PDF
 6. Comunidad de Madrid, Portal de Datos Abiertos. "Defunciones por causa de muerte y sexo. Municipios". https://datos.comunidad.madrid/dataset/defunciones_por_causa_y_sexo
+
+7. Nutrasalud. "Cuánto cuesta un desfibrilador y por qué las farmacias, las comunidades y las pequeñas empresas se están equipando". 11 de septiembre de 2026. https://www.nutrasalud.es/noticias/20260911/precio-desfibriladores-farmacias
+8. Rivfordea. "Mantenimiento de desfibriladores en Madrid". Consultado el 23 de noviembre de 2026. https://rivfordea.es/cardioproteccion/mantenimiento-desfibriladores-madrid/
 
 Para más contexto sobre la epidemiología en Europa: Gräsner JT, Herlitz J, Tjelmeland IBM, et al. "European Resuscitation Council Guidelines 2021: Epidemiology of cardiac arrest in Europe". *Resuscitation* 2021;161:61-79. https://www.cprguidelines.eu/assets/guidelines/European-Resuscitation-Council-Guidelines-2021-Ep.pdf
