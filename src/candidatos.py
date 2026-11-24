@@ -22,6 +22,13 @@ def gasolineras_24h():
                          'municipio': g['Municipio'], 'lon': g['lon'], 'lat': g['lat']}).reset_index(drop=True)
 
 
+def gasolineras_todas():
+    """Todas las gasolineras de la Comunidad, abran cuando abran (solo su posición)."""
+    g = pd.DataFrame(json.loads((ORIGINALES / 'gasolineras.json').read_text(encoding='utf-8'))['ListaEESSPrecio'])
+    return pd.DataFrame({'lon': g['Longitud (WGS84)'].str.replace(',', '.').astype(float),
+                         'lat': g['Latitud'].str.replace(',', '.').astype(float)})
+
+
 def farmacias():
     """Oficinas de farmacia del registro de la Comunidad. No guardamos el nombre de los titulares."""
     f = pd.read_csv(ORIGINALES / 'oficinas_farmacia.csv', sep=';', dtype=str, encoding='utf-8')
@@ -42,10 +49,11 @@ PRIMARIA = {'Centro de salud', 'Consultorio de atención primaria'}
 HOSPITAL = {'Hospital general'}
 
 
-def centros_sanitarios():
-    """Un punto por centro (el fichero trae una fila por cada servicio de cada centro)."""
+def centros_sanitarios(todos=False):
+    """Un punto por centro (el fichero trae una fila por cada servicio de cada centro). Con todos=True, también
+    clínicas, consultas y demás centros privados (para saber qué son algunos aparatos del registro)."""
     c = pd.read_csv(ORIGINALES / 'centros_sanitarios.csv', sep=';', dtype=str, encoding='utf-8-sig')
-    c = c[c['centro_tipo'].isin(PRIMARIA | HOSPITAL)].drop_duplicates('centro_nro_registro').copy()
+    c = (c if todos else c[c['centro_tipo'].isin(PRIMARIA | HOSPITAL)]).drop_duplicates('centro_nro_registro').copy()
     c['x'] = pd.to_numeric(c['localizacion_coordenada_x'].str.replace(',', '.'), errors='coerce')
     c['y'] = pd.to_numeric(c['localizacion_coordenada_y'].str.replace(',', '.'), errors='coerce')
     c = c.dropna(subset=['x', 'y'])

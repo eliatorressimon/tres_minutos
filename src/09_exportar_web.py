@@ -13,6 +13,8 @@ from shapely.geometry import shape
 from shapely.ops import unary_union
 from pyproj import Transformer
 from config import ORIGINALES, ELABORADOS, WEB, CRS_METROS
+from scipy.spatial import cKDTree
+from candidatos import farmacias, gasolineras_todas, centros_sanitarios
 
 sec = pd.read_csv(ELABORADOS / 'puntos.csv', dtype={'punto': str, 'cod_ine_seccion': str, 'cod_ine_muni': str})
 dea = pd.read_csv(ELABORADOS / 'desfibriladores.csv', dtype=str)
@@ -55,7 +57,24 @@ TIPOS = {  # nombres cortos para la ficha de cada municipio
     'Grandes establecimientos comerciales con una superficie superior a 2500 m2': 'Centros comerciales',
     'Aeropuertos': 'Aeropuertos', 'Establecimiento público con aforo igual o superior a 2000 personas': 'Grandes aforos',
     'Centros residenciales de mayores con 200 plazas': 'Residencias de mayores'}
-tipos = sorted(set(TIPOS.values()))
+# "Otros" es el tipo más común (casi un tercio). El registro no dice más, pero muchos están en el mismo sitio
+# que una clínica, una farmacia o una gasolinera de otros registros: si hay una a 25 m o menos, lo decimos.
+# Si no, al menos separamos los públicos de los privados.
+CERCA_M = 25
+MAS_OTROS = ['Clínicas y centros sanitarios', 'Farmacias', 'Gasolineras', 'Otros sitios públicos', 'Otros sitios privados']
+tipos = sorted(set(TIPOS.values()) - {'Otros sitios'}) + MAS_OTROS
+a_m = Transformer.from_crs(4326, CRS_METROS, always_xy=True)
+def a_metros(lon, lat):
+    return np.c_[a_m.transform(np.asarray(lon, float), np.asarray(lat, float))]
+pos_dea = a_metros(dea['lon'], dea['lat'])
+tipo_dea = dea['tipo_establecimiento'].map(lambda t: TIPOS.get(t, 'Otros sitios')).values.copy()
+otros = tipo_dea == 'Otros sitios'
+tipo_dea[otros] = np.where(dea.loc[otros, 'tipo_titularidad'].eq('Pública'), 'Otros sitios públicos', 'Otros sitios privados')
+for nombre, sitios in [('Gasolineras', gasolineras_todas()), ('Farmacias', farmacias()), ('Clínicas y centros sanitarios', centros_sanitarios(todos=True))]:
+    d, _ = cKDTree(a_metros(sitios['lon'], sitios['lat'])).query(pos_dea[otros])
+    idx_o = np.flatnonzero(otros)[d <= CERCA_M]
+    tipo_dea[idx_o] = nombre
+print('Otros sitios aclarados:', pd.Series(tipo_dea[otros]).value_counts().to_dict())
 horarios, pos, filas_dea = [], {}, []
 textos, pos_texto = [], {}  # horario tal como viene escrito, para enseñarlo en la web
 for (_, d), tabla in zip(dea.iterrows(), tablas):
@@ -66,7 +85,7 @@ for (_, d), tabla in zip(dea.iterrows(), tablas):
         if k == len(horarios):
             horarios.append(clave)
     filas_dea.append([round(float(d['lon']), 5), round(float(d['lat']), 5), codigo_estado[d['estado_horario']], k,
-                      idx.get('28' + str(d['municipio_codigo']), -1), tipos.index(TIPOS.get(d['tipo_establecimiento'], 'Otros sitios'))])
+                      idx.get('28' + str(d['municipio_codigo']), -1), tipos.index(tipo_dea[len(filas_dea)])])
     texto = ' '.join(str(d['horario_acceso']).split()) if isinstance(d['horario_acceso'], str) else ''
     filas_dea[-1].append(pos_texto.setdefault(texto, len(textos)))
     if filas_dea[-1][-1] == len(textos):
