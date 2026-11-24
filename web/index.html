@@ -81,9 +81,9 @@ a{color:var(--negro);text-decoration-color:var(--rojo);text-underline-offset:3px
 .barrio-tit{font:700 14px var(--sans);color:var(--vino);margin:0 0 4px}
 .barrio-fila{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid var(--linea)}
 .barrio-fila strong{font:600 13.5px var(--sans);color:var(--vino)}
-.barrio-fila>b{font:700 14px var(--sans);text-align:right;color:var(--vino)}.barrio-fila.lejos>b{color:var(--rojo)}
+.barrio-fila>b{font:700 14px var(--sans);text-align:right;color:var(--vino)}
 .barrio-fila span{grid-column:1/-1;font-size:12.5px;color:var(--gris-1)}.barrio-fila i{font-style:normal}
-.barrio-fila .barrio-lejos,.barrio-fila .barrio-duda{font-style:normal;color:var(--rojo)}
+.barrio-fila .barrio-lejos{font-style:normal;color:var(--gris-2)}.barrio-fila .barrio-duda{font-style:normal;color:var(--rojo)}
 .ruta-planb{margin:14px 0 0;padding:10px 12px;background:var(--rosa);font-size:13.5px;line-height:1.45;color:var(--vino)}.ruta-planb a{color:var(--vino);text-decoration:underline;text-underline-offset:2px}.ruta-planb em{display:block;font-style:normal;color:var(--rojo)}
 .ruta .aviso-duda{margin:8px 0 0;padding:0;border:0;background:none;color:var(--rojo);font-size:12.5px}
 .letra{border:1.5px solid var(--negro);background:#fff;font:700 14px var(--sans);padding:7px 12px;margin-top:14px}
@@ -379,7 +379,16 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
 .cercano h3::before{content:"";width:12px;height:12px;background:var(--rojo);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
 .cercano>p{font-size:13.5px;color:var(--gris-1);margin:4px 0 10px;line-height:1.45}
 .cercano .acciones{margin-top:0;flex-wrap:wrap}
-.ruta{margin-top:12px;animation:aparecer .35s var(--entrar)}
+.respuesta{margin-top:14px}
+.respuesta:has(.ruta){background:#fff;padding:16px 14px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+.res-ante{font-size:12.5px;color:var(--gris-2);margin:0}
+.res-sitio{font:750 18px/1.25 var(--sans);color:var(--vino);margin:4px 0 0}
+.res-dir{font-size:15px;color:var(--gris-1);margin:2px 0 0}
+.res-est{font-size:13px;color:var(--gris-2);margin:4px 0 0}
+.res-mismo{font-size:13px;color:var(--vino);margin:6px 0 0}
+.ruta .ruta-veredicto{margin-top:14px;border-left:3px solid var(--vino);background:var(--hueso)}
+.res-acc{margin-top:14px!important}.res-acc .boton-sec{text-decoration:none;font-size:14px}
+.ruta{margin-top:0;animation:aparecer .35s var(--entrar)}
 .ruta-cifras{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
 .ruta-cifras div{background:var(--hueso);padding:8px 10px}
 .ruta-cifras strong{display:block;font:750 20px/1.1 var(--sans);font-variation-settings:"wdth" 110}
@@ -626,14 +635,13 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
       <div class="cercano" id="cercano">
         <h3>Mira tu calle</h3>
         <p>Usa tu ubicación o toca cualquier punto del mapa: tu casa, el colegio, la casa de tus padres. Verás a qué distancia andando está el desfibrilador abierto más cercano, de día y de noche.</p>
-        <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="enlace" id="btnTocar">o toca un punto del mapa</button></div>
-        <div id="rutaRes"></div>
-        <div id="barrio" class="barrio"></div>
+        <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="boton" id="btnTocar">O toca un punto del mapa</button></div>
         <div class="emergencia solo">
           <button class="boton-sec" id="btnAvisar"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 3h12v8H6l-4 3z"/></svg>Avisar a un contacto</button>
           <div class="aviso-cfg" id="avisoCfg" hidden></div>
         </div>
       </div>
+      <div class="respuesta"><div id="rutaRes"></div><div id="barrio" class="barrio"></div></div>
       <div class="consejo"><strong>Si vas a dejar esta web a una persona mayor</strong>Guárdale un contacto en "Avisar a un contacto" y déjale la web abierta en Emergencia. Con un solo botón sabrá dónde está el desfibrilador, oirá las instrucciones en voz alta y podrá avisarte con su ubicación.</div>
       <h2 class="seccion">Dos preguntas importantes</h2>
       <div class="mas">
@@ -1353,10 +1361,10 @@ function modoTocar(msg){if(poniendo)$('btnPoner').click();buscandoPunto=true;$('
 const distintos=(l,n)=>{const r=[];for(const x of l){if(r.every(y=>metros(y.d,x.d)>40))r.push(x);if(r.length===n)break}return r};
 async function buscarCercano(c){
   // los 8 más cercanos en línea recta; se mide andando a todos de una vez y se piden las rutas de los dos mejores
-  let cand=cache.dea.map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,8);
+  let cand=cache.dea.map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,8),todos=cand;
   try{const pts=[c,...cand.map(x=>[x.d[0],x.d[1]])].map(p=>(+p[0]).toFixed(5)+','+(+p[1]).toFixed(5)).join(';');
     const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');if(!r.ok)throw 0;const j=await r.json();
-    cand=distintos(cand.map((x,k)=>({...x,t:j.distances[0][k+1]??Infinity})).sort((a,b)=>a.t-b.t),2)}catch(e){cand=distintos(cand,3)}
+    todos=cand.map((x,k)=>({...x,t:j.distances[0][k+1]??Infinity})).sort((a,b)=>a.t-b.t);cand=distintos(todos,2)}catch(e){cand=distintos(cand,3)}
   if(!cand.length){$('rutaRes').innerHTML='<p class="nota">No hay ningún aparato abierto a esta hora.</p>';return}
   $('rutaRes').innerHTML='<p class="nota" style="margin-top:10px">Calculando la ruta andando…</p>';
   const pedir=async x=>{try{const r=await fetch(`https://routing.openstreetmap.de/routed-foot/route/v1/driving/${c[0]},${c[1]};${x.d[0]},${x.d[1]}?overview=full&geometries=geojson`);const j=await r.json();
@@ -1367,15 +1375,21 @@ async function buscarCercano(c){
   const andar=b.dist/1.35/60,correr=b.dist/2.8/60,idaVuelta=2*correr;
   const ok=idaVuelta<=3,c2=ok?'var(--vino)':'var(--rojo)';
   const hor=D.horarios_texto[b.d[6]]||'',r2=rs[1];
+  // otros aparatos abiertos en el mismo sitio: si uno no se puede usar, el otro quizá sí
+  const mismos=todos.filter(x=>x.d!==b.d&&metros(x.d,b.d)<=40);
   const mm=v=>v<1?'menos de 1 min':Math.round(v)+' min',m10=v=>fmt(Math.round(v/10)*10)+' m';
   const aqui=T===ahoraT()?'ahora':etiquetaT(T);
   // una ficha para el más cercano y, pegada debajo, la de reserva; cada una con un solo "Cómo llegar"
   $('rutaRes').innerHTML=`<div class="ruta">
-    <div class="ruta-veredicto" style="--c:${c2}">${ok?'Da tiempo: ida y vuelta corriendo en '+(idaVuelta<1?'menos de 1 min':'unos '+Math.round(idaVuelta)+' min'):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
-    <div class="ruta-cifras"><div><strong>${m10(b.dist)}</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
-    <dl><dt>Sitio</dt><dd>${tipoTxt(b.d[5])}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Dirección</dt><dd id="dirRuta">buscando…</dd><dt>Estado</dt><dd>${b.d[2]===0?'Abierto las 24 horas':'Abierto a esta hora'}${aqui==='ahora'?'':', '+aqui.toLowerCase()}</dd>${hor&&b.d[2]!==0?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
+    <p class="res-ante">El desfibrilador abierto más cercano${aqui==='ahora'?'':', '+aqui.toLowerCase()}</p>
+    <p class="res-sitio">${tipoTxt(b.d[5])}</p>
+    <p class="res-dir"><span id="dirRuta">buscando la dirección…</span>, ${nombreBonito(D.munis[b.d[4]])}</p>
+    <p class="res-est">${b.d[2]===0?'Abierto las 24 horas':'Abierto a esta hora'}${hor&&b.d[2]!==0?'. Horario: '+hor:''}</p>
     <p class="aviso-duda" id="dudaRuta" hidden></p>
-    <div class="acciones" style="margin-top:12px"><a class="enlace" href="${mapsA(c,b.d)}" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
+    ${mismos.length?`<p class="res-mismo">En el mismo sitio hay ${mismos.length>1?mismos.length+' aparatos más':'otro aparato'} abierto${mismos.length>1?'s':''}: ${mismos.map(x=>tipoTxt(x.d[5]).toLowerCase()+(x.d[2]===0?', 24 horas':', '+(D.horarios_texto[x.d[6]]||'con horario'))).join('; ')}. Si uno no se puede usar, prueba con el otro.</p>`:''}
+    <div class="ruta-veredicto">${ok?'Da tiempo: ida y vuelta corriendo en '+(idaVuelta<1?'menos de 1 min':'unos '+Math.round(idaVuelta)+' min'):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
+    <div class="ruta-cifras"><div><strong>${m10(b.dist)}</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
+    <div class="acciones res-acc"><a class="boton-sec" href="${mapsA(c,b.d)}" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
     <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p>
     ${r2?`<p class="ruta-planb"><b>Si está cerrado o no lo encuentras,</b> hay otro a ${m10(r2.dist)}: ${tipoTxt(r2.d[5]).toLowerCase()}, <span id="dirRuta2">buscando la dirección</span>. <a href="${mapsA(c,r2.d)}" target="_blank" rel="noopener">Cómo llegar a ese</a><em id="dudaRuta2" class="planb-duda"></em></p>`:''}
 </div>`;
