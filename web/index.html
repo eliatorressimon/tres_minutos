@@ -77,12 +77,13 @@ a{color:var(--negro);text-decoration-color:var(--rojo);text-underline-offset:3px
 .guia em{font:600 11px var(--mono);font-style:normal;text-transform:uppercase;letter-spacing:.05em;padding:3px 6px;justify-self:start}
 .guia .util{background:var(--vino);color:#fff}
 .guia .deco{background:var(--hueso,#efe6e1);color:var(--gris-1)}
-.barrio{margin-top:12px;display:grid;gap:6px}
-.barrio-fila{display:grid;grid-template-columns:1fr auto;gap:2px 10px;background:#fff;padding:10px 12px;border-left:4px solid var(--c)}
-.barrio-fila strong{font:700 14px var(--sans)}
-.barrio-fila b{font:700 15px var(--mono);text-align:right}
+.barrio{margin-top:12px;display:grid;gap:0;border-top:1px solid var(--linea,#e7dcd8)}
+.barrio-fila{display:grid;grid-template-columns:1fr auto;gap:3px 10px;padding:11px 2px;border-bottom:1px solid var(--linea,#e7dcd8)}
+.barrio-fila strong{font:700 14px var(--sans);color:var(--vino)}.barrio-fila strong small{font:500 12px var(--mono);color:var(--gris-2);margin-left:4px}
+.barrio-fila>b{font:700 15px var(--mono);text-align:right;color:var(--vino)}.barrio-fila.lejos>b{color:var(--rojo)}
+.barrio-fila.ya{background:#fff;padding:11px 10px;margin:0 -8px}
 .barrio-fila span{grid-column:1/-1;font-size:13px;color:var(--gris-1)}
-.barrio-fila .barrio-donde{color:var(--vino)}.barrio-fila .barrio-donde i{font-style:normal}.barrio-fila .barrio-donde a{color:var(--rojo);font-weight:600}
+.barrio-fila .barrio-donde{color:var(--vino)}.barrio-fila .barrio-donde i{font-style:normal}.barrio-fila .barrio-donde a{color:var(--vino);text-decoration:underline;text-underline-offset:2px}
 .letra{border:1.5px solid var(--negro);background:#fff;font:700 14px var(--sans);padding:7px 12px;margin-top:14px}
 .letra[aria-pressed=true]{background:var(--vino);color:#fff;border-color:var(--vino)}
 .grande .lado{zoom:1.18}
@@ -646,7 +647,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
       <p class="entradilla">Si vas a cambiarte de casa, elegir colegio o te preocupa un familiar mayor, esto es lo que conviene mirar.</p>
       <div class="mas" style="margin-top:18px">
         <details><summary>Si estás buscando casa</summary><div>
-          <p>Toca en el mapa la calle que te interesa y mira <b>las tres horas</b>: martes por la mañana, sábado por la tarde y domingo de madrugada. Muchos aparatos están en oficinas, tiendas o polideportivos que cierran, y de noche la diferencia es grande.</p>
+          <p>Toca en el mapa la calle que te interesa y mira <b>ahora mismo y otras tres horas</b>: martes por la mañana, sábado por la tarde y domingo de madrugada. Muchos aparatos están en oficinas, tiendas o polideportivos que cierran, y de noche la diferencia es grande.</p>
           <p>Las farmacias, las estaciones grandes y los hoteles suelen ser los que más horas abren.</p></div></details>
         <details><summary>Si estás eligiendo colegio</summary><div>
           <p>En la Comunidad de Madrid, los centros educativos están obligados a tener un desfibrilador (Decreto 78/2017). Pregunta dónde está y quién sabe usarlo.</p>
@@ -659,7 +660,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
         <details><summary>¿Qué es cada cosa del mapa?</summary><div>
           <ul><li><b>Marcas rojas:</b> barrios sin ningún desfibrilador abierto a 200 metros andando a esa hora. En 3D, cuanto más alta, más vecinos.</li>
           <li><b>Cuadrados oscuros</b> (al acercarte): los desfibriladores abiertos a esa hora.</li>
-          <li><b>La tabla de "Tu calle":</b> a cuántos metros andando queda el más cercano a tres horas distintas. Verde si está a 200 metros o menos, rojo si está lejos.</li>
+          <li><b>La tabla de "Tu calle":</b> a cuántos metros andando queda el más cercano ahora mismo y a otras tres horas de la semana. La distancia sale en rojo si pasa de 200 metros.</li>
           <li>De noche el mapa se oscurece para que se note la hora.</li></ul></div></details>
         <details><summary>¿De dónde salen estos datos?</summary><div>
           <p>Del registro oficial de desfibriladores de la Comunidad de Madrid, con su horario, la población del INE y las calles de OpenStreetMap. Está explicado en <a href="#metodo">Administraciones, Método</a>.</p>
@@ -1256,38 +1257,47 @@ $('simHoras').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;para
 $('btnQuitar').onclick=()=>{extra.clear();mios=[];calcular();ponerT(T);$('btnQuitar').hidden=true;$('resSim').hidden=true;$('simCab').textContent=''};
 
 
-/* ---------- tu calle a tres horas (Información) ---------- */
+/* ---------- tu calle ahora y a tres horas más (Información) ---------- */
 // Para decidir dónde vivir o qué colegio elegir: el desfibrilador abierto más cercano andando
 // un martes por la mañana, un sábado por la tarde y un domingo de madrugada.
 // El registro no trae la dirección de los aparatos: la pedimos a OpenStreetMap (Nominatim) a partir de sus
 // coordenadas, de una en una y con un segundo de pausa, como pide su política de uso. Se guarda en memoria.
-const dirCache=new Map(),dirTxt=new Map();let dirCola=Promise.resolve();
+const dirCache=new Map(),dirTxt=new Map(),dirInfo=new Map();let dirCola=Promise.resolve();
+// qué es el sitio, según OpenStreetMap (el registro solo da una categoría amplia)
+const CLASE_OSM={pharmacy:'Farmacia',hospital:'Hospital',clinic:'Clínica',doctors:'Consulta médica',dentist:'Dentista',school:'Colegio',kindergarten:'Escuela infantil',college:'Centro de estudios',university:'Universidad',police:'Policía',fire_station:'Bomberos',townhall:'Ayuntamiento',library:'Biblioteca',community_centre:'Centro cultural',arts_centre:'Centro cultural',social_facility:'Centro social',nursing_home:'Residencia',place_of_worship:'Iglesia',theatre:'Teatro',cinema:'Cine',bank:'Banco',fuel:'Gasolinera',restaurant:'Restaurante',fast_food:'Restaurante',cafe:'Cafetería',bar:'Bar',pub:'Bar',hotel:'Hotel',hostel:'Albergue',guest_house:'Hostal',supermarket:'Supermercado',mall:'Centro comercial',department_store:'Grandes almacenes',sports_centre:'Polideportivo',swimming_pool:'Piscina',fitness_centre:'Gimnasio',stadium:'Estadio',sports_hall:'Pabellón',golf_course:'Campo de golf',post_office:'Correos',courthouse:'Juzgado',government:'Oficina pública',public_building:'Edificio público',company:'Empresa',office:'Oficina',station:'Estación',bus_station:'Estación de autobuses',museum:'Museo',attraction:'Atracción',exhibition_centre:'Recinto ferial',conference_centre:'Palacio de congresos',events_venue:'Sala de eventos',marketplace:'Mercado',parking:'Aparcamiento'};
+const nomR=(d,capa)=>fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${d[1]}&lon=${d[0]}&zoom=18&addressdetails=1&accept-language=es${capa?'&layer='+capa:''}`).then(r=>{if(!r.ok)throw 0;return r.json()});
 function direccion(d){const k=d[0]+','+d[1];if(dirCache.has(k))return dirCache.get(k);
-  const p=dirCola.then(async()=>{try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${d[1]}&lon=${d[0]}&zoom=18&addressdetails=1&accept-language=es`);
-      if(!r.ok)throw 0;const j=await r.json(),a=j.address||{};
+  const p=dirCola.then(async()=>{try{
+      // primero el sitio con nombre más cercano; si está a más de 40 m, no es el del aparato y se pide solo la calle
+      let j=await nomR(d,'poi').catch(()=>null);
+      if(!j||j.error||metros([+j.lon,+j.lat],d)>40){await new Promise(ok=>setTimeout(ok,1100));j=await nomR(d)}
+      const a=j.address||{};
       const calle=a.road||a.pedestrian||a.footway||a.square||a.neighbourhood||'',num=a.house_number?' '+a.house_number:'';
-      const nombre=j.name&&j.name!==calle?j.name+', ':'';
-      const t=calle?nombre+calle+num:(j.display_name||'').split(',').slice(0,2).join(',');dirTxt.set(k,t);return t}catch(e){return ''}});
+      const clase=CLASE_OSM[j.type]||'',nom=j.name&&j.name!==calle?j.name:'';
+      const sitio=nom&&clase&&!nom.toLowerCase().includes(clase.toLowerCase())?clase+' '+nom:nom||clase;
+      const dir=calle?calle+num:(j.display_name||'').split(',').slice(0,2).join(',');
+      const t=sitio?sitio+', '+dir:dir;dirTxt.set(k,t);dirInfo.set(k,{sitio,dir});return t}catch(e){return ''}});
   dirCola=p.then(()=>new Promise(ok=>setTimeout(ok,1100)));dirCache.set(k,p);return p}
 function ponerDireccion(id,d){direccion(d).then(t=>{const el=document.getElementById(id);if(el)el.textContent=t||'Sin dirección: mira el punto en el mapa'})}
 const mapsA=(c,d)=>`https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${d[1]},${d[0]}&travelmode=walking`;
 
 async function barrio(c){
-  const el=$('barrio');el.innerHTML='<p class="nota">Mirando tu calle a tres horas distintas…</p>';
-  const momentos=[[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00']];
+  const el=$('barrio');el.innerHTML='<p class="nota">Mirando tu calle a cuatro horas distintas…</p>';
+  const ya=ahoraT(),momentos=[[ya,'Ahora mismo',etiquetaT(ya)],[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00']];
   const por=momentos.map(([t])=>D.dea.filter(d=>abierto(d,t)).map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,4));
   const uni=[...new Set(por.flat().map(x=>x.d))],dist=new Map();
   try{const pts=[c,...uni.map(d=>[d[0],d[1]])].map(p=>(+p[0]).toFixed(5)+','+(+p[1]).toFixed(5)).join(';');
     const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');if(!r.ok)throw 0;const j=await r.json();
     uni.forEach((d,k)=>{const v=j.distances[0][k+1];if(v!=null)dist.set(d,v+j.sources[0].distance+j.destinations[k+1].distance)})}catch(e){}
-  const filas=momentos.map(([t,et],i)=>{if(!por[i].length)return {et,m:Infinity};
-    return {et,...por[i].map(x=>({d:x.d,m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)})).sort((a,b)=>a.m-b.m)[0]}});
+  const filas=momentos.map(([t,et,sub],i)=>{if(!por[i].length)return {et,sub,m:Infinity};
+    return {et,sub,...por[i].map(x=>({d:x.d,m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)})).sort((a,b)=>a.m-b.m)[0]}});
   el.innerHTML='<p class="nota" style="margin-bottom:2px">El desfibrilador abierto más cercano, andando:</p>'+filas.map((f,i)=>{
-    const c2=f.m<=200?'#5c7a5a':f.m<=400?'#b5651d':'#d6142f';
     const txt=f.m===Infinity?'No consta ninguno abierto cerca':f.m<=200?'Da tiempo a ir y volver corriendo en menos de tres minutos':f.m<=400?'Ida y vuelta corriendo, de tres a cinco minutos':'Más de cinco minutos ida y vuelta';
-    const donde=f.d?`<span class="barrio-donde"><b>${tipoTxt(f.d[5])}</b>, <i id="dirB${i}">buscando la dirección</i>. <a href="${mapsA(c,f.d)}" target="_blank" rel="noopener">Cómo llegar</a></span>`:'';
-    return `<div class="barrio-fila" style="--c:${c2}"><strong>${f.et}</strong><b>${f.m===Infinity?'Ninguno':fmt(Math.round(f.m/10)*10)+' m'}</b><span>${txt}${f.aprox?' (distancia aproximada)':''}</span>${donde}</div>`}).join('');
-  filas.forEach((f,i)=>{if(f.d)ponerDireccion('dirB'+i,f.d)});
+    const donde=f.d?`<span class="barrio-donde" id="dirB${i}"><b>${tipoTxt(f.d[5])}</b>, <i>buscando la dirección</i>. <a href="${mapsA(c,f.d)}" target="_blank" rel="noopener">Cómo llegar</a></span>`:'';
+    return `<div class="barrio-fila${f.m>200?' lejos':''}${i===0?' ya':''}"><strong>${f.et}${f.sub?` <small>${f.sub}</small>`:''}</strong><b>${f.m===Infinity?'Ninguno':fmt(Math.round(f.m/10)*10)+' m'}</b><span>${txt}${f.aprox?' (distancia aproximada)':''}</span>${donde}</div>`}).join('');
+  // si OpenStreetMap sabe qué sitio es ("Hotel NH Atocha"), se pone eso en vez de la categoría del registro
+  filas.forEach((f,i)=>{if(f.d)direccion(f.d).then(()=>{const el=$('dirB'+i),x=dirInfo.get(f.d[0]+','+f.d[1]);if(!el)return;
+    el.querySelector('b').textContent=x&&x.sitio?x.sitio:tipoTxt(f.d[5]);el.querySelector('i').textContent=x&&x.dir?x.dir:'sin dirección, mira el punto en el mapa'})});
 }
 
 /* ---------- letra grande ---------- */
