@@ -124,6 +124,17 @@ por_sitio = {}
 for i, punto, m in zip(cerca['id'], cerca['punto'], cerca['metros_andando']):
     if punto in pos_punto:
         por_sitio.setdefault(i, []).extend([pos_punto[punto], int(round(m))])
+# lo mismo para los colegios e institutos sin horario en el registro (interruptor "suponer horario escolar")
+cerca_col = pd.read_csv(ELABORADOS / 'distancias_candidatos.csv', dtype={'id': str, 'punto': str})
+cerca_col = cerca_col[cerca_col['tipo'] == 'Colegio sin horario']
+todos_dea = pd.read_csv(ELABORADOS / 'desfibriladores.csv', dtype=str)
+por_colegio = {}
+for fila, punto, m in zip(cerca_col['id'], cerca_col['punto'], cerca_col['metros_andando']):
+    if punto in pos_punto:
+        por_colegio.setdefault(fila, []).extend([pos_punto[punto], int(round(m))])
+sin_hor = todos_dea[todos_dea['fijo'].eq('True') & todos_dea['estado_horario'].eq('desconocido') &
+                    todos_dea['tipo_establecimiento'].eq('Centro educativo')]
+colegios_web = [[round(float(d.lon), 5), round(float(d.lat), 5), 2, por_colegio.get(str(fila), [])] for fila, d in sin_hor.iterrows()]
 sanitarios_web = [[round(r.lon, 5), round(r.lat, 5), 1 if r.tipo == 'Hospital' else 0, por_sitio.get(r.id, [])] for r in sani.itertuples()]
 
 datos = {
@@ -145,6 +156,7 @@ datos = {
     'si_todos': si_todos.to_dict('records'),
     'resumen': resumen,
     'sanitarios': sanitarios_web,
+    'colegios_sin_horario': colegios_web,
     'municipios': [[r.municipio, int(r.poblacion), r.pct_martes_11h, r.pct_domingo_3h, int(r.tiene_desfibrilador_fijo)]
                    for r in muni.itertuples()],
 }

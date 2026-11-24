@@ -170,6 +170,10 @@ if __name__ == '__main__':
     sec = pd.read_csv(ELABORADOS / 'puntos.csv', dtype={'punto': str, 'cod_ine_seccion': str, 'cod_ine_muni': str})
     dea = pd.read_csv(ELABORADOS / 'desfibriladores.csv', dtype=str)
     dea['fila_dea'] = np.arange(len(dea))   # fila en desfibriladores.csv (hay un código repetido)
+    # colegios e institutos que no dicen su horario: no cuentan como abiertos, pero la web deja suponer el horario escolar
+    colegios = dea[dea['fijo'].eq('True') & dea['estado_horario'].eq('desconocido') & dea['tipo_establecimiento'].eq('Centro educativo')]
+    colegios = pd.DataFrame({'id': colegios['fila_dea'].astype(str), 'tipo': 'Colegio sin horario',
+                             'lon': colegios['lon'].astype(float), 'lat': colegios['lat'].astype(float)})
     dea = con_metros(dea[dea['fijo'].eq('True') & dea['estado_horario'].isin(['24h', 'horario'])])
     cargar_cache()
 
@@ -186,7 +190,7 @@ if __name__ == '__main__':
     centros = centros_secciones(sec)
     ideal = pd.DataFrame({'id': centros.index, 'tipo': 'Sitio ideal', 'lon': centros['lon'].values, 'lat': centros['lat'].values})
     cand = con_metros(pd.concat([ideal, farmacias()[['id', 'tipo', 'lon', 'lat']], gasolineras_24h()[['id', 'tipo', 'lon', 'lat']],
-                                centros_sanitarios()[['id', 'tipo', 'lon', 'lat']]]))
+                                centros_sanitarios()[['id', 'tipo', 'lon', 'lat']], colegios]))
     p = andando(cand, sec, RADIO_M)
     pd.DataFrame([{'tipo': cand.at[i, 'tipo'], 'id': cand.at[i, 'id'], 'punto': sec.at[j, 'punto'],
                    'metros_andando': m} for i, j, r, m in p]).to_csv(ELABORADOS / 'distancias_candidatos.csv', index=False)

@@ -576,6 +576,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
         </div>
       </div>
       <label class="interruptor" id="interSani" hidden><input type="checkbox" id="chkSani"><span class="pista" aria-hidden="true"></span><span><b>Contar también centros de salud y hospitales</b><small>Tienen desfibrilador pero no están en el registro. Horario supuesto: centros de salud de lunes a viernes de 8 a 21, hospitales las 24 horas.</small></span></label>
+      <label class="interruptor" id="interCol" hidden><input type="checkbox" id="chkCol"><span class="pista" aria-hidden="true"></span><span><b>Suponer horario escolar en los colegios sin horario</b><small><span id="nCol"></span> colegios e institutos no dicen su horario en el registro y no se cuentan como abiertos. Con esto se suponen abiertos de lunes a viernes de 8 a 17.</small></span></label>
       <details class="bloque"><summary>Probar con otra distancia<small>Para ver si el resultado depende de cómo se mide</small></summary><div class="bloque-cuerpo">
             <p class="nota" style="font-size:14px;margin-bottom:12px">Un vecino cuenta como cubierto si tiene un aparato abierto a <b>200 metros andando</b>: es lo que da tiempo a ir y volver en unos tres minutos. Aquí puedes ver qué pasa con un criterio más exigente (100 m), más generoso (300 m) o midiendo en línea recta, como si se pudieran atravesar los edificios. Todo se recalcula, también el mapa.</p>
             <div class="medir" id="medir">
@@ -785,6 +786,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
       <div class="leySel" hidden><i class="sel"></i><span>Aparato del municipio, abierto a esta hora</span></div>
       <div class="leySel" hidden><i class="sel cerrado"></i><span>Aparato del municipio, cerrado a esta hora</span></div>
       <div id="leySani" hidden><i class="sani"></i><span>Centro de salud u hospital abierto (en gris si está cerrado)</span></div>
+      <div id="leyCol" hidden><i class="dea"></i><span>Colegio sin horario, con horario escolar supuesto</span></div>
       <div id="leyNuevo" hidden><i class="nuevo"></i><span>Sitio propuesto</span></div>
     </div>
     <div class="controles">
@@ -865,13 +867,20 @@ function fichaAparato(d,a){return `<strong>${tipoTxt(d[5])}</strong><span><b>${a
 const abierto=(d,t)=>d[2]===0||(d[2]===1&&D.masks[d[3]][t]==='1');
 let conSani=false,saniF=null; // saniF[i]: 1 = a tiro de un centro de salud, 2 = de un hospital (bits)
 const saniAbierto=(tipo,t)=>tipo===1||(Math.floor(t/24)<5&&t%24>=8&&t%24<21);
-const cubierta=(i,t)=>cub[t][i]===1||extra.has(i)||(conSani&&saniF[i]>0&&((saniF[i]&2)||saniAbierto(0,t)));
-function marcarSani(){ // qué puntos quedan a la distancia elegida de cada centro, con la medida elegida
-  const S=D.secs;saniF=new Uint8Array(S.length);
-  for(const c of D.sanitarios){const bit=c[2]?2:1;
-    if(MEDIDA==='andando'){const L=c[3];for(let k=0;k<L.length;k+=2)if(L[k+1]<=RADIO)saniF[L[k]]|=bit}
+let conCol=false,colF=null;
+const escolar=t=>Math.floor(t/24)<5&&t%24>=8&&t%24<17;
+const cubierta=(i,t)=>cub[t][i]===1||extra.has(i)||(conSani&&saniF[i]>0&&((saniF[i]&2)||saniAbierto(0,t)))||(conCol&&colF[i]===1&&escolar(t));
+function marcarSani(){saniF=marcar(D.sanitarios,c=>c[2]?2:1)}
+function marcarCol(){colF=marcar(D.colegios_sin_horario,()=>1)}
+function marcar(lista,bitDe){ // qué puntos quedan a la distancia elegida de cada sitio, con la medida elegida
+  const S=D.secs,F=new Uint8Array(S.length);
+  for(const c of lista){const bit=bitDe(c);
+    if(MEDIDA==='andando'){const L=c[3];for(let k=0;k<L.length;k+=2)if(L[k+1]<=RADIO)F[L[k]]|=bit}
     else{const dl=RADIO/(111320*Math.cos(40.4*Math.PI/180)),da=RADIO/110540;
-      for(let i=0;i<S.length;i++){const s=S[i];if(Math.abs(s[0]-c[0])<=dl&&Math.abs(s[1]-c[1])<=da&&metros(s,c)<=RADIO)saniF[i]|=bit}}}}
+      for(let i=0;i<S.length;i++){const s=S[i];if(Math.abs(s[0]-c[0])<=dl&&Math.abs(s[1]-c[1])<=da&&metros(s,c)<=RADIO)F[i]|=bit}}}return F}
+function ponerCol(v){conCol=v;if(v)marcarCol();cache={k:''};$('leyCol').hidden=!v;recalcular()}
+$('chkCol').onchange=e=>ponerCol(e.target.checked);
+function recalcular(){calcular();gMin=Math.min(...curvaG.map(c=>c[0]));gMax=Math.max(...curvaG.map(c=>c[0]));casos();ponerT(T)}
 function ponerSani(v){conSani=v;if(v)marcarSani();cache={k:''};$('leySani').hidden=!v;calcular();gMin=Math.min(...curvaG.map(c=>c[0]));gMax=Math.max(...curvaG.map(c=>c[0]));casos();ponerT(T)}
 $('chkSani').onchange=e=>ponerSani(e.target.checked);
 function metros(a,b){const k=Math.cos(40.4*Math.PI/180);return Math.hypot((a[0]-b[0])*111320*k,(a[1]-b[1])*110540)}
@@ -892,7 +901,7 @@ async function cambiarMedida(r,m){
   document.querySelectorAll('#segM button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
   document.querySelectorAll('.dist').forEach(e=>e.textContent=distL());
   document.querySelectorAll('.dist-c').forEach(e=>e.textContent=distC());
-  if(conSani)marcarSani();
+  if(conSani)marcarSani();if(conCol)marcarCol();
   calcular();gMin=Math.min(...curvaG.map(c=>c[0]));gMax=Math.max(...curvaG.map(c=>c[0]));
   casos();ponerT(T);
 }
@@ -940,7 +949,7 @@ function actual(){let vp=null;try{vp=dk.getViewports()[0]}catch(e){} // antes de
 function volar(v,ms=1500){dk.setProps({initialViewState:{...actual(),...v,transitionDuration:reduce?0:ms,transitionInterpolator:new deck.FlyToInterpolator({speed:1.3}),transitionEasing:t=>1-Math.pow(1-t,3)}})}
 let crecer=1;
 function capas(){
-  const t=T,nk=noche(t%24),S=D.secs,clave=t+'|'+extra.size+'|'+conSani;
+  const t=T,nk=noche(t%24),S=D.secs,clave=t+'|'+extra.size+'|'+conSani+'|'+conCol;
   if(cache.k!==clave){const sc=[];for(let i=0;i<S.length;i++)if(!cubierta(i,t))sc.push(i);cache={k:clave,sc,dea:D.dea.filter(d=>abierto(d,t))}}
   zoomPintado=zoom;const esc=1.4*Math.pow(.55,Math.max(0,zoom-9))*crecer,plano=pitch<5;
   const L=[
@@ -956,6 +965,8 @@ function capas(){
       getLineColor:[255,255,255,255],lineWidthMinPixels:1,getFillColor:[...NEGRO,255]})
   ];
   document.querySelectorAll('.leySel').forEach(e=>e.hidden=sel<0);
+  if(conCol)L.push(new deck.ScatterplotLayer({id:'col_sh',data:D.colegios_sin_horario,visible:zoom>10,pickable:true,getPosition:c=>[c[0],c[1]],getRadius:9,radiusMinPixels:zoom>12?3.5:2,stroked:true,
+    lineWidthMinPixels:1,getFillColor:escolar(t)?[...NEGRO,255]:[255,255,255,255],getLineColor:escolar(t)?[255,255,255,255]:[...NEGRO,255],updateTriggers:{getFillColor:t,getLineColor:t}}));
   if(conSani)L.push(new deck.TextLayer({id:'sani',data:D.sanitarios,visible:zoom>9.5,pickable:true,getPosition:c=>[c[0],c[1]],getText:()=>'+',getSize:zoom>12?18:13,sizeUnits:'pixels',
     fontFamily:'Archivo, sans-serif',fontWeight:800,background:true,backgroundPadding:[3,0],getColor:c=>saniAbierto(c[2],t)?[...ROJO,255]:[160,150,152,255],
     getBackgroundColor:[255,255,255,255],getBorderColor:c=>saniAbierto(c[2],t)?[...NEGRO,255]:[160,150,152,255],getBorderWidth:2,
@@ -990,6 +1001,7 @@ function alPasar(info){
     if(id==='col'){const s=D.secs[o];m=s[4];html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${fmt(s[2])}</b> vecinos sin aparato abierto ${distC()}</span><em>${fmt(s[3])} con más de 65 años. ${corto(T)}</em>`}
     else if(id==='munis'){m=o.m;html=`<strong>${nombreBonito(D.munis[m])}</strong><span><b>${p1(curvaM[m][T])}</b> de sus vecinos cubiertos</span><em>${corto(T)}. Pulsa para ver el municipio</em>`}
     else if(id==='deaSel'){html=fichaAparato(o.d,o.a)}
+    else if(id==='col_sh'){html=`<strong>Colegio o instituto</strong><span><b>${escolar(T)?'Abierto':'Cerrado'}</b>, ${corto(T).toLowerCase()}</span><em>Sin horario en el registro. Horario escolar supuesto: de lunes a viernes, de 8 a 17</em>`}
     else if(id==='sani'){html=`<strong>${o[2]?'Hospital':'Centro de salud'}</strong><span><b>${saniAbierto(o[2],T)?'Abierto':'Cerrado'}</b>, ${corto(T).toLowerCase()}</span><em>${o[2]?'Urgencias las 24 horas':'Horario supuesto: de lunes a viernes, de 8 a 21'}. No está en el registro</em>`}
     else if(id==='nuevos'){html=`<strong>${o.i}. ${o.tipo?(o.tipo==='Farmacia'?'Farmacia':o.nombre)+', ':''}${nombreBonito(o.muni)}</strong><span><b>+${fmt(o.personas)}</b> vecinos cubiertos${o.direccion?'<br>'+o.direccion:''}</span><em>${fmt(o.mayores)} con más de 65 años</em>`}
   }
@@ -1011,7 +1023,7 @@ function ponerT(t){
   $('hora').value=h;$('btnAhora').classList.toggle('es',esAhora);siguiendo=esAhora;textosHora();
   $('lecturaP').textContent=Math.round(c[0])+' %';
   esfera(d,h);$('barrasDia').textContent=DIAS[d].toLowerCase();$('cPct').textContent=Math.round(c[0])+' %';
-  $('cTexto').innerHTML=`de los vecinos tiene un desfibrilador abierto ${distL()}. <b>${fmt(c[3])}</b> personas, no. A esta hora hay <b>${fmt(abiertosT[T])}</b> aparatos abiertos${conSani?`, más <b>${fmt(D.sanitarios.filter(c=>saniAbierto(c[2],T)).length)}</b> centros sanitarios`:''}.`;
+  $('cTexto').innerHTML=`de los vecinos tiene un desfibrilador abierto ${distL()}. <b>${fmt(c[3])}</b> personas, no. A esta hora hay <b>${fmt(abiertosT[T])}</b> aparatos abiertos${conCol&&escolar(T)?`, más <b>${fmt(D.colegios_sin_horario.length)}</b> colegios con horario supuesto`:''}${conSani?`, más <b>${fmt(D.sanitarios.filter(c=>saniAbierto(c[2],T)).length)}</b> centros sanitarios`:''}.`;
   $('noche').style.opacity=(noche(h)*.42).toFixed(2);
   if(vista==='ahora')rankings();if(sel>=0)actualizarMunicipio();if(mios.length)resultadoSim();
   notaMedida();pintar();
@@ -1060,7 +1072,7 @@ function casos(){
 }
 function sanitarios(){ // centros de salud y hospitales: tienen aparato aunque el registro (fuera del ámbito sanitario) no los recoja
   const st=D.si_todos||[],d=st.find(x=>/centros de salud/.test(x.caso)),n=st.find(x=>/^Contando hospitales/.test(x.caso));if(!d||!n)return;
-  $('bloqueSani').hidden=false;if(D.sanitarios&&D.sanitarios.length)$('interSani').hidden=false;
+  $('bloqueSani').hidden=false;if(D.sanitarios&&D.sanitarios.length)$('interSani').hidden=false;if(D.colegios_sin_horario&&D.colegios_sin_horario.length){$('interCol').hidden=false;$('nCol').textContent=fmt(D.colegios_sin_horario.length)}
   $('sani').innerHTML=`<p class="nota" style="font-size:14px;margin-bottom:12px">El registro de la Comunidad solo recoge los desfibriladores que están <b>fuera del ámbito sanitario</b>. Los centros de salud y los hospitales tienen el suyo, pero no aparecen. Si se cuentan, con su horario habitual (centros de salud de lunes a viernes de 8 a 21, hospitales con urgencias las 24 horas):</p>
     <ul class="apilado"><li><span>Martes, 11:00 (${fmt(d.locales)} centros)</span><strong>${p1(d.pct_antes)} → ${p1(d.pct_despues)}</strong></li><li><span>Domingo, 3:00 (${fmt(n.locales)} hospitales)</span><strong>${p1(n.pct_antes)} → ${p1(n.pct_despues)}</strong></li></ul>
     <p class="nota" style="margin-top:10px">Serían ${fmt(d.vecinos_nuevos)} vecinos más cubiertos de día y ${fmt(n.vecinos_nuevos)} de madrugada. Las cifras principales usan solo el registro, que es lo que se puede comprobar aparato por aparato. Con el interruptor de arriba, "Contar también centros de salud y hospitales", los ves en el mapa y entran en todas las cifras.</p>`}
