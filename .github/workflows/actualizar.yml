@@ -39,7 +39,7 @@ jobs:
         # OSRM propio con el mapa de OpenStreetMap de Geofabrik: así no se carga el servidor público
         run: |
           mkdir -p osrm && cd osrm
-          curl -sSfL -o madrid.osm.pbf https://download.geofabrik.de/europe/spain/madrid-latest.osm.pbf
+          curl -sSfL --retry 8 --retry-delay 30 --retry-all-errors --connect-timeout 30 -o madrid.osm.pbf https://download.geofabrik.de/europe/spain/madrid-latest.osm.pbf
           IMG=ghcr.io/project-osrm/osrm-backend:v5.27.1
           docker run --rm -v "$PWD:/data" $IMG osrm-extract -p /opt/foot.lua /data/madrid.osm.pbf
           docker run --rm -v "$PWD:/data" $IMG osrm-partition /data/madrid.osrm
