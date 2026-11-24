@@ -201,6 +201,8 @@ details.bloque h2.seccion:first-child{margin-top:6px}
 /* rankings */
 .ranking{margin-bottom:4px}
 .seg-cob{margin:18px 0 4px}
+.seg-orden{flex-wrap:wrap}
+.seg-orden button{flex:1 1 40%}
 .interruptor{display:flex;gap:12px;align-items:flex-start;margin-top:12px;background:#fff;padding:12px 14px;cursor:pointer;box-shadow:inset 3px 0 0 var(--vino)}
 .interruptor input{position:absolute;opacity:0;width:1px;height:1px}
 .interruptor .pista{flex:none;width:38px;height:22px;background:var(--hueso);position:relative;margin-top:1px;transition:background .15s}
@@ -555,7 +557,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
       <div class="antetitulo"><span>Para administraciones: <span data-n="registro">13.651</span> aparatos, hora a hora</span></div>
       <h1 class="titular">Si alguien cae ahora, ¿llega <span>a tiempo</span> un desfibrilador?</h1>
       <p class="entradilla">Hay unos <b>tres minutos</b> para ir a por uno y volver. Cada <b>marca roja</b> del mapa es un barrio donde a esta hora no hay ninguno abierto <span class="dist">a menos de 200 metros</span>.</p>
-      <div class="seg seg-cob" id="segCob" role="tablist"><button data-c="general" aria-pressed="true">Toda la Comunidad</button><button data-c="buscar" aria-pressed="false">Buscar un municipio</button></div>
+      <div class="seg seg-cob" id="segCob" role="tablist"><button data-c="general" aria-pressed="true">Toda la Comunidad</button><button data-c="buscar" aria-pressed="false">Por municipio</button></div>
       <div id="cobGeneral">
       <ol class="leer" aria-label="Cómo se lee esta pantalla">
         <li><b>Elige día y hora</b><span>Con los botones o tocando una barra.</span></li>
@@ -585,17 +587,6 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
               <p class="nota" id="medirNota"></p>
             </div>
       </div></details>
-      <div class="caja munis">
-        <div class="caja-cab"><span>POR MUNICIPIO</span><b id="munisHora"></b></div>
-        <div class="caja-cuerpo">
-          <div class="seg seg-rank" id="segRank"><button data-k="peor" aria-pressed="true">Peor cubiertos</button><button data-k="mejor" aria-pressed="false">Mejor cubiertos</button><button data-k="sin" aria-pressed="false">Más vecinos sin uno</button></div>
-          <div id="rankings"></div>
-          <button class="enlace" id="verTodos" style="margin-top:8px">Ver los 179 municipios →</button>
-        </div>
-      </div>
-      <details class="bloque" id="bloqueSani" hidden><summary>Y si contamos los centros de salud<small>Tienen desfibrilador, pero no están en el registro</small></summary><div class="bloque-cuerpo">
-        <div id="sani"></div>
-      </div></details>
       <details class="bloque"><summary>Cuatro casos que llaman la atención<small>La peor hora, la mejor, un pueblo que cambia mucho y los que no tienen ninguno</small></summary><div class="bloque-cuerpo">
         <div class="casos" id="casos"></div>
       </div></details>
@@ -608,7 +599,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 15 15"/></svg>
             <input id="buscar" type="search" placeholder="Escribe un municipio y abre su ficha" autocomplete="off" aria-label="Busca un municipio">
           </div>
-          <div class="medir-fila" style="margin-top:12px"><span>Ordenar</span><div class="seg" id="segOrden"><button data-o="nombre" aria-pressed="true">Por nombre</button><button data-o="pct" aria-pressed="false">Peor cubiertos primero</button></div></div>
+          <div style="margin-top:12px"><div class="seg seg-orden" id="segOrden"><button data-o="peor" aria-pressed="true">Peor cubiertos</button><button data-o="mejor" aria-pressed="false">Mejor cubiertos</button><button data-o="sin" aria-pressed="false">Más vecinos sin uno</button><button data-o="nombre" aria-pressed="false">A-Z</button></div></div>
           <p class="nota" id="listaNota" style="margin:10px 0 4px"></p>
           <ol class="lista-munis" id="listaMunis"></ol>
         </div>
@@ -1070,44 +1061,29 @@ function casos(){
   $('casos').innerHTML=L.map((c,k)=>`<button class="caso" data-k="${k}">${ICO[c.i]}<strong>${c.t}</strong><span>${c.s}</span><em>Ver →</em></button>`).join('');
   $('casos').onclick=e=>{const b=e.target.closest('[data-k]');if(b){parar();L[+b.dataset.k].f()}};
 }
-function sanitarios(){ // centros de salud y hospitales: tienen aparato aunque el registro (fuera del ámbito sanitario) no los recoja
-  const st=D.si_todos||[],d=st.find(x=>/centros de salud/.test(x.caso)),n=st.find(x=>/^Contando hospitales/.test(x.caso));if(!d||!n)return;
-  $('bloqueSani').hidden=false;if(D.sanitarios&&D.sanitarios.length)$('interSani').hidden=false;if(D.colegios_sin_horario&&D.colegios_sin_horario.length){$('interCol').hidden=false;$('nCol').textContent=fmt(D.colegios_sin_horario.length)}
-  $('sani').innerHTML=`<p class="nota" style="font-size:14px;margin-bottom:12px">El registro de la Comunidad solo recoge los desfibriladores que están <b>fuera del ámbito sanitario</b>. Los centros de salud y los hospitales tienen el suyo, pero no aparecen. Si se cuentan, con su horario habitual (centros de salud de lunes a viernes de 8 a 21, hospitales con urgencias las 24 horas):</p>
-    <ul class="apilado"><li><span>Martes, 11:00 (${fmt(d.locales)} centros)</span><strong>${p1(d.pct_antes)} → ${p1(d.pct_despues)}</strong></li><li><span>Domingo, 3:00 (${fmt(n.locales)} hospitales)</span><strong>${p1(n.pct_antes)} → ${p1(n.pct_despues)}</strong></li></ul>
-    <p class="nota" style="margin-top:10px">Serían ${fmt(d.vecinos_nuevos)} vecinos más cubiertos de día y ${fmt(n.vecinos_nuevos)} de madrugada. Las cifras principales usan solo el registro, que es lo que se puede comprobar aparato por aparato. Con el interruptor de arriba, "Contar también centros de salud y hospitales", los ves en el mapa y entran en todas las cifras.</p>`}
-function rankings(){
-  const ms=D.munis.map((_,m)=>m);
-  const top=(arr,v,f)=>{const L=arr.slice(0,5),mx=Math.max(...L.map(v))||1;return L.map((m,k)=>`<li><button data-m="${m}"><span class="n">${k+1}</span><span>${nombreBonito(D.munis[m])}</span><span class="v">${f(m)}</span><span class="bar"><i style="width:${(100*v(m)/mx).toFixed(1)}%"></i></span></button></li>`).join('')};
-  const a=ms.filter(m=>m!==MAD).sort((x,y)=>D.sinM[y][T]-D.sinM[x][T]);
-  const b=ms.filter(m=>D.totM[m]>=5000).sort((x,y)=>Math.round(10*curvaM[x][T])-Math.round(10*curvaM[y][T])||D.totM[y]-D.totM[x]); // empates: primero los más poblados
-  const ceros=b.filter(m=>curvaM[m][T]<0.05).length;
-  const c=ms.filter(m=>D.totM[m]>=5000).sort((x,y)=>curvaM[y][T]-curvaM[x][T]);
-  $('rankings').innerHTML=`
-    <div class="ranking" data-k="sin"><h3>Más vecinos sin aparato cerca</h3><p class="nota">Personas sin desfibrilador abierto ${distC()}, sin contar Madrid capital (${fmt(D.sinM[MAD][T])})</p><ol>${top(a,m=>D.sinM[m][T],m=>fmt(D.sinM[m][T]))}</ol></div>
-    <div class="ranking" data-k="peor"><h3>Peor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes${ceros>1?`. A esta hora, <b>${ceros}</b> no tienen ninguno abierto ${distC()}; aquí van los más poblados`:''}</p><ol>${top(b,m=>100-curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>
-    <div class="ranking bien" data-k="mejor"><h3>Mejor cubiertos</h3><p class="nota">Municipios de más de 5.000 habitantes</p><ol>${top(c,m=>curvaM[m][T],m=>p1(curvaM[m][T]))}</ol></div>`;
-  verRank();$('munisHora').textContent=$('cajaT').textContent;listaMunis();
-}
-let cobSel='general',ordenL='nombre';
+function sanitarios(){ // interruptores de centros de salud y colegios sin horario, si los datos los traen
+  if(D.sanitarios&&D.sanitarios.length)$('interSani').hidden=false;
+  if(D.colegios_sin_horario&&D.colegios_sin_horario.length){$('interCol').hidden=false;$('nCol').textContent=fmt(D.colegios_sin_horario.length)}}
+function rankings(){listaMunis()}
+let cobSel='general',ordenL='peor';
 function verCob(k){cobSel=k;$('cobGeneral').hidden=k!=='general';$('cobBuscar').hidden=k!=='buscar';
   document.querySelectorAll('#segCob button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===k));if(k==='buscar')listaMunis()}
 $('segCob').onclick=e=>{const b=e.target.closest('[data-c]');if(b)verCob(b.dataset.c)};
-$('verTodos').onclick=()=>{verCob('buscar');$('lado').scrollTop=0};
 $('segOrden').onclick=e=>{const b=e.target.closest('[data-o]');if(b){ordenL=b.dataset.o;document.querySelectorAll('#segOrden button').forEach(x=>x.setAttribute('aria-pressed',x===b));listaMunis()}};
 let filtrados=[];
 function listaMunis(){if(cobSel!=='buscar'||!D)return;
   const q=sinTildes($('buscar').value.trim());
   filtrados=D.munis.map((n,m)=>({m,n:nombreBonito(n)})).filter(x=>!q||sinTildes(x.n).includes(q));
-  if(ordenL==='pct')filtrados.sort((a,b)=>curvaM[a.m][T]-curvaM[b.m][T]||D.totM[b.m]-D.totM[a.m]);else filtrados.sort((a,b)=>a.n.localeCompare(b.n,'es'));
-  $('listaHora').textContent=$('cajaT').textContent;
-  $('listaNota').innerHTML=filtrados.length?`Vecinos con un aparato abierto ${distC()} a esta hora. Pulsa uno para abrir su ficha. La hora se cambia en "Toda la Comunidad".`:'Ningún municipio con ese nombre.';
-  $('listaMunis').innerHTML=filtrados.map(x=>{const v=curvaM[x.m][T];return `<li><button data-m="${x.m}"><span>${x.n}<small>${fmt(D.totM[x.m])} hab.</small></span><span class="v">${v>0&&v<1?p1(v):Math.round(v)+' %'}</span><span class="bar"><i style="width:${Math.min(100,v).toFixed(1)}%"></i></span></button></li>`}).join('')}
+  const pc=m=>Math.round(10*curvaM[m][T]);
+  if(ordenL==='peor')filtrados.sort((a,b)=>pc(a.m)-pc(b.m)||D.totM[b.m]-D.totM[a.m]); // empates: primero los más poblados
+  else if(ordenL==='mejor')filtrados.sort((a,b)=>pc(b.m)-pc(a.m)||D.totM[b.m]-D.totM[a.m]);
+  else if(ordenL==='sin')filtrados.sort((a,b)=>D.sinM[b.m][T]-D.sinM[a.m][T]);
+  else filtrados.sort((a,b)=>a.n.localeCompare(b.n,'es'));
+  const ceros=D.munis.filter((_,m)=>curvaM[m][T]<0.05).length;
+  $('listaHora').textContent=$('cajaT').textContent;const mxSin=Math.max(1,...filtrados.map(x=>D.sinM[x.m][T]));
+  $('listaNota').innerHTML=filtrados.length?(ordenL==='sin'?`Personas sin un aparato abierto ${distC()} a esta hora.`:`Vecinos con un aparato abierto ${distC()} a esta hora.`+(ordenL==='peor'&&ceros?` <b>${ceros}</b> municipios no tienen ninguno; primero van los más poblados.`:''))+` Pulsa uno para abrir su ficha. La hora se cambia en "Toda la Comunidad".`:'Ningún municipio con ese nombre.';
+  $('listaMunis').innerHTML=filtrados.map(x=>{const v=curvaM[x.m][T],sin=ordenL==='sin',w=sin?100*D.sinM[x.m][T]/mxSin:Math.min(100,v);return `<li><button data-m="${x.m}"><span>${x.n}<small>${fmt(D.totM[x.m])} hab.</small></span><span class="v">${sin?fmt(D.sinM[x.m][T]):v>0&&v<1?p1(v):p1(v)}</span><span class="bar"><i style="width:${w.toFixed(1)}%"></i></span></button></li>`}).join('')}
 $('listaMunis').onclick=e=>{const b=e.target.closest('[data-m]');if(b)abrirMunicipio(+b.dataset.m)};
-let rankSel='peor';
-function verRank(){document.querySelectorAll('#rankings .ranking').forEach(r=>r.hidden=r.dataset.k!==rankSel);document.querySelectorAll('#segRank button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===rankSel))}
-$('segRank').onclick=e=>{const b=e.target.closest('[data-k]');if(b){rankSel=b.dataset.k;verRank()}};
-$('rankings').onclick=e=>{const b=e.target.closest('[data-m]');if(b)abrirMunicipio(+b.dataset.m)};
 
 /* ---------- municipio ---------- */
 const ESC=[[0,ROJO],[25,[243,179,188]],[50,[238,238,238]],[100,[200,200,200]]];
