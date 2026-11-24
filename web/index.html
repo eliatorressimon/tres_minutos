@@ -77,13 +77,20 @@ a{color:var(--negro);text-decoration-color:var(--rojo);text-underline-offset:3px
 .guia em{font:600 11px var(--mono);font-style:normal;text-transform:uppercase;letter-spacing:.05em;padding:3px 6px;justify-self:start}
 .guia .util{background:var(--vino);color:#fff}
 .guia .deco{background:var(--hueso,#efe6e1);color:var(--gris-1)}
-.barrio{margin-top:12px;display:grid;gap:0;border-top:1px solid var(--linea,#e7dcd8)}
-.barrio-fila{display:grid;grid-template-columns:1fr auto;gap:3px 10px;padding:11px 2px;border-bottom:1px solid var(--linea,#e7dcd8)}
-.barrio-fila strong{font:700 14px var(--sans);color:var(--vino)}.barrio-fila strong small{font:500 12px var(--mono);color:var(--gris-2);margin-left:4px}
-.barrio-fila>b{font:700 15px var(--mono);text-align:right;color:var(--vino)}.barrio-fila.lejos>b{color:var(--rojo)}
-.barrio-fila.ya{background:#fff;padding:11px 10px;margin:0 -8px}
-.barrio-fila span{grid-column:1/-1;font-size:13px;color:var(--gris-1)}
-.barrio-fila .barrio-donde{color:var(--vino)}.barrio-fila .barrio-donde i{font-style:normal}.barrio-fila .barrio-donde a{color:var(--vino);text-decoration:underline;text-underline-offset:2px}
+.barrio{margin-top:18px;display:grid}
+.barrio-tit{font:700 14px var(--sans);color:var(--vino);margin:0 0 4px}
+.barrio-fila{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid var(--linea)}
+.barrio-fila strong{font:600 13.5px var(--sans);color:var(--vino)}
+.barrio-fila>b{font:700 14px var(--mono);text-align:right;color:var(--vino)}.barrio-fila.lejos>b{color:var(--rojo)}
+.barrio-fila span{grid-column:1/-1;font-size:12.5px;color:var(--gris-1)}.barrio-fila i{font-style:normal}
+.barrio-fila .barrio-lejos,.barrio-fila .barrio-duda{font-style:normal;color:var(--rojo)}
+.dea-ficha{background:#fff;padding:12px 14px;margin-top:10px;border-left:3px solid var(--vino)}
+.dea-ficha.reserva{background:transparent;border:1px solid var(--linea);border-left:3px solid var(--gris-3)}
+.dea-ficha p{margin:0}.dea-cuando{font:500 11px var(--mono);color:var(--gris-2);text-transform:uppercase;letter-spacing:.04em}
+.dea-sitio{font:700 15px var(--sans);color:var(--vino);margin-top:3px!important}.dea-sitio span{font:700 13px var(--mono);color:var(--gris-1);margin-left:6px}
+.dea-dir{font-size:13.5px;color:var(--gris-1)}.dea-hor{font-size:12.5px;color:var(--gris-2);margin-top:2px!important}
+.dea-ficha .aviso-duda{margin:8px 0 0;padding:0;border:0;background:none;color:var(--rojo);font-size:12.5px}
+.dea-ficha .enlace{margin-top:8px;display:inline-block}
 .letra{border:1.5px solid var(--negro);background:#fff;font:700 14px var(--sans);padding:7px 12px;margin-top:14px}
 .letra[aria-pressed=true]{background:var(--vino);color:#fff;border-color:var(--vino)}
 .grande .lado{zoom:1.18}
@@ -424,7 +431,6 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
 .etiqueta em{font-style:normal;font:500 11px var(--mono);color:var(--gris-2)}
 .aviso-duda{margin:10px 0 0;padding:8px 10px;border-left:3px solid var(--rojo);background:#fff;font-size:13px;color:var(--vino)}
 .sos-duda{margin:8px 0}
-.ruta-planb{margin:10px 0 0;font-size:13px;color:var(--vino)}.ruta-planb a{color:var(--vino);text-decoration:underline}
 .etiqueta .eti-duda{font:600 12px/1.3 var(--sans);color:var(--rojo);margin-top:3px}
 .barrio-fila .barrio-duda{display:block;font-style:normal;font-weight:600;color:var(--rojo);margin-top:3px}
 .etiqueta .eti-dir{font:500 12.5px/1.3 var(--sans);color:var(--vino)}
@@ -626,8 +632,8 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
         <h3>Mira tu calle</h3>
         <p>Usa tu ubicación o toca cualquier punto del mapa: tu casa, el colegio, la casa de tus padres. Verás a qué distancia andando está el desfibrilador abierto más cercano, de día y de noche.</p>
         <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="enlace" id="btnTocar">o toca un punto del mapa</button></div>
-        <div id="barrio" class="barrio"></div>
         <div id="rutaRes"></div>
+        <div id="barrio" class="barrio"></div>
         <div class="emergencia solo">
           <button class="boton-sec" id="btnAvisar"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 3h12v8H6l-4 3z"/></svg>Avisar a un contacto</button>
           <div class="aviso-cfg" id="avisoCfg" hidden></div>
@@ -1309,26 +1315,26 @@ const dirDe=d=>{const x=dirInfo.get(d[0]+','+d[1]);if(!x||!x.dir)return '';retur
 function ponerDireccion(id,d){direccion(d).then(t=>{const el=document.getElementById(id);if(el)el.textContent=t||'Sin dirección: mira el punto en el mapa'})}
 const mapsA=(c,d)=>`https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${d[1]},${d[0]}&travelmode=walking`;
 
-async function barrio(c,medidos,esAhora){const elegido=medidos[0];
-  const el=$('barrio');el.innerHTML='<p class="nota">Mirando tu calle a cuatro horas distintas…</p>';
-  const ya=ahoraT(),momentos=[[ya,'Ahora mismo',etiquetaT(ya)],[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00']];
+async function barrio(c,medidos){
+  const el=$('barrio');el.innerHTML='<p class="nota">Mirando tu calle a otras horas…</p>';
+  const momentos=[[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00']];
   const por=momentos.map(([t])=>D.dea.filter(d=>abierto(d,t)).map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,4));
   const uni=[...new Set(por.flat().map(x=>x.d))],dist=new Map();
   try{const pts=[c,...uni.map(d=>[d[0],d[1]])].map(p=>(+p[0]).toFixed(5)+','+(+p[1]).toFixed(5)).join(';');
     const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');if(!r.ok)throw 0;const j=await r.json();
     uni.forEach((d,k)=>{const v=j.distances[0][k+1];if(v!=null)dist.set(d,v+j.sources[0].distance+j.destinations[k+1].distance)})}catch(e){}
-  const filas=momentos.map(([t,et,sub],i)=>{if(!por[i].length)return {et,sub,m:Infinity};
-    // "Ahora mismo" es el mismo aparato y la misma ruta que salen debajo, para que no se contradigan
-    if(i===0&&elegido&&esAhora)return {et,sub,d:elegido.d,m:Math.round(elegido.dist/10)*10,aprox:!!elegido.recta};
-    // los aparatos que ya tienen ruta debajo (el elegido y el de reserva) llevan la distancia de esa ruta, para que las cifras coincidan
-    const med=x=>{const r=medidos.find(y=>y.d===x.d);return r?{d:x.d,m:r.dist,aprox:!!r.recta}:{d:x.d,m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)}};
-    const f={et,sub,...por[i].map(med).sort((a,b)=>a.m-b.m)[0]};f.m=Math.round(f.m/10)*10;return f});
-  el.innerHTML='<p class="nota" style="margin-bottom:2px">El desfibrilador abierto más cercano, andando:</p>'+filas.map((f,i)=>{
-    const txt=f.m===Infinity?'No consta ninguno abierto cerca':f.m<=200?'Da tiempo a ir y volver corriendo en menos de tres minutos':f.m<=400?'Ida y vuelta corriendo, de tres a cinco minutos':'Más de cinco minutos ida y vuelta';
-    const donde=f.d?`<span class="barrio-donde" id="dirB${i}"><b>${tipoTxt(f.d[5])}</b>, <i>buscando la dirección</i>. <a href="${mapsA(c,f.d)}" target="_blank" rel="noopener">Cómo llegar</a></span>`:'';
-    return `<div class="barrio-fila${f.m>200?' lejos':''}${i===0?' ya':''}"><strong>${f.et}${f.sub?` <small>${f.sub}</small>`:''}</strong><b>${f.m===Infinity?'Ninguno':fmt(Math.round(f.m/10)*10)+' m'}</b><span>${txt}${f.aprox?' (distancia aproximada)':''}</span>${donde}</div>`}).join('');
-    filas.forEach((f,i)=>{if(f.d)direccion(f.d).then(()=>{const el=$('dirB'+i),x=dirInfo.get(f.d[0]+','+f.d[1]);if(!el)return;
-    el.querySelector('i').textContent=dirDe(f.d)||'sin dirección, mira el punto en el mapa';cargarDudas.then(()=>{const t=dudaTxt(f.d);if(t&&!el.querySelector('.barrio-duda'))el.insertAdjacentHTML('beforeend',`<em class="barrio-duda">${t}</em>`)})})});
+  // los aparatos que ya tienen ficha arriba llevan la distancia de su ruta, para que las cifras coincidan
+  const med=x=>{const r=medidos.find(y=>y.d===x.d);return r?{d:x.d,m:r.dist,aprox:!!r.recta}:{d:x.d,m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)}};
+  const filas=momentos.map(([t,et],i)=>{if(!por[i].length)return {et,m:Infinity};const f={et,...por[i].map(med).sort((a,b)=>a.m-b.m)[0]};f.m=Math.round(f.m/10)*10;return f});
+  const cual=f=>{const k=medidos.findIndex(y=>y.d===f.d);return k===0?'El mismo de arriba':k===1?'El siguiente de arriba':null};
+  el.innerHTML='<h4 class="barrio-tit">Y a otras horas de la semana</h4>'+filas.map((f,i)=>{
+    const lejos=f.m===Infinity?'Ninguno abierto cerca':f.m<=200?'':f.m<=400?'Ida y vuelta, de 3 a 5 min':'Más de 5 min ida y vuelta';
+    const q=f.d&&cual(f);
+    return `<div class="barrio-fila${f.m>200?' lejos':''}"><strong>${f.et}</strong><b>${f.m===Infinity?'Ninguno':fmt(f.m)+' m'}${f.aprox?'*':''}</b>
+      <span id="fB${i}">${q||(f.d?`${tipoTxt(f.d[5])}, <i id="dirB${i}">buscando la dirección</i>`:'')}${lejos?`. <em class="barrio-lejos">${lejos}</em>`:''}</span></div>`}).join('')
+    +(filas.some(f=>f.aprox)?'<p class="nota">* Distancia aproximada.</p>':'');
+  const ojo=i=>cargarDudas.then(()=>{const f=filas[i],e=$('fB'+i);if(f.d&&e&&dudaTxt(f.d))e.insertAdjacentHTML('beforeend',` <em class="barrio-duda">Ojo: dice 24 horas sin que nadie lo haya comprobado.</em>`)});
+  filas.forEach((f,i)=>{if(!f.d)return;if(cual(f)){ojo(i);return}direccion(f.d).then(()=>{const e=$('dirB'+i);if(e)e.textContent=dirDe(f.d)||'mira el punto en el mapa';ojo(i)})});
 }
 
 /* ---------- letra grande ---------- */
@@ -1358,21 +1364,28 @@ async function buscarCercano(c){
   const camino=[c,...b.camino,[b.d[0],b.d[1]]];
   camRuta={desde:c,hasta:[b.d[0],b.d[1]],camino,t:T};
   const andar=b.dist/1.35/60,correr=b.dist/2.8/60,idaVuelta=2*correr;
-  const ok=idaVuelta<=3,c2=ok?'#5c7a5a':idaVuelta<=5?'#b5651d':'#d6142f';
-  const est=b.d[2]===0?'Abierto las 24 horas':'Abierto a esta hora';
-  const hor=D.horarios_texto[b.d[6]]||'';
-  const mm=v=>v<1?'menos de 1 min':Math.round(v)+' min';
+  const ok=idaVuelta<=3,c2=ok?'var(--vino)':'var(--rojo)';
+  const hor=D.horarios_texto[b.d[6]]||'',r2=rs[1];
+  const mm=v=>v<1?'menos de 1 min':Math.round(v)+' min',m10=v=>fmt(Math.round(v/10)*10)+' m';
+  const aqui=T===ahoraT()?'Ahora mismo':etiquetaT(T);
+  // una ficha para el más cercano y, pegada debajo, la de reserva; cada una con un solo "Cómo llegar"
   $('rutaRes').innerHTML=`<div class="ruta">
     <div class="ruta-veredicto" style="--c:${c2}">${ok?'Da tiempo: ida y vuelta corriendo en '+(idaVuelta<1?'menos de 1 min':'unos '+Math.round(idaVuelta)+' min'):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
-    <div class="ruta-cifras"><div><strong>${fmt(Math.round(b.dist/10)*10)} m</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
-    <dl><dt>Sitio</dt><dd id="sitRuta">${tipoTxt(b.d[5])}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Dirección</dt><dd id="dirRuta">buscando…</dd><dt>Estado</dt><dd>${est}, ${etiquetaT(T).toLowerCase()}</dd>${hor?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
-    ${rs[1]?`<p class="ruta-planb"><b>Si está cerrado o no lo encuentras:</b> hay otro a ${fmt(Math.round(rs[1].dist/10)*10)} m, ${tipoTxt(rs[1].d[5]).toLowerCase()}, <span id="dirRuta2">buscando la dirección</span>. <a href="${mapsA(c,rs[1].d)}" target="_blank" rel="noopener">Cómo llegar a ese</a></p>`:''}
-    <div class="acciones" style="margin-top:12px"><a class="enlace" href="https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${b.d[1]},${b.d[0]}&travelmode=walking" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
-    <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p></div>`;
-  direccion(b.d).then(()=>{const a=$('sitRuta'),e=$('dirRuta');if(a)a.textContent=sitioDe(b.d)+', '+nombreBonito(D.munis[b.d[4]]);if(e)e.textContent=dirDe(b.d)||'Sin dirección: mira el punto en el mapa'});
-  if(rs[1])direccion(rs[1].d).then(()=>{const e=$('dirRuta2');if(e)e.textContent=dirDe(rs[1].d)||'mira el punto en el mapa'});
+    <div class="ruta-cifras"><div><strong>${m10(b.dist)}</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
+    <div class="dea-ficha"><p class="dea-cuando">${aqui}, el más cercano abierto</p>
+      <p class="dea-sitio">${tipoTxt(b.d[5])}</p><p class="dea-dir" id="dirRuta">buscando la dirección…</p>
+      <p class="dea-hor">${b.d[2]===0?'Abierto las 24 horas':'Horario: '+(hor||'abierto a esta hora')}</p>
+      <p class="aviso-duda" id="dudaRuta" hidden></p>
+      <a class="enlace" href="${mapsA(c,b.d)}" target="_blank" rel="noopener">Cómo llegar</a></div>
+    ${r2?`<div class="dea-ficha reserva"><p class="dea-cuando">Si está cerrado o no lo encuentras, el siguiente</p>
+      <p class="dea-sitio">${tipoTxt(r2.d[5])} <span>a ${m10(r2.dist)}</span></p><p class="dea-dir" id="dirRuta2">buscando la dirección…</p>
+      <a class="enlace" href="${mapsA(c,r2.d)}" target="_blank" rel="noopener">Cómo llegar a este</a></div>`:''}
+    <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p>
+    <button class="enlace" id="btnBorrarRuta">Borrar y buscar otro sitio</button></div>`;
+  direccion(b.d).then(()=>{const e=$('dirRuta');if(e)e.textContent=(dirDe(b.d)||'Sin dirección: mira el punto en el mapa')+', '+nombreBonito(D.munis[b.d[4]]);cargarDudas.then(()=>ponerDuda('dudaRuta',b.d))});
+  if(r2)direccion(r2.d).then(()=>{const e=$('dirRuta2');if(e)e.textContent=(dirDe(r2.d)||'mira el punto en el mapa')+', '+nombreBonito(D.munis[r2.d[4]])});
   $('btnBorrarRuta').onclick=()=>{camRuta=null;$('rutaRes').innerHTML='';$('barrio').innerHTML='';pintar()};
-  barrio(c,rs,T===ahoraT());
+  barrio(c,rs);
   let x0=Math.min(...camino.map(p=>p[0])),x1=Math.max(...camino.map(p=>p[0])),y0=Math.min(...camino.map(p=>p[1])),y1=Math.max(...camino.map(p=>p[1]));
   const {w,h}=caja(),span=Math.max(x1-x0,(y1-y0)*1.31,.002);const z=Math.min(17,Math.log2((Math.min(w,h)-240)*360/(512*span)));
   volar({longitude:(x0+x1)/2,latitude:(y0+y1)/2,zoom:z,pitch:0,bearing:0},1300);pintar();
