@@ -1309,7 +1309,7 @@ const dirDe=d=>{const x=dirInfo.get(d[0]+','+d[1]);if(!x||!x.dir)return '';retur
 function ponerDireccion(id,d){direccion(d).then(t=>{const el=document.getElementById(id);if(el)el.textContent=t||'Sin dirección: mira el punto en el mapa'})}
 const mapsA=(c,d)=>`https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${d[1]},${d[0]}&travelmode=walking`;
 
-async function barrio(c,elegido){
+async function barrio(c,medidos,esAhora){const elegido=medidos[0];
   const el=$('barrio');el.innerHTML='<p class="nota">Mirando tu calle a cuatro horas distintas…</p>';
   const ya=ahoraT(),momentos=[[ya,'Ahora mismo',etiquetaT(ya)],[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00']];
   const por=momentos.map(([t])=>D.dea.filter(d=>abierto(d,t)).map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,4));
@@ -1319,8 +1319,10 @@ async function barrio(c,elegido){
     uni.forEach((d,k)=>{const v=j.distances[0][k+1];if(v!=null)dist.set(d,v+j.sources[0].distance+j.destinations[k+1].distance)})}catch(e){}
   const filas=momentos.map(([t,et,sub],i)=>{if(!por[i].length)return {et,sub,m:Infinity};
     // "Ahora mismo" es el mismo aparato y la misma ruta que salen debajo, para que no se contradigan
-    if(i===0&&elegido)return {et,sub,d:elegido.d,m:Math.round(elegido.dist/10)*10,aprox:!!elegido.recta};
-    const f={et,sub,...por[i].map(x=>({d:x.d,m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)})).sort((a,b)=>a.m-b.m)[0]};f.m=Math.round(f.m/10)*10;return f});
+    if(i===0&&elegido&&esAhora)return {et,sub,d:elegido.d,m:Math.round(elegido.dist/10)*10,aprox:!!elegido.recta};
+    // los aparatos que ya tienen ruta debajo (el elegido y el de reserva) llevan la distancia de esa ruta, para que las cifras coincidan
+    const med=x=>{const r=medidos.find(y=>y.d===x.d);return r?{d:x.d,m:r.dist,aprox:!!r.recta}:{d:x.d,m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)}};
+    const f={et,sub,...por[i].map(med).sort((a,b)=>a.m-b.m)[0]};f.m=Math.round(f.m/10)*10;return f});
   el.innerHTML='<p class="nota" style="margin-bottom:2px">El desfibrilador abierto más cercano, andando:</p>'+filas.map((f,i)=>{
     const txt=f.m===Infinity?'No consta ninguno abierto cerca':f.m<=200?'Da tiempo a ir y volver corriendo en menos de tres minutos':f.m<=400?'Ida y vuelta corriendo, de tres a cinco minutos':'Más de cinco minutos ida y vuelta';
     const donde=f.d?`<span class="barrio-donde" id="dirB${i}"><b>${tipoTxt(f.d[5])}</b>, <i>buscando la dirección</i>. <a href="${mapsA(c,f.d)}" target="_blank" rel="noopener">Cómo llegar</a></span>`:'';
@@ -1362,16 +1364,15 @@ async function buscarCercano(c){
   const mm=v=>v<1?'menos de 1 min':Math.round(v)+' min';
   $('rutaRes').innerHTML=`<div class="ruta">
     <div class="ruta-veredicto" style="--c:${c2}">${ok?'Da tiempo: ida y vuelta corriendo en '+(idaVuelta<1?'menos de 1 min':'unos '+Math.round(idaVuelta)+' min'):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
-    <div class="ruta-cifras"><div><strong>${fmt(b.dist)} m</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
+    <div class="ruta-cifras"><div><strong>${fmt(Math.round(b.dist/10)*10)} m</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
     <dl><dt>Sitio</dt><dd id="sitRuta">${tipoTxt(b.d[5])}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Dirección</dt><dd id="dirRuta">buscando…</dd><dt>Estado</dt><dd>${est}, ${etiquetaT(T).toLowerCase()}</dd>${hor?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
-    <p class="aviso-duda" id="dudaRuta" hidden></p>
     ${rs[1]?`<p class="ruta-planb"><b>Si está cerrado o no lo encuentras:</b> hay otro a ${fmt(Math.round(rs[1].dist/10)*10)} m, ${tipoTxt(rs[1].d[5]).toLowerCase()}, <span id="dirRuta2">buscando la dirección</span>. <a href="${mapsA(c,rs[1].d)}" target="_blank" rel="noopener">Cómo llegar a ese</a></p>`:''}
     <div class="acciones" style="margin-top:12px"><a class="enlace" href="https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${b.d[1]},${b.d[0]}&travelmode=walking" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
     <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p></div>`;
-  direccion(b.d).then(()=>{const a=$('sitRuta'),e=$('dirRuta');if(a)a.textContent=sitioDe(b.d)+', '+nombreBonito(D.munis[b.d[4]]);if(e)e.textContent=dirDe(b.d)||'Sin dirección: mira el punto en el mapa';cargarDudas.then(()=>ponerDuda('dudaRuta',b.d))});
+  direccion(b.d).then(()=>{const a=$('sitRuta'),e=$('dirRuta');if(a)a.textContent=sitioDe(b.d)+', '+nombreBonito(D.munis[b.d[4]]);if(e)e.textContent=dirDe(b.d)||'Sin dirección: mira el punto en el mapa'});
   if(rs[1])direccion(rs[1].d).then(()=>{const e=$('dirRuta2');if(e)e.textContent=dirDe(rs[1].d)||'mira el punto en el mapa'});
   $('btnBorrarRuta').onclick=()=>{camRuta=null;$('rutaRes').innerHTML='';$('barrio').innerHTML='';pintar()};
-  barrio(c,T===ahoraT()?b:null);
+  barrio(c,rs,T===ahoraT());
   let x0=Math.min(...camino.map(p=>p[0])),x1=Math.max(...camino.map(p=>p[0])),y0=Math.min(...camino.map(p=>p[1])),y1=Math.max(...camino.map(p=>p[1]));
   const {w,h}=caja(),span=Math.max(x1-x0,(y1-y0)*1.31,.002);const z=Math.min(17,Math.log2((Math.min(w,h)-240)*360/(512*span)));
   volar({longitude:(x0+x1)/2,latitude:(y0+y1)/2,zoom:z,pitch:0,bearing:0},1300);pintar();
