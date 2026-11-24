@@ -84,7 +84,7 @@ a{color:var(--negro);text-decoration-color:var(--rojo);text-underline-offset:3px
 .barrio-fila>b{font:700 14px var(--sans);text-align:right;color:var(--vino)}.barrio-fila.lejos>b{color:var(--rojo)}
 .barrio-fila span{grid-column:1/-1;font-size:12.5px;color:var(--gris-1)}.barrio-fila i{font-style:normal}
 .barrio-fila .barrio-lejos,.barrio-fila .barrio-duda{font-style:normal;color:var(--rojo)}
-.ruta-planb{margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--vino)}.ruta-planb a{color:var(--vino);text-decoration:underline;text-underline-offset:2px}.ruta-planb em{display:block;font-style:normal;color:var(--rojo)}
+.ruta-planb{margin:14px 0 0;padding:10px 12px;background:var(--rosa);border-left:3px solid var(--rojo);font-size:13.5px;line-height:1.45;color:var(--vino)}.ruta-planb a{color:var(--vino);text-decoration:underline;text-underline-offset:2px}.ruta-planb em{display:block;font-style:normal;color:var(--rojo)}
 .ruta .aviso-duda{margin:8px 0 0;padding:0;border:0;background:none;color:var(--rojo);font-size:12.5px}
 .letra{border:1.5px solid var(--negro);background:#fff;font:700 14px var(--sans);padding:7px 12px;margin-top:14px}
 .letra[aria-pressed=true]{background:var(--vino);color:#fff;border-color:var(--vino)}
@@ -1369,9 +1369,9 @@ async function buscarCercano(c){
     <div class="ruta-cifras"><div><strong>${m10(b.dist)}</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
     <dl><dt>Sitio</dt><dd>${tipoTxt(b.d[5])}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Dirección</dt><dd id="dirRuta">buscando…</dd><dt>Estado</dt><dd>${b.d[2]===0?'Abierto las 24 horas':'Abierto a esta hora'}${aqui==='ahora'?'':', '+aqui.toLowerCase()}</dd>${hor&&b.d[2]!==0?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
     <p class="aviso-duda" id="dudaRuta" hidden></p>
-    ${r2?`<p class="ruta-planb"><b>Si está cerrado o no lo encuentras,</b> hay otro a ${m10(r2.dist)}: ${tipoTxt(r2.d[5]).toLowerCase()}, <span id="dirRuta2">buscando la dirección</span>. <a href="${mapsA(c,r2.d)}" target="_blank" rel="noopener">Cómo llegar a ese</a><em id="dudaRuta2" class="planb-duda"></em></p>`:''}
     <div class="acciones" style="margin-top:12px"><a class="enlace" href="${mapsA(c,b.d)}" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
     <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p>
+    ${r2?`<p class="ruta-planb"><b>Si está cerrado o no lo encuentras,</b> hay otro a ${m10(r2.dist)}: ${tipoTxt(r2.d[5]).toLowerCase()}, <span id="dirRuta2">buscando la dirección</span>. <a href="${mapsA(c,r2.d)}" target="_blank" rel="noopener">Cómo llegar a ese</a><em id="dudaRuta2" class="planb-duda"></em></p>`:''}
 </div>`;
   direccion(b.d).then(()=>{const e=$('dirRuta');if(e)e.textContent=dirDe(b.d)||'Sin dirección: mira el punto en el mapa';cargarDudas.then(()=>ponerDuda('dudaRuta',b.d))});
   if(r2)direccion(r2.d).then(()=>{const e=$('dirRuta2');if(e)e.textContent=dirDe(r2.d)||'mira el punto en el mapa';cargarDudas.then(()=>{const o=$('dudaRuta2');if(o&&dudaTxt(r2.d))o.textContent='Ojo: dice 24 horas sin que nadie lo haya comprobado.'})});
