@@ -422,6 +422,10 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
 .etiqueta strong{font:700 14px/1.2 var(--sans)}
 .etiqueta span{font-size:13px;color:var(--gris-1)}
 .etiqueta em{font-style:normal;font:500 11px var(--mono);color:var(--gris-2)}
+.aviso-duda{margin:10px 0 0;padding:8px 10px;border-left:3px solid var(--rojo);background:#fff;font-size:13px;color:var(--vino)}
+.sos-duda{margin:8px 0}
+.etiqueta .eti-duda{font:600 12px/1.3 var(--sans);color:var(--rojo);margin-top:3px}
+.barrio-fila .barrio-duda{display:block;font-style:normal;font-weight:600;color:var(--rojo);margin-top:3px}
 .etiqueta .eti-dir{font:500 12.5px/1.3 var(--sans);color:var(--vino)}
 #deck.poniendo{cursor:crosshair}
 
@@ -861,9 +865,9 @@ const tipoTxt=k=>NOMBRE_TIPO[D.tipos[k]]||D.tipos[k];
 const horarioTxt=d=>d[2]===0?'Abierto las 24 horas':d[2]===2?'Sin horario claro en el registro: no lo contamos como abierto':d[2]===3?'Solo en eventos':(D.horarios_texto&&D.horarios_texto[d[6]])||'Con horario';
 function dentro(pt,m){let k=false;for(const r of D.poligonos[m])for(let i=0,j=r.length-1;i<r.length;j=i++){const [xi,yi]=r[i],[xj,yj]=r[j];if((yi>pt[1])!==(yj>pt[1])&&pt[0]<(xj-xi)*(pt[1]-yi)/(yj-yi)+xi)k=!k}return k}
 function lejosDe(d,m){if(dentro(d,m))return false;let b=1e9;for(const r of D.poligonos[m])for(const [x,y] of r)b=Math.min(b,((x-d[0])*.76)**2+(y-d[1])**2);return Math.sqrt(b)>.006} // más de unos 600 m fuera de su municipio
-function fichaAparato(d,a){const t=dirInfo.has(d[0]+','+d[1]);return `<strong>${t?sitioDe(d):tipoTxt(d[5])}</strong><small class="eti-dir">${t?dirDe(d)||'Sin dirección: mira el punto en el mapa':'Pulsa para ver la dirección'}</small><span><b>${a?'Abierto':'Cerrado'}</b>, ${corto(T).toLowerCase()}</span><em>${horarioTxt(d)}</em>`}
+function fichaAparato(d,a){const t=dirInfo.has(d[0]+','+d[1]);return `<strong>${t?sitioDe(d):tipoTxt(d[5])}</strong><small class="eti-dir">${t?dirDe(d)||'Sin dirección: mira el punto en el mapa':'Pulsa para ver la dirección'}</small><span><b>${a?'Abierto':'Cerrado'}</b>, ${corto(T).toLowerCase()}</span><em>${horarioTxt(d)}</em>${dudaTxt(d)?`<small class="eti-duda">${dudaTxt(d)}</small>`:''}`}
 // al pulsar un aparato: pide su dirección y la pone en la etiqueta si sigue abierta con ese aparato
-function etiDireccion(d){eti.dataset.k=d[0]+','+d[1];direccion(d).then(()=>{const el=eti.querySelector('.eti-dir'),st=eti.querySelector('strong');if(el&&eti.dataset.k===d[0]+','+d[1]){el.textContent=dirDe(d)||'Sin dirección: mira el punto en el mapa';if(st)st.textContent=sitioDe(d)}})}
+function etiDireccion(d){eti.dataset.k=d[0]+','+d[1];direccion(d).then(()=>{const el=eti.querySelector('.eti-dir'),st=eti.querySelector('strong');if(el&&eti.dataset.k===d[0]+','+d[1]){el.textContent=dirDe(d)||'Sin dirección: mira el punto en el mapa';if(st)st.textContent=sitioDe(d);const t=dudaTxt(d);let du=eti.querySelector('.eti-duda');if(t&&!du){du=document.createElement('small');du.className='eti-duda';eti.appendChild(du)}if(du){du.textContent=t;du.hidden=!t}}})}
 const abierto=(d,t)=>d[2]===0||(d[2]===1&&D.masks[d[3]][t]==='1');
 let conSani=false,saniF=null; // saniF[i]: 1 = a tiro de un centro de salud, 2 = de un hospital (bits)
 const saniAbierto=(tipo,t)=>tipo===1||(Math.floor(t/24)<5&&t%24>=8&&t%24<21);
@@ -1206,7 +1210,7 @@ function actualizarMunicipio(){if(sel<0||!$('mPct'))return;const v=curvaM[sel][T
   $('huella').innerHTML=graficoSemana(curvaM[sel],{t:T});
   const ul=$('mAparatos');if(ul){const L=D.dea.filter(d=>d[4]===sel).map(d=>({d,a:abierto(d,T)})).sort((x,y)=>y.a-x.a||x.d[2]-y.d[2]||tipoTxt(x.d[5]).localeCompare(tipoTxt(y.d[5]),'es')),MAX=60;
     L.forEach(o=>o.fuera=lejosDe(o.d,sel));
-    ul.innerHTML=L.slice(0,MAX).map((o,k)=>`<li><button data-k="${k}"><span class="pt${o.a?'':' cerrado'}"></span><span><strong>${tipoTxt(o.d[5])}</strong><small>${horarioTxt(o.d)}${o.fuera?'<br><b>Ojo: en el registro su posición cae fuera del municipio.</b>':''}</small></span><span class="est${o.a?'':' cerrado'}">${o.a?'ABIERTO':'CERRADO'}</span></button></li>`).join('')+(L.length>MAX?`<li class="nota" style="padding:9px 0">Y ${fmt(L.length-MAX)} más. Acércate en el mapa para verlos todos.</li>`:'');
+    ul.innerHTML=L.slice(0,MAX).map((o,k)=>`<li><button data-k="${k}"><span class="pt${o.a?'':' cerrado'}"></span><span><strong>${tipoTxt(o.d[5])}</strong><small>${horarioTxt(o.d)}${o.fuera?'<br><b>Ojo: en el registro su posición cae fuera del municipio.</b>':''}${dudaTxt(o.d)?'<br><b>'+dudaTxt(o.d)+'</b>':''}</small></span><span class="est${o.a?'':' cerrado'}">${o.a?'ABIERTO':'CERRADO'}</span></button></li>`).join('')+(L.length>MAX?`<li class="nota" style="padding:9px 0">Y ${fmt(L.length-MAX)} más. Acércate en el mapa para verlos todos.</li>`:'');
     ul.onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;const o=L[+b.dataset.k];volar({longitude:o.d[0],latitude:o.d[1],zoom:16.5,pitch:0});
       eti.innerHTML=fichaAparato(o.d,o.a);eti.hidden=false;etiDireccion(o.d);const r=escena.getBoundingClientRect();eti.style.transform=`translate(${r.left+r.width/2+14}px,${r.top+r.height/2+14}px)`}}}
 
@@ -1277,15 +1281,35 @@ function direccion(d){const k=d[0]+','+d[1];if(dirCache.has(k))return dirCache.g
       const clase=CLASE_OSM[j.type]||(j.name?CAT_OSM[j.category]||'':''),nom=j.name&&j.name!==calle?j.name:'';
       const sitio=nom&&clase&&!nom.toLowerCase().includes(clase.toLowerCase())?clase+' '+nom:nom||clase;
       const dir=calle?calle+num:(j.display_name||'').split(',').slice(0,2).join(',');
-      const t=sitio?sitio+', '+dir:dir;dirTxt.set(k,t);dirInfo.set(k,{sitio,dir});return t}catch(e){return ''}});
+      const t=sitio?sitio+', '+dir:dir;dirTxt.set(k,t);dirInfo.set(k,{sitio,dir,cat:j.category||'',tipo:j.type||''});return t}catch(e){return ''}});
   dirCola=p.then(()=>new Promise(ok=>setTimeout(ok,1100)));dirCache.set(k,p);return p}
+// "24 horas" dudosos: la lista de descargas/24h_a_revisar.csv (sitios que suelen cerrar de noche) y, si OpenStreetMap
+// dice que en ese punto hay una oficina, tienda, colegio... también se avisa
+let dudasM=null;
+function csvFilas(t){const F=[];let f=[],c='',q=false;for(let i=0;i<t.length;i++){const x=t[i];
+  if(q){if(x==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=x}
+  else if(x==='"')q=true;else if(x===';'){f.push(c);c=''}else if(x==='\n'){f.push(c.replace(/\r$/,''));F.push(f);f=[];c=''}else c+=x}
+  if(c||f.length){f.push(c);F.push(f)}return F}
+const llaveD=d=>(+d[0]).toFixed(5)+','+(+d[1]).toFixed(5);
+const cargarDudas=fetch('descargas/24h_a_revisar.csv').then(r=>r.ok?r.text():'').then(t=>{const m=new Map(),F=csvFilas(t.replace(/^﻿/,''));
+  const h=F[0]||[],ilo=h.indexOf('lon'),ila=h.indexOf('lat'),imo=h.indexOf('motivo_de_duda');
+  F.slice(1).forEach(f=>{if(f[imo])m.set(llaveD([f[ilo].replace(',','.'),f[ila].replace(',','.')]),f[imo])});dudasM=m;return m}).catch(()=>{dudasM=new Map()});
+const CIERRA_CAT=new Set(['office','shop','craft']),CIERRA_TIPO=new Set(['school','kindergarten','college','university','library','townhall','bank','post_office','courthouse','government','sports_centre','fitness_centre','swimming_pool','sports_hall','theatre','cinema','museum','community_centre','arts_centre','marketplace','mall','department_store','supermarket','dentist','doctors','music_school','language_school','driving_school','dance']);
+function dudaTxt(d){if(d[2]!==0)return '';
+  const m=dudasM&&dudasM.get(llaveD(d));
+  if(m){const l=m.split(';')[0];if(/^El texto/.test(l))return 'Ojo: el registro dice 24 horas, pero su horario mezcla eso con otro. Puede que no abra siempre.';
+    return `Ojo: el registro dice 24 horas, pero está en un sitio que suele cerrar de noche (${l.split(':')[0].toLowerCase()}). Nadie lo ha comprobado.`}
+  const x=dirInfo.get(d[0]+','+d[1]);
+  if(x&&x.sitio&&(CIERRA_CAT.has(x.cat)||CIERRA_TIPO.has(x.tipo)))return `Ojo: el registro dice 24 horas, pero según OpenStreetMap ahí está "${x.sitio}", que puede cerrar de noche. Nadie lo ha comprobado.`;
+  return ''}
+function ponerDuda(id,d,extra){const el=document.getElementById(id);if(!el)return;const t=dudaTxt(d);el.textContent=t?t+(extra||''):'';el.hidden=!t}
 // qué sitio es: el de OpenStreetMap si lo hay, si no la categoría del registro
 const sitioDe=d=>{const x=dirInfo.get(d[0]+','+d[1]);return x&&x.sitio?x.sitio:tipoTxt(d[5])};
 const dirDe=d=>{const x=dirInfo.get(d[0]+','+d[1]);return x&&x.dir?x.dir:''};
 function ponerDireccion(id,d){direccion(d).then(t=>{const el=document.getElementById(id);if(el)el.textContent=t||'Sin dirección: mira el punto en el mapa'})}
 const mapsA=(c,d)=>`https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${d[1]},${d[0]}&travelmode=walking`;
 
-async function barrio(c){
+async function barrio(c,elegido){
   const el=$('barrio');el.innerHTML='<p class="nota">Mirando tu calle a cuatro horas distintas…</p>';
   const ya=ahoraT(),momentos=[[ya,'Ahora mismo',etiquetaT(ya)],[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00']];
   const por=momentos.map(([t])=>D.dea.filter(d=>abierto(d,t)).map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,4));
@@ -1294,6 +1318,8 @@ async function barrio(c){
     const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');if(!r.ok)throw 0;const j=await r.json();
     uni.forEach((d,k)=>{const v=j.distances[0][k+1];if(v!=null)dist.set(d,v+j.sources[0].distance+j.destinations[k+1].distance)})}catch(e){}
   const filas=momentos.map(([t,et,sub],i)=>{if(!por[i].length)return {et,sub,m:Infinity};
+    // "Ahora mismo" es el mismo aparato y la misma ruta que salen debajo, para que no se contradigan
+    if(i===0&&elegido)return {et,sub,d:elegido.d,m:elegido.dist,aprox:!!elegido.recta};
     return {et,sub,...por[i].map(x=>({d:x.d,m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)})).sort((a,b)=>a.m-b.m)[0]}});
   el.innerHTML='<p class="nota" style="margin-bottom:2px">El desfibrilador abierto más cercano, andando:</p>'+filas.map((f,i)=>{
     const txt=f.m===Infinity?'No consta ninguno abierto cerca':f.m<=200?'Da tiempo a ir y volver corriendo en menos de tres minutos':f.m<=400?'Ida y vuelta corriendo, de tres a cinco minutos':'Más de cinco minutos ida y vuelta';
@@ -1301,7 +1327,7 @@ async function barrio(c){
     return `<div class="barrio-fila${f.m>200?' lejos':''}${i===0?' ya':''}"><strong>${f.et}${f.sub?` <small>${f.sub}</small>`:''}</strong><b>${f.m===Infinity?'Ninguno':fmt(Math.round(f.m/10)*10)+' m'}</b><span>${txt}${f.aprox?' (distancia aproximada)':''}</span>${donde}</div>`}).join('');
   // si OpenStreetMap sabe qué sitio es ("Hotel NH Atocha"), se pone eso en vez de la categoría del registro
   filas.forEach((f,i)=>{if(f.d)direccion(f.d).then(()=>{const el=$('dirB'+i),x=dirInfo.get(f.d[0]+','+f.d[1]);if(!el)return;
-    el.querySelector('b').textContent=x&&x.sitio?x.sitio:tipoTxt(f.d[5]);el.querySelector('i').textContent=x&&x.dir?x.dir:'sin dirección, mira el punto en el mapa'})});
+    el.querySelector('b').textContent=x&&x.sitio?x.sitio:tipoTxt(f.d[5]);el.querySelector('i').textContent=x&&x.dir?x.dir:'sin dirección, mira el punto en el mapa';cargarDudas.then(()=>{const t=dudaTxt(f.d);if(t&&!el.querySelector('.barrio-duda'))el.insertAdjacentHTML('beforeend',`<em class="barrio-duda">${t}</em>`)})})});
 }
 
 /* ---------- letra grande ---------- */
@@ -1339,11 +1365,12 @@ async function buscarCercano(c){
     <div class="ruta-veredicto" style="--c:${c2}">${ok?'Da tiempo: ida y vuelta corriendo en '+(idaVuelta<1?'menos de 1 min':'unos '+Math.round(idaVuelta)+' min'):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
     <div class="ruta-cifras"><div><strong>${fmt(b.dist)} m</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
     <dl><dt>Sitio</dt><dd id="sitRuta">${tipoTxt(b.d[5])}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Dirección</dt><dd id="dirRuta">buscando…</dd><dt>Estado</dt><dd>${est}, ${etiquetaT(T).toLowerCase()}</dd>${hor?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
+    <p class="aviso-duda" id="dudaRuta" hidden></p>
     <div class="acciones" style="margin-top:12px"><a class="enlace" href="https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${b.d[1]},${b.d[0]}&travelmode=walking" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
     <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p></div>`;
-  direccion(b.d).then(()=>{const a=$('sitRuta'),e=$('dirRuta');if(a)a.textContent=sitioDe(b.d)+', '+nombreBonito(D.munis[b.d[4]]);if(e)e.textContent=dirDe(b.d)||'Sin dirección: mira el punto en el mapa'});
+  direccion(b.d).then(()=>{const a=$('sitRuta'),e=$('dirRuta');if(a)a.textContent=sitioDe(b.d)+', '+nombreBonito(D.munis[b.d[4]]);if(e)e.textContent=dirDe(b.d)||'Sin dirección: mira el punto en el mapa';cargarDudas.then(()=>ponerDuda('dudaRuta',b.d))});
   $('btnBorrarRuta').onclick=()=>{camRuta=null;$('rutaRes').innerHTML='';$('barrio').innerHTML='';pintar()};
-  barrio(c);
+  barrio(c,T===ahoraT()?b:null);
   let x0=Math.min(...camino.map(p=>p[0])),x1=Math.max(...camino.map(p=>p[0])),y0=Math.min(...camino.map(p=>p[1])),y1=Math.max(...camino.map(p=>p[1]));
   const {w,h}=caja(),span=Math.max(x1-x0,(y1-y0)*1.31,.002);const z=Math.min(17,Math.log2((Math.min(w,h)-240)*360/(512*span)));
   volar({longitude:(x0+x1)/2,latitude:(y0+y1)/2,zoom:z,pitch:0,bearing:0},1300);pintar();
@@ -1525,6 +1552,7 @@ const SOS=(()=>{
       <div class="sos-dist"><strong>${fmt(dist)} m</strong><span>${mm(correr)} corriendo, ${mm(andar)} andando</span></div>
       <div class="sos-donde"><span id="sitSos">${tipoTxt(b.d[5])}</span>, <span id="dirSos">${nombreBonito(D.munis[b.d[4]])}</span>, ${rumbo(c,hasta)}. ${b.d[2]===0?'Abierto las 24 horas.':'Abierto a esta hora'+(hor?': '+hor:'.')}</div>
       <div class="sos-veredicto">${ver}</div>
+      <div class="aviso-duda sos-duda" id="dudaSos" hidden></div>
       ${sig?`<div class="sos-planb"><b>Si está cerrado o no lo encuentras:</b> hay otro a ${fmt(Math.round(sig.dist/10)*10)} m, ${rumbo(c,[sig.d[0],sig.d[1]])}. <button id="sosSig">Llévame a ese</button></div>`:''}
       <div class="sos-acciones">
         <a class="boton" href="tel:112">${'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.6 1h2.6l1.3 3.4-1.7 1.2a8.6 8.6 0 0 0 4.6 4.6l1.2-1.7 3.4 1.3v2.6c0 .9-.7 1.6-1.6 1.6A12.4 12.4 0 0 1 2 2.6C2 1.7 2.7 1 3.6 1z"/></svg>'}Llamar al 112</a>
@@ -1540,7 +1568,7 @@ const SOS=(()=>{
     $('sosVoz').onclick=()=>{voz=!voz;if(!voz)try{speechSynthesis.cancel()}catch(e){};$('sosVoz').textContent=voz?'Silenciar la voz':'Activar la voz'};
     $('sosRepetir').onclick=()=>hablar(frase);
     $('sosOtro').onclick=pedirPunto;
-    direccion(b.d).then(()=>{const a=$('sitSos'),e=$('dirSos'),t=dirDe(b.d);if(a)a.textContent=sitioDe(b.d);if(e&&t)e.textContent=t+', '+nombreBonito(D.munis[b.d[4]])});
+    direccion(b.d).then(()=>{const a=$('sitSos'),e=$('dirSos'),t=dirDe(b.d);if(a)a.textContent=sitioDe(b.d);if(e&&t)e.textContent=t+', '+nombreBonito(D.munis[b.d[4]]);cargarDudas.then(()=>ponerDuda('dudaSos',b.d,sig?' Si no puedes entrar, ve al otro.':''))});
     if(sig)$('sosSig').onclick=()=>verRes(i+1);
     };verRes(0);
   }
