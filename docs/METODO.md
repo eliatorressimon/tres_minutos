@@ -2,7 +2,7 @@
 
 ## 1. Horarios
 
-El registro guarda el horario de cada desfibrilador como texto libre: "L-V 8-20 h", "lunes a jueves de 9 a 18 y viernes de 9 a 15", "horario escolar", "24 horas / 7 días a la semana"... Hay 2.336 textos distintos. `src/horarios.py` los convierte en una tabla de 7 días por 24 horas con estas reglas:
+El registro guarda el horario de cada desfibrilador como texto libre: "L-V 8-20 h", "lunes a jueves de 9 a 18 y viernes de 9 a 15", "horario escolar", "24 horas / 7 días a la semana"... Hay 2.338 textos distintos. `src/horarios.py` los convierte en una tabla de 7 días por 24 horas con estas reglas:
 
 - "24 h", "24 horas", "permanente" y parecidos: abierto siempre.
 - "Horario escolar": de lunes a viernes de 8:00 a 17:00.

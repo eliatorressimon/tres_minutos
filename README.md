@@ -14,8 +14,8 @@ Cifras con el registro descargado el 23 de noviembre de 2026. La web se actualiz
 
 - Medido andando por la calle, que es como se llega de verdad, un martes a las 11:00 solo el 20,7 % de la población tiene un desfibrilador abierto a 200 metros o menos. Un domingo a las 3:00, el 10,4 %. Con 300 m andando, el 42,6 % y el 24,5 %.
 - En línea recta saldría bastante más: el 48,6 % y el 28,2 %. La distancia andando es, en la mediana, 1,5 veces la recta.
-- De los 13.664 aparatos del registro, 2.206 tienen como horario "autobús urbano": van en autobuses de Madrid capital y no cubren un barrio fijo.
-- 4.534 aparatos no indican su horario o lo indican de una forma que no se puede interpretar.
+- De los 13.651 aparatos del registro, 2.206 tienen como horario "autobús urbano": van en autobuses de Madrid capital y no cubren un barrio fijo.
+- 4.521 aparatos no indican su horario o lo indican de una forma que no se puede interpretar.
 - 15 municipios no tienen ningún desfibrilador fijo registrado. El mayor es El Molar, con 9.805 habitantes.
 - Si cada una de las 2.954 farmacias de la Comunidad tuviera un desfibrilador, un martes a las 11:00 la cobertura andando pasaría del 20,7 % al 50,7 %: 2,1 millones de personas más. Las diez mejores ya suman 48.747, por unos 25.000 euros en cinco años contando compra y mantenimiento: unos 51 céntimos por persona (cuentas y fuentes en [docs/POR_QUE_IMPORTA.md](docs/POR_QUE_IMPORTA.md)).
 - Las gasolineras abiertas 24 horas sirven de poco de madrugada: aunque las 550 tuvieran uno, la cobertura del domingo a las 3:00 solo pasaría del 10,4 % al 11,4 %, porque están en carreteras y avenidas y no donde vive la gente.
