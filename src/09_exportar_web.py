@@ -114,6 +114,18 @@ for cdmuni, geoms in por_muni.items():
         x, y = a_grados.transform(*p.exterior.xy)
         poligonos[idx['28' + cdmuni]].append([[round(a, 4), round(b, 4)] for a, b in zip(x, y)])
 
+# centros de salud y hospitales (no están en el registro): posición, tipo y puntos de población a 200 m o menos andando,
+# para el interruptor de la web que los cuenta como si tuvieran un aparato con su horario habitual
+sani = centros_sanitarios()
+pos_punto = {p: i for i, p in enumerate(sec['punto'])}
+cerca = pd.read_csv(ELABORADOS / 'distancias_candidatos.csv', dtype={'id': str, 'punto': str})
+cerca = cerca[cerca['tipo'].isin(['Centro de salud', 'Hospital'])]
+por_sitio = {}
+for i, punto, m in zip(cerca['id'], cerca['punto'], cerca['metros_andando']):
+    if punto in pos_punto:
+        por_sitio.setdefault(i, []).extend([pos_punto[punto], int(round(m))])
+sanitarios_web = [[round(r.lon, 5), round(r.lat, 5), 1 if r.tipo == 'Hospital' else 0, por_sitio.get(r.id, [])] for r in sani.itertuples()]
+
 datos = {
     'munis': [nombres[m] for m in codigos],
     'secs': [[round(r.lon, 5), round(r.lat, 5), int(round(r.poblacion)), int(round(r.mayores_65)), idx[r.cod_ine_muni]]
@@ -132,6 +144,7 @@ datos = {
                 'personas': int(r.vecinos_nuevos), 'mayores': int(r.mayores_65_nuevos)} for r in reales.itertuples()],
     'si_todos': si_todos.to_dict('records'),
     'resumen': resumen,
+    'sanitarios': sanitarios_web,
     'municipios': [[r.municipio, int(r.poblacion), r.pct_martes_11h, r.pct_domingo_3h, int(r.tiene_desfibrilador_fijo)]
                    for r in muni.itertuples()],
 }
