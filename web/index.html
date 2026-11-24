@@ -380,6 +380,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
 .cercano>p{font-size:13.5px;color:var(--gris-1);margin:4px 0 10px;line-height:1.45}
 .cercano .acciones{margin-top:0;flex-wrap:wrap}
 .respuesta{margin-top:14px}
+.consejo.en-caja{margin:16px 0 0}
 .respuesta:has(.ruta){background:#fff;padding:16px 14px;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
 .res-ante{font-size:12.5px;color:var(--gris-2);margin:0}
 .res-sitio{font:750 18px/1.25 var(--sans);color:var(--vino);margin:4px 0 0}
@@ -636,13 +637,13 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
         <h3>Mira tu calle</h3>
         <p>Usa tu ubicación o toca cualquier punto del mapa: tu casa, el colegio, la casa de tus padres. Verás a qué distancia andando está el desfibrilador abierto más cercano, de día y de noche.</p>
         <div class="acciones"><button class="boton" id="btnCerca">Usar mi ubicación</button><button class="boton" id="btnTocar">O toca un punto del mapa</button></div>
+        <div class="consejo en-caja"><strong>Si vas a dejar esta web a una persona mayor</strong>Guárdale un contacto en "Avisar a un contacto" y déjale la web abierta en Emergencia. Con un solo botón sabrá dónde está el desfibrilador, oirá las instrucciones en voz alta y podrá avisarte con su ubicación.</div>
         <div class="emergencia solo">
           <button class="boton-sec" id="btnAvisar"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 3h12v8H6l-4 3z"/></svg>Avisar a un contacto</button>
           <div class="aviso-cfg" id="avisoCfg" hidden></div>
         </div>
       </div>
       <div class="respuesta"><div id="rutaRes"></div><div id="barrio" class="barrio"></div></div>
-      <div class="consejo"><strong>Si vas a dejar esta web a una persona mayor</strong>Guárdale un contacto en "Avisar a un contacto" y déjale la web abierta en Emergencia. Con un solo botón sabrá dónde está el desfibrilador, oirá las instrucciones en voz alta y podrá avisarte con su ubicación.</div>
       <h2 class="seccion">Dos preguntas importantes</h2>
       <div class="mas">
         <details><summary>¿Qué hago si alguien se desploma?</summary><div>
