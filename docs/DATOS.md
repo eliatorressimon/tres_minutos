@@ -14,6 +14,8 @@ Se descargan con `src/01_descargar.py`. No se suben al repositorio.
 | `centros_sanitarios.csv` | Centros, servicios y establecimientos sanitarios, Portal de Datos Abiertos de la Comunidad de Madrid | Separador `;`. Una fila por cada servicio de cada centro: se agrupa por `centro_nro_registro`. Coordenadas en ETRS89 / UTM 30N. Solo se usan los centros de salud, los consultorios de atención primaria y los hospitales generales. |
 | `defunciones_causa.csv` | Defunciones por causa de muerte y sexo, Portal de Datos Abiertos de la Comunidad de Madrid | Solo se usa como contexto. |
 
+`sitios_osm.csv` sale de `src/01b_sitios_osm.py`, que lee el mapa de OpenStreetMap de Geofabrik (`osrm/madrid.osm.pbf`, el mismo del servidor de rutas) y guarda comisarías, cuarteles de la Guardia Civil, parques de bomberos y estaciones: `id` (`osm-` más el tipo y número de OpenStreetMap), `tipo`, `nombre`, `lon`, `lat`. Se guarda una copia en `datos/respaldo/` por si el mapa no está.
+
 Además, `src/viviendas_catastro.py` baja del servicio INSPIRE de edificios del Catastro un fichero por municipio (179) y guarda de cada edificio con viviendas el centro de su contorno y el número de viviendas en `datos/respaldo/viviendas_catastro.csv.gz` (unos 497.000 edificios y 2,97 millones de viviendas). Esa copia sí se sube al repositorio, porque la descarga es de varios GB y el Catastro cambia poco; para renovarla basta con borrarla.
 
 ## Elaborados (`datos/elaborados/`)
@@ -72,19 +74,43 @@ Una fila por municipio: población, % cubierto el martes a las 11:00 y el doming
 Los diez puntos propuestos, en orden de elección, con los vecinos y mayores de 65 que añaden a la cobertura andando del domingo a las 3:00.
 
 ### `sitios_reales.csv`
-Las diez mejores farmacias (martes 11:00) y las diez mejores gasolineras 24 h (domingo 3:00).
+Las diez mejores farmacias (martes 11:00) y los diez mejores sitios abiertos de noche (domingo 3:00): gasolineras 24 h, comisarías, cuarteles de la Guardia Civil y parques de bomberos.
 
 | Columna | Significado |
 |---|---|
 | `orden` | Orden de elección dentro de su grupo |
 | `momento` | `martes 11:00` o `domingo 3:00` |
-| `tipo` | `Farmacia` o `Gasolinera 24 h` |
+| `tipo` | `Farmacia`, `Gasolinera 24 h`, `Policía nacional`, `Policía local`, `Policía`, `Guardia Civil` o `Bomberos` |
 | `nombre`, `direccion`, `municipio` | Rótulo y dirección del local |
 | `lon`, `lat` | Coordenadas en grados |
 | `vecinos_nuevos`, `mayores_65_nuevos` | Lo que añade a la cobertura, después de los anteriores |
 
 ### `sitios_reales_resumen.csv`
 Qué pasaría si todos los locales de cada grupo tuvieran un aparato: número de locales, % cubierto antes y después y vecinos nuevos. Las dos últimas filas cuentan los centros de salud y hospitales, que ya tienen aparato aunque no estén en el registro.
+
+### `horarios_formato_fijo.csv`
+Una fila por aparato del registro.
+
+| Columna | Significado |
+|---|---|
+| `codigo_dea` | Código del aparato en el registro |
+| `horario_en_el_registro` | El texto tal como viene |
+| `lectura` | `24h`, `horario`, `desconocido`, `movil` (autobús) o `eventos` |
+| `lunes` ... `domingo` | Horas abiertas ese día, por ejemplo `08:00-14:00,17:00-21:00`; `cerrado` si ese día no abre; vacío si no se sabe |
+| `opening_hours` | El mismo horario con la sintaxis de OpenStreetMap (`24/7`, `Mo-Fr 08:00-21:00; Sa 09:00-14:00`...) |
+
+Las horas están redondeadas a horas enteras (la apertura hacia abajo y el cierre hacia arriba).
+
+### `24h_a_revisar.csv`
+Los aparatos fijos que dicen estar disponibles las 24 horas, de más a menos urgente de comprobar.
+
+| Columna | Significado |
+|---|---|
+| `codigo_dea`, `tipo_establecimiento`, `tipo_titularidad`, `municipio_nombre`, `lon`, `lat`, `horario_acceso` | Como en el registro |
+| `motivo_de_duda` | Por qué podría no estar disponible de noche: sitio que suele cerrar o texto que mezcla horarios; vacío si no hay motivo |
+| `vecinos_que_solo_tienen_este_de_madrugada` | Vecinos a 200 m o menos andando para quienes es el único aparato abierto un domingo a las 3:00 |
+| `de_ellos_mayores_65` | Cuántos de ellos tienen más de 65 años |
+| `vecinos_a_200_m_andando` | Todos los vecinos a 200 m o menos andando |
 
 ### `distancias_calle.csv`
 Una fila por pareja de punto de población y aparato que están a 300 m o menos andando.

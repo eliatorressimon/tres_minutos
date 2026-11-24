@@ -65,12 +65,33 @@ def centros_sanitarios(todos=False):
                          'municipio': c['municipio_nombre'], 'lon': c['lon'], 'lat': c['lat']}).reset_index(drop=True)
 
 
+# De OpenStreetMap (paso 1b). Policía, Guardia Civil y bomberos tienen gente de guardia toda la noche;
+# las estaciones abren de día y cierran de madrugada.
+DE_NOCHE = ['Policía nacional', 'Policía local', 'Policía', 'Guardia Civil', 'Bomberos']
+ESTACIONES = ['Estación de metro', 'Estación de metro ligero', 'Estación de tren']
+
+
+def sitios_osm(tipos):
+    """Sitios de OpenStreetMap de esos tipos, con el municipio del punto de población más cercano."""
+    s = pd.read_csv(ORIGINALES / 'sitios_osm.csv', dtype={'id': str}, keep_default_na=False)
+    s = s[s['tipo'].isin(tipos)].reset_index(drop=True)
+    puntos = pd.read_csv(ELABORADOS / 'puntos.csv', usecols=['lon', 'lat', 'municipio'])
+    from scipy.spatial import cKDTree
+    _, cerca = cKDTree(puntos[['lon', 'lat']].values * [0.76, 1]).query(s[['lon', 'lat']].values * [0.76, 1])
+    s['municipio'] = puntos['municipio'].values[cerca] if len(s) else []
+    s['nombre'] = s['nombre'].where(s['nombre'] != '', s['tipo'])
+    s['direccion'] = ''
+    return s[['id', 'tipo', 'nombre', 'direccion', 'municipio', 'lon', 'lat']]
+
+
 def secciones_a_pie(tipo, sec):
-    """Para cada sitio de un tipo, las secciones (posición en secciones.csv) a RADIO_M o menos andando (paso 5)."""
+    """Para cada sitio de un tipo (o de una lista de tipos), las secciones (posición en secciones.csv) a RADIO_M
+    o menos andando (paso 5)."""
     d = pd.read_csv(ELABORADOS / 'distancias_candidatos.csv', dtype={'id': str, 'punto': str})
     pos = {c: i for i, c in enumerate(sec['punto'])}
     res = {}
-    for i, s in zip(d.loc[d['tipo'] == tipo, 'id'], d.loc[d['tipo'] == tipo, 'punto']):
+    estos = d['tipo'].isin([tipo] if isinstance(tipo, str) else list(tipo))
+    for i, s in zip(d.loc[estos, 'id'], d.loc[estos, 'punto']):
         res.setdefault(i, []).append(pos[s])
     return res
 

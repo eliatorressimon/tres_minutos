@@ -669,10 +669,10 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
     <section class="vista" id="v-actuar" hidden>
       <div class="antetitulo" id="antAct">Domingo, 3:00</div>
       <h1 class="titular">Diez aparatos más, <span>bien puestos</span>.</h1>
-      <p class="entradilla">Dónde un aparato nuevo cubriría a más vecinos que hoy no tienen ninguno abierto cerca. Las farmacias se miran <b>un martes a las 11</b>, una hora normal de día. Las gasolineras y el sitio ideal, <b>un domingo a las 3</b>, la peor hora de la semana.</p>
+      <p class="entradilla">Dónde un aparato nuevo cubriría a más vecinos que hoy no tienen ninguno abierto cerca. Las farmacias se miran <b>un martes a las 11</b>, una hora normal de día. Los sitios abiertos de noche y el sitio ideal, <b>un domingo a las 3</b>, la peor hora de la semana.</p>
       <div class="modos" id="modos">
         <button data-modo="dia" aria-pressed="true"><b>Farmacias</b><span>de día</span></button>
-        <button data-modo="noche"><b>Gasolineras 24 h</b><span>de madrugada</span></button>
+        <button data-modo="noche"><b>Abiertos de noche</b><span>gasolineras, policía, bomberos</span></button>
         <button data-modo="ideal"><b>Sitio ideal</b><span>de madrugada</span></button>
       </div>
       <div class="hallazgo" id="hallazgo"></div>
@@ -717,7 +717,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
         <li><div><h4>Sus horarios</h4><p>El horario viene escrito a mano, de <span data-n="formas">2.338</span> formas distintas ("L-V 8 a 15", "24H", "horario del centro"...). Se convierte en una tabla de 7 días por 24 horas. <b><span data-n="siempre">3.229</span></b> abren siempre y <b><span data-n="desconocido">4.521</span></b> no tienen un horario que se pueda leer, así que no cuentan como abiertos.</p></div></li>
         <li><div><h4>Quién vive cerca</h4><p>Población de las <b>4.417 secciones censales</b> (INE) ajustada al padrón de 2024. Dentro de cada sección, los vecinos se reparten entre sus edificios según las viviendas que tienen en el <b>Catastro</b>, así que en un pueblo de urbanizaciones no se pone a todo el mundo en el centro de la sección. Un vecino está cubierto a una hora si tiene un aparato abierto a 200 metros o menos de su casa, andando por la calle. Se calcula para las 168 horas de la semana.</p></div></li>
         <li><div><h4>Andando por la calle</h4><p>En línea recta se atraviesan edificios, vías de tren y autopistas. Para cada pareja de grupo de casas y aparato a 300 metros o menos se pide la distancia a pie por las calles y caminos de <b>OpenStreetMap</b> a un servidor de rutas OSRM, y se le suma lo que hay hasta la calle más cercana. Con 200 metros andando, un martes a las 11 solo el <b><span data-n="andando_martes">20,7</span> %</b> de los vecinos tiene uno abierto (en línea recta salía el <span data-n="recta_martes">45,5</span> %) y un domingo a las 3, el <b><span data-n="andando_domingo">9,6</span> %</b> (frente al <span data-n="recta_domingo">25,9</span> %). Por eso toda la web, también "Dónde poner más", mide andando.</p></div></li>
-        <li><div><h4>Dónde poner los siguientes</h4><p>Se elige de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y se repite con lo que queda. De día se busca entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas o en cualquier punto del mapa.</p></div></li>
+        <li><div><h4>Dónde poner los siguientes</h4><p>Se elige de uno en uno el sitio que más vecinos sin cubrir gana, con doble peso para los mayores de 65, y se repite con lo que queda. De día se busca entre las farmacias; de madrugada, entre las gasolineras abiertas 24 horas, las comisarías, los cuarteles de la Guardia Civil y los parques de bomberos (con gente de guardia toda la noche, según OpenStreetMap), o en cualquier punto del mapa.</p></div></li>
       </ol>
       </div></details>
       <details class="bloque"><summary>Por qué 200 metros<small>Ir y volver en tres minutos</small></summary><div class="bloque-cuerpo">
@@ -736,6 +736,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
         <li>Población por sección censal y por municipio, 2019 y 2024 (tabla 31105), INE</li>
         <li>Oficinas de farmacia, Comunidad de Madrid, y gasolineras con su horario, Ministerio para la Transición Ecológica</li>
         <li>Centros, servicios y establecimientos sanitarios, Comunidad de Madrid</li>
+        <li>Comisarías, cuarteles, parques de bomberos y estaciones: OpenStreetMap</li>
         <li>Distancias a pie: OSRM con la red de calles de OpenStreetMap</li>
         <li>Mapa base: OpenFreeMap con datos de OpenStreetMap</li>
       </ul>
@@ -747,10 +748,12 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
         <tbody>
           <tr><td><b>Cobertura por municipio y hora</b><small>179 municipios por 168 horas de la semana, a 200 m andando</small></td><td>CSV</td><td><a href="descargas/cobertura_municipio_hora.csv" download>Descargar</a></td></tr>
           <tr><td><b>Registro con el horario traducido</b><small>Cada aparato con su tipo, municipio, coordenadas y estado del horario</small></td><td>CSV</td><td><a href="descargas/desfibriladores.csv" download>Descargar</a></td></tr>
-          <tr><td><b>Mejores farmacias y gasolineras</b><small>Las diez de cada grupo, con los vecinos que ganarían</small></td><td>CSV</td><td><a href="descargas/sitios_reales.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Horarios en formato fijo</b><small>El horario de cada aparato, de texto libre a una columna por día y al formato opening_hours de OpenStreetMap</small></td><td>CSV</td><td><a href="descargas/horarios_formato_fijo.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Aparatos "24 horas" por comprobar</b><small>Ordenados por cuántos vecinos dependen solo de ellos de madrugada, con los que están en sitios que suelen cerrar de noche</small></td><td>CSV</td><td><a href="descargas/24h_a_revisar.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Mejores sitios reales</b><small>Las diez mejores farmacias de día y los diez mejores sitios abiertos de noche, con los vecinos que ganarían</small></td><td>CSV</td><td><a href="descargas/sitios_reales.csv" download>Descargar</a></td></tr>
           <tr><td><b>Sitios ideales de madrugada</b><small>Los diez puntos propuestos</small></td><td>CSV</td><td><a href="descargas/nuevos_sitios.csv" download>Descargar</a></td></tr>
           <tr><td><b>Cobertura de la Comunidad por hora</b><small>Con 100, 200 y 300 m, en línea recta y andando</small></td><td>CSV</td><td><a href="descargas/cobertura_variantes.csv" download>Descargar</a></td></tr>
-          <tr><td><b>Escenarios</b><small>Todas las farmacias, todas las gasolineras, centros de salud y hospitales</small></td><td>CSV</td><td><a href="descargas/sitios_reales_resumen.csv" download>Descargar</a></td></tr>
+          <tr><td><b>Escenarios</b><small>Todas las farmacias, gasolineras, comisarías y bomberos, estaciones, centros de salud y hospitales</small></td><td>CSV</td><td><a href="descargas/sitios_reales_resumen.csv" download>Descargar</a></td></tr>
         </tbody>
       </table>
       <p class="nota" style="margin-top:8px">Separador punto y coma, coma decimal y codificación UTF-8: se abren directamente en Excel o LibreOffice.</p>
@@ -1178,7 +1181,7 @@ function construirMunicipio(){
     <button class="boton-informe" id="verAparatos" style="margin:4px 0 8px"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l4 4" stroke="currentColor" stroke-width="1.6"/></svg>Acercar el mapa a sus aparatos</button>
     <ol class="aparatos" id="mAparatos"></ol>`:''}
     <h2 class="seccion">Lo que más ayudaría</h2>
-    ${aqui.length?`<p class="nota" style="font-size:14px;color:var(--gris-1);margin-bottom:10px">Entre las mejores farmacias y gasolineras de la Comunidad para un aparato nuevo, ${aqui.length===1?'una está':aqui.length+' están'} aquí.</p><ol class="sitios">${aqui.map(d=>sitioHTML(d,d.i).replace('class="sitio"','class="sitio" data-modo="'+d.momento+'"')).join('')}</ol>`
+    ${aqui.length?`<p class="nota" style="font-size:14px;color:var(--gris-1);margin-bottom:10px">Entre los mejores sitios de la Comunidad para un aparato nuevo, ${aqui.length===1?'una está':aqui.length+' están'} aquí.</p><ol class="sitios">${aqui.map(d=>sitioHTML(d,d.i).replace('class="sitio"','class="sitio" data-modo="'+d.momento+'"')).join('')}</ol>`
       :`<p class="nota" style="font-size:14px;color:var(--gris-1)">De madrugada está en el puesto <b>${orden.indexOf(m)+1}</b> de 179 por vecinos cubiertos. Prueba a poner un aparato aquí en el <button class="enlace" id="irActuar">Simulador</button>.</p>`}`;
   actualizarMunicipio();$('lado').scrollTop=0;
   $('volver').onclick=cerrarMunicipio;
@@ -1211,16 +1214,16 @@ function sitios(){
   const L=listaAct(),pers=L.reduce((a,d)=>a+d.personas,0),may=L.reduce((a,d)=>a+d.mayores,0);
   document.querySelectorAll('#modos button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.modo===modoAct));
   $('antAct').textContent=modoAct==='dia'?'Martes, 11:00':'Domingo, 3:00';
-  $('tituloLista').textContent=modoAct==='dia'?'Las diez mejores farmacias':modoAct==='noche'?'Las diez mejores gasolineras 24 h':'Los diez mejores puntos';
+  $('tituloLista').textContent=modoAct==='dia'?'Las diez mejores farmacias':modoAct==='noche'?'Los diez mejores sitios abiertos de noche':'Los diez mejores puntos';
   $('sitios').innerHTML=L.map(sitioHTML).join('');
   $('sumaPers').textContent='+'+fmt(pers);
   $('sumaTxt').innerHTML=modoAct==='dia'?`vecinos más tendrían uno a 200 metros o menos andando un martes por la mañana. <b>${fmt(may)}</b> tienen más de 65 años.`
     :`vecinos más tendrían uno a 200 metros o menos andando de madrugada. <b>${fmt(may)}</b> tienen más de 65 años.`;
-  const st=D.si_todos||[],g=st.find(x=>/gasolineras/.test(x.caso)),f=st.find(x=>/farmacias/.test(x.caso));
+  const st=D.si_todos||[],g=st.find(x=>/gasolineras/.test(x.caso)),f=st.find(x=>/farmacias/.test(x.caso)),pol=st.find(x=>/^Todas las comisar/.test(x.caso)),est=st.find(x=>/estaciones/.test(x.caso));
   const ideal=D.nuevos.reduce((a,d)=>a+d.personas,0),gas=D.reales.filter(r=>r.momento==='noche').reduce((a,d)=>a+d.personas,0);
-  $('hallazgo').innerHTML=modoAct==='dia'&&f?`<div class="flecha"><span>${p1(f.pct_antes)}</span><i>→</i><span class="despues">${p1(f.pct_despues)}</span></div><p>Si <b>cada una de las ${fmt(f.locales)} farmacias</b> de la Comunidad tuviera un desfibrilador, un martes a las 11 la cobertura pasaría del ${p1(f.pct_antes)} al ${p1(f.pct_despues)}: <b>${fmt(f.vecinos_nuevos)} vecinos más</b>. Están en todos los barrios y abren de día.</p>`
-    :modoAct==='noche'&&g?`<div class="flecha"><span>${p1(g.pct_antes)}</span><i>→</i><span class="despues">${p1(g.pct_despues)}</span></div><p>Aunque <b>las ${fmt(g.locales)} gasolineras</b> abiertas las 24 horas tuvieran uno, de madrugada la cobertura solo pasaría del ${p1(g.pct_antes)} al ${p1(g.pct_despues)}. Suelen estar en carreteras y avenidas, lejos de las casas. Las diez mejores suman ${fmt(gas)} vecinos.</p>`
-    :`<div class="flecha"><span class="despues">+${fmt(ideal)}</span></div><p>Es el máximo que se puede ganar con diez aparatos abiertos las 24 horas, poniéndolos en el mejor punto posible, haya allí un local o no. Sirve para comparar: las diez mejores gasolineras ganan ${fmt(gas)}.</p>`;
+  $('hallazgo').innerHTML=modoAct==='dia'&&f?`<div class="flecha"><span>${p1(f.pct_antes)}</span><i>→</i><span class="despues">${p1(f.pct_despues)}</span></div><p>Si <b>cada una de las ${fmt(f.locales)} farmacias</b> de la Comunidad tuviera un desfibrilador, un martes a las 11 la cobertura pasaría del ${p1(f.pct_antes)} al ${p1(f.pct_despues)}: <b>${fmt(f.vecinos_nuevos)} vecinos más</b>. Están en todos los barrios y abren de día.${est?` Con las ${fmt(est.locales)} estaciones de metro y tren, ${fmt(est.vecinos_nuevos)} más.`:''}</p>`
+    :modoAct==='noche'&&g?`<div class="flecha"><span>${p1(g.pct_antes)}</span><i>→</i><span class="despues">${p1(g.pct_despues)}</span></div><p>Aunque <b>las ${fmt(g.locales)} gasolineras</b> abiertas las 24 horas tuvieran uno, de madrugada la cobertura solo pasaría del ${p1(g.pct_antes)} al ${p1(g.pct_despues)}. Suelen estar en carreteras y avenidas, lejos de las casas.${pol?` Con <b>las ${fmt(pol.locales)} comisarías, cuarteles de la Guardia Civil y parques de bomberos</b>, que tienen gente de guardia toda la noche, pasaría al ${p1(pol.pct_despues)}.`:''} Los diez mejores sitios suman ${fmt(gas)} vecinos.</p>`
+    :`<div class="flecha"><span class="despues">+${fmt(ideal)}</span></div><p>Es el máximo que se puede ganar con diez aparatos abiertos las 24 horas, poniéndolos en el mejor punto posible, haya allí un local o no. Sirve para comparar: los diez mejores sitios reales abiertos de noche ganan ${fmt(gas)}.</p>`;
 }
 $('modos').onclick=e=>{const b=e.target.closest('[data-modo]');if(!b)return;modoAct=b.dataset.modo;sitios();parar();ponerT(horaAct());const v=vista0();volar({...v,zoom:v.zoom+.9,latitude:40.38,longitude:-3.72})};
 $('sitios').onclick=e=>{const b=e.target.closest('[data-i]');if(b)irASitio(+b.dataset.i)};

@@ -54,6 +54,7 @@ jobs:
           OSRM_URL: http://localhost:5000
         run: |
           python 01_descargar.py
+          python 01b_sitios_osm.py
           python viviendas_catastro.py
           python 02_limpiar_desfibriladores.py
           python 03_poblacion_secciones.py
@@ -63,6 +64,7 @@ jobs:
           python 06_cobertura_calle.py
           python 07_nuevos_sitios.py
           python 08_sitios_reales.py
+          python 08b_revisar_horarios.py
           python 09_exportar_web.py
 
       - name: Comprobar que los datos tienen sentido

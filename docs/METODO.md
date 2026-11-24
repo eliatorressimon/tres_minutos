@@ -39,11 +39,19 @@ Problema de máxima cobertura: elegir k puntos que cubran a la mayor cantidad de
 `src/08_sitios_reales.py` repite la elección voraz, con el mismo peso, pero solo entre locales que existen:
 
 - De día (martes a las 11:00): las 2.954 oficinas de farmacia del registro de la Comunidad.
-- De madrugada (domingo a las 3:00): las 550 gasolineras cuyo horario en la API del Ministerio es `L-D: 24H` o `L-D: 00:00-23:59`.
+- De madrugada (domingo a las 3:00): las 550 gasolineras cuyo horario en la API del Ministerio es `L-D: 24H` o `L-D: 00:00-23:59`, y las comisarías de la Policía Nacional y local, los cuarteles de la Guardia Civil y los parques de bomberos de OpenStreetMap (`src/01b_sitios_osm.py`). Estos últimos no tienen un horario publicado, pero hay gente de guardia toda la noche, así que los tratamos como abiertos las 24 horas. Es una suposición que habría que acordar con cada cuerpo. Se quitan las oficinas que solo atienden de día (DNI y pasaporte, atención al ciudadano), las unidades sin público, los agentes forestales y Protección Civil, que es voluntaria.
+- Las estaciones de metro, metro ligero y tren de OpenStreetMap solo cuentan en el escenario de "todas", de día: el metro cierra de 1:30 a 6:00.
 
 Para cada grupo se eligen los diez mejores y se calcula también qué pasaría si todos los locales tuvieran uno. Las distancias de cada local a los puntos de población se miden andando (apartado 6). Con todas las farmacias, la cobertura del martes a las 11:00 pasaría del 20,7 % al 50,7 %. Con todas las gasolineras de 24 horas, la del domingo a las 3:00 solo pasaría del 10,4 % al 11,4 %.
 
 Los centros sanitarios no están en el registro, que solo recoge los aparatos de fuera del ámbito sanitario, pero tienen el suyo. `src/08_sitios_reales.py` calcula también cuánto subiría la cobertura si se contaran: los centros de salud y consultorios de atención primaria, de lunes a viernes de 8:00 a 21:00, y los hospitales generales, con urgencias las 24 horas. El horario no viene en los datos; es el habitual de estos centros en la Comunidad. La web lo enseña aparte y no lo mezcla con el mapa principal, que usa solo el registro.
+
+## 5b. Mejorar el registro sin comprar nada
+
+`src/08b_revisar_horarios.py` saca dos tablas pensadas para quien mantiene el registro:
+
+- `horarios_formato_fijo.csv`: el horario de cada aparato, que en el registro es texto libre, leído y escrito de forma fija: una columna por día con las horas de apertura y cierre, y la misma información con la sintaxis `opening_hours` de OpenStreetMap (por ejemplo `Mo-Fr 08:00-21:00; Sa 09:00-14:00`), que ya entienden muchos mapas y aplicaciones. Es nuestra lectura, redondeada a horas enteras: un "9 a 16:30" queda como 09:00-17:00. Si el formulario del registro pidiera así el horario, no haría falta adivinarlo.
+- `24h_a_revisar.csv`: los aparatos que dicen estar disponibles las 24 horas, con cuántos vecinos los tienen como único aparato abierto a 200 m andando un domingo a las 3:00. Es el orden en que convendría comprobarlos sobre el terreno, porque si uno de ellos en realidad no se puede usar de noche, esa gente se queda sin ninguno. Se marcan además los que están en sitios que suelen cerrar de noche (colegios, centros de trabajo, tiendas grandes, polideportivos y recintos de espectáculos) o cuyo texto mezcla "24 horas" con otro horario.
 
 ## 6. Andando por la calle
 
@@ -77,6 +85,7 @@ La pantalla de inicio de la web es para una emergencia. Al pulsar el botón gran
 
 ## Próximos pasos
 
-- Que el registro recoja el horario en un formato fijo (días y horas por separado). Hoy un tercio de los aparatos no tiene un horario que se pueda leer.
-- Comprobar sobre el terreno si los aparatos "24 horas" son accesibles de madrugada o están dentro de un edificio cerrado.
-- Más candidatos reales: farmacias de guardia, comisarías y estaciones.
+- Que el registro adopte un formato fijo para el horario. La propuesta y el registro ya pasado a ese formato están en `horarios_formato_fijo.csv`. Hoy un tercio de los aparatos no tiene un horario que se pueda leer.
+- Comprobar sobre el terreno los aparatos "24 horas", empezando por los primeros de `24h_a_revisar.csv`.
+- Confirmar con cada cuerpo si las comisarías, cuarteles y parques de bomberos podrían tener un aparato a disposición de los vecinos de noche.
+- Farmacias de guardia como candidatos de noche: no están en datos abiertos.

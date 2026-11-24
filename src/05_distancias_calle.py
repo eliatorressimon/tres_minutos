@@ -27,7 +27,7 @@ import requests
 from scipy.spatial import cKDTree
 from pyproj import Transformer
 from config import ELABORADOS, CRS_METROS, RADIO_M, RAIZ
-from candidatos import farmacias, gasolineras_24h, centros_sanitarios, centros_secciones
+from candidatos import farmacias, gasolineras_24h, centros_sanitarios, centros_secciones, sitios_osm, DE_NOCHE, ESTACIONES
 
 MAX_DEA_M = 300      # hasta dónde miramos para la cobertura (el selector de la web llega a 300 m)
 MAX_PUNTOS = 100
@@ -190,7 +190,8 @@ if __name__ == '__main__':
     centros = centros_secciones(sec)
     ideal = pd.DataFrame({'id': centros.index, 'tipo': 'Sitio ideal', 'lon': centros['lon'].values, 'lat': centros['lat'].values})
     cand = con_metros(pd.concat([ideal, farmacias()[['id', 'tipo', 'lon', 'lat']], gasolineras_24h()[['id', 'tipo', 'lon', 'lat']],
-                                centros_sanitarios()[['id', 'tipo', 'lon', 'lat']], colegios]))
+                                centros_sanitarios()[['id', 'tipo', 'lon', 'lat']], colegios,
+                                sitios_osm(DE_NOCHE + ESTACIONES)[['id', 'tipo', 'lon', 'lat']]]))
     p = andando(cand, sec, RADIO_M)
     pd.DataFrame([{'tipo': cand.at[i, 'tipo'], 'id': cand.at[i, 'id'], 'punto': sec.at[j, 'punto'],
                    'metros_andando': m} for i, j, r, m in p]).to_csv(ELABORADOS / 'distancias_candidatos.csv', index=False)

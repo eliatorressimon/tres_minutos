@@ -172,7 +172,7 @@ DESCARGAS.mkdir(exist_ok=True)
 def guardar(df, nombre):
     df.to_csv(DESCARGAS / nombre, index=False, sep=';', decimal=',', encoding='utf-8-sig')
 for nombre in ['desfibriladores.csv', 'cobertura_semana.csv', 'cobertura_variantes.csv', 'nuevos_sitios.csv',
-               'sitios_reales.csv', 'sitios_reales_resumen.csv']:
+               'sitios_reales.csv', 'sitios_reales_resumen.csv', 'horarios_formato_fijo.csv', '24h_a_revisar.csv']:
     guardar(pd.read_csv(ELABORADOS / nombre, dtype={'codigo_dea': str, 'municipio_codigo': str, 'cod_ine_muni': str, 'id': str}), nombre)
 # cobertura de cada municipio en cada hora de la semana, a 200 m andando (la medida principal de la web)
 andando = np.load(ELABORADOS / 'cubiertas_andando.npy')

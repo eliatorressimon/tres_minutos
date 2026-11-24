@@ -16,6 +16,9 @@ if len(dea) < 10000:
 sec = pd.read_csv(ELABORADOS / 'secciones.csv', dtype=str)
 if len(sec) < 4000:
     problemas.append(f'solo hay {len(sec)} secciones censales')
+osm = ELABORADOS.parent / 'originales' / 'sitios_osm.csv'
+if osm.exists() and len(pd.read_csv(osm)) < 300:
+    problemas.append(f'solo hay {len(pd.read_csv(osm))} comisarías, bomberos y estaciones de OpenStreetMap (se esperaban unos 800)')
 datos = json.loads((WEB / 'datos.json').read_text(encoding='utf-8'))
 if not datos:
     problemas.append('web/datos.json está vacío')
