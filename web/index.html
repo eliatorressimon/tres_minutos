@@ -82,6 +82,7 @@ a{color:var(--negro);text-decoration-color:var(--rojo);text-underline-offset:3px
 .barrio-fila strong{font:700 14px var(--sans)}
 .barrio-fila b{font:700 15px var(--mono);text-align:right}
 .barrio-fila span{grid-column:1/-1;font-size:13px;color:var(--gris-1)}
+.barrio-fila .barrio-donde{color:var(--vino)}.barrio-fila .barrio-donde i{font-style:normal}.barrio-fila .barrio-donde a{color:var(--rojo);font-weight:600}
 .letra{border:1.5px solid var(--negro);background:#fff;font:700 14px var(--sans);padding:7px 12px;margin-top:14px}
 .letra[aria-pressed=true]{background:var(--vino);color:#fff;border-color:var(--vino)}
 .grande .lado{zoom:1.18}
@@ -420,6 +421,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
 .etiqueta strong{font:700 14px/1.2 var(--sans)}
 .etiqueta span{font-size:13px;color:var(--gris-1)}
 .etiqueta em{font-style:normal;font:500 11px var(--mono);color:var(--gris-2)}
+.etiqueta .eti-dir{font:500 12.5px/1.3 var(--sans);color:var(--vino)}
 #deck.poniendo{cursor:crosshair}
 
 /* entrada */
@@ -738,6 +740,7 @@ h1.titular .hab{font:500 15px/1 var(--sans);font-variation-settings:normal;lette
         <li>Centros, servicios y establecimientos sanitarios, Comunidad de Madrid</li>
         <li>Comisarías, cuarteles, parques de bomberos y estaciones: OpenStreetMap</li>
         <li>Distancias a pie: OSRM con la red de calles de OpenStreetMap</li>
+        <li>Direcciones de los aparatos (el registro no las publica): buscador Nominatim de OpenStreetMap, en el momento</li>
         <li>Mapa base: OpenFreeMap con datos de OpenStreetMap</li>
       </ul>
       </div></details>
@@ -857,7 +860,9 @@ const tipoTxt=k=>NOMBRE_TIPO[D.tipos[k]]||D.tipos[k];
 const horarioTxt=d=>d[2]===0?'Abierto las 24 horas':d[2]===2?'Sin horario claro en el registro: no lo contamos como abierto':d[2]===3?'Solo en eventos':(D.horarios_texto&&D.horarios_texto[d[6]])||'Con horario';
 function dentro(pt,m){let k=false;for(const r of D.poligonos[m])for(let i=0,j=r.length-1;i<r.length;j=i++){const [xi,yi]=r[i],[xj,yj]=r[j];if((yi>pt[1])!==(yj>pt[1])&&pt[0]<(xj-xi)*(pt[1]-yi)/(yj-yi)+xi)k=!k}return k}
 function lejosDe(d,m){if(dentro(d,m))return false;let b=1e9;for(const r of D.poligonos[m])for(const [x,y] of r)b=Math.min(b,((x-d[0])*.76)**2+(y-d[1])**2);return Math.sqrt(b)>.006} // más de unos 600 m fuera de su municipio
-function fichaAparato(d,a){return `<strong>${tipoTxt(d[5])}</strong><span><b>${a?'Abierto':'Cerrado'}</b>, ${corto(T).toLowerCase()}</span><em>${horarioTxt(d)}</em>`}
+function fichaAparato(d,a){const t=dirTxt.get(d[0]+','+d[1]);return `<strong>${tipoTxt(d[5])}</strong><small class="eti-dir">${t||'Pulsa para ver la dirección'}</small><span><b>${a?'Abierto':'Cerrado'}</b>, ${corto(T).toLowerCase()}</span><em>${horarioTxt(d)}</em>`}
+// al pulsar un aparato: pide su dirección y la pone en la etiqueta si sigue abierta con ese aparato
+function etiDireccion(d){eti.dataset.k=d[0]+','+d[1];direccion(d).then(t=>{const el=eti.querySelector('.eti-dir');if(el&&eti.dataset.k===d[0]+','+d[1])el.textContent=t||'Sin dirección: mira el punto en el mapa'})}
 const abierto=(d,t)=>d[2]===0||(d[2]===1&&D.masks[d[3]][t]==='1');
 let conSani=false,saniF=null; // saniF[i]: 1 = a tiro de un centro de salud, 2 = de un hospital (bits)
 const saniAbierto=(tipo,t)=>tipo===1||(Math.floor(t/24)<5&&t%24>=8&&t%24<21);
@@ -1006,7 +1011,7 @@ function alPulsar(info){
   if(buscandoPunto&&info.coordinate){buscandoPunto=false;$('deck').classList.remove('poniendo');buscarCercano(info.coordinate);return}
   if(poniendo&&info.coordinate){ponerAparato(info.coordinate);return}
   const o=info.object,id=info.layer&&info.layer.id;if(o==null)return;
-  if(id==='col')abrirMunicipio(D.secs[o][4]);else if(id==='munis')abrirMunicipio(o.m);else if(id==='deaSel'){eti.innerHTML=fichaAparato(o.d,o.a);eti.hidden=false}else if(id==='nuevos')irASitio(o.i-1);
+  if(id==='col')abrirMunicipio(D.secs[o][4]);else if(id==='munis')abrirMunicipio(o.m);else if(id==='deaSel'){eti.innerHTML=fichaAparato(o.d,o.a);eti.hidden=false;etiDireccion(o.d)}else if(id==='nuevos')irASitio(o.i-1);
 }
 
 /* ---------- hora ---------- */
@@ -1202,7 +1207,7 @@ function actualizarMunicipio(){if(sel<0||!$('mPct'))return;const v=curvaM[sel][T
     L.forEach(o=>o.fuera=lejosDe(o.d,sel));
     ul.innerHTML=L.slice(0,MAX).map((o,k)=>`<li><button data-k="${k}"><span class="pt${o.a?'':' cerrado'}"></span><span><strong>${tipoTxt(o.d[5])}</strong><small>${horarioTxt(o.d)}${o.fuera?'<br><b>Ojo: en el registro su posición cae fuera del municipio.</b>':''}</small></span><span class="est${o.a?'':' cerrado'}">${o.a?'ABIERTO':'CERRADO'}</span></button></li>`).join('')+(L.length>MAX?`<li class="nota" style="padding:9px 0">Y ${fmt(L.length-MAX)} más. Acércate en el mapa para verlos todos.</li>`:'');
     ul.onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;const o=L[+b.dataset.k];volar({longitude:o.d[0],latitude:o.d[1],zoom:16.5,pitch:0});
-      eti.innerHTML=fichaAparato(o.d,o.a);eti.hidden=false;const r=escena.getBoundingClientRect();eti.style.transform=`translate(${r.left+r.width/2+14}px,${r.top+r.height/2+14}px)`}}}
+      eti.innerHTML=fichaAparato(o.d,o.a);eti.hidden=false;etiDireccion(o.d);const r=escena.getBoundingClientRect();eti.style.transform=`translate(${r.left+r.width/2+14}px,${r.top+r.height/2+14}px)`}}}
 
 /* ---------- dónde actuar ---------- */
 let modoAct='dia';
@@ -1254,6 +1259,19 @@ $('btnQuitar').onclick=()=>{extra.clear();mios=[];calcular();ponerT(T);$('btnQui
 /* ---------- tu calle a tres horas (Información) ---------- */
 // Para decidir dónde vivir o qué colegio elegir: el desfibrilador abierto más cercano andando
 // un martes por la mañana, un sábado por la tarde y un domingo de madrugada.
+// El registro no trae la dirección de los aparatos: la pedimos a OpenStreetMap (Nominatim) a partir de sus
+// coordenadas, de una en una y con un segundo de pausa, como pide su política de uso. Se guarda en memoria.
+const dirCache=new Map(),dirTxt=new Map();let dirCola=Promise.resolve();
+function direccion(d){const k=d[0]+','+d[1];if(dirCache.has(k))return dirCache.get(k);
+  const p=dirCola.then(async()=>{try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${d[1]}&lon=${d[0]}&zoom=18&addressdetails=1&accept-language=es`);
+      if(!r.ok)throw 0;const j=await r.json(),a=j.address||{};
+      const calle=a.road||a.pedestrian||a.footway||a.square||a.neighbourhood||'',num=a.house_number?' '+a.house_number:'';
+      const nombre=j.name&&j.name!==calle?j.name+', ':'';
+      const t=calle?nombre+calle+num:(j.display_name||'').split(',').slice(0,2).join(',');dirTxt.set(k,t);return t}catch(e){return ''}});
+  dirCola=p.then(()=>new Promise(ok=>setTimeout(ok,1100)));dirCache.set(k,p);return p}
+function ponerDireccion(id,d){direccion(d).then(t=>{const el=document.getElementById(id);if(el)el.textContent=t||'Sin dirección: mira el punto en el mapa'})}
+const mapsA=(c,d)=>`https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${d[1]},${d[0]}&travelmode=walking`;
+
 async function barrio(c){
   const el=$('barrio');el.innerHTML='<p class="nota">Mirando tu calle a tres horas distintas…</p>';
   const momentos=[[35,'Martes, 11:00'],[137,'Sábado, 17:00'],[147,'Domingo, 3:00']];
@@ -1263,11 +1281,13 @@ async function barrio(c){
     const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');if(!r.ok)throw 0;const j=await r.json();
     uni.forEach((d,k)=>{const v=j.distances[0][k+1];if(v!=null)dist.set(d,v+j.sources[0].distance+j.destinations[k+1].distance)})}catch(e){}
   const filas=momentos.map(([t,et],i)=>{if(!por[i].length)return {et,m:Infinity};
-    return {et,...por[i].map(x=>({m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)})).sort((a,b)=>a.m-b.m)[0]}});
-  el.innerHTML='<p class="nota" style="margin-bottom:2px">El desfibrilador abierto más cercano, andando:</p>'+filas.map(f=>{
+    return {et,...por[i].map(x=>({d:x.d,m:dist.has(x.d)?dist.get(x.d):x.m*1.4,aprox:!dist.has(x.d)})).sort((a,b)=>a.m-b.m)[0]}});
+  el.innerHTML='<p class="nota" style="margin-bottom:2px">El desfibrilador abierto más cercano, andando:</p>'+filas.map((f,i)=>{
     const c2=f.m<=200?'#5c7a5a':f.m<=400?'#b5651d':'#d6142f';
     const txt=f.m===Infinity?'No consta ninguno abierto cerca':f.m<=200?'Da tiempo a ir y volver corriendo en menos de tres minutos':f.m<=400?'Ida y vuelta corriendo, de tres a cinco minutos':'Más de cinco minutos ida y vuelta';
-    return `<div class="barrio-fila" style="--c:${c2}"><strong>${f.et}</strong><b>${f.m===Infinity?'Ninguno':fmt(Math.round(f.m/10)*10)+' m'}</b><span>${txt}${f.aprox?' (distancia aproximada)':''}</span></div>`}).join('');
+    const donde=f.d?`<span class="barrio-donde"><b>${tipoTxt(f.d[5])}</b>, <i id="dirB${i}">buscando la dirección</i>. <a href="${mapsA(c,f.d)}" target="_blank" rel="noopener">Cómo llegar</a></span>`:'';
+    return `<div class="barrio-fila" style="--c:${c2}"><strong>${f.et}</strong><b>${f.m===Infinity?'Ninguno':fmt(Math.round(f.m/10)*10)+' m'}</b><span>${txt}${f.aprox?' (distancia aproximada)':''}</span>${donde}</div>`}).join('');
+  filas.forEach((f,i)=>{if(f.d)ponerDireccion('dirB'+i,f.d)});
 }
 
 /* ---------- letra grande ---------- */
@@ -1304,9 +1324,10 @@ async function buscarCercano(c){
   $('rutaRes').innerHTML=`<div class="ruta">
     <div class="ruta-veredicto" style="--c:${c2}">${ok?'Da tiempo: ida y vuelta corriendo en '+(idaVuelta<1?'menos de 1 min':'unos '+Math.round(idaVuelta)+' min'):'Ida y vuelta corriendo: '+mm(idaVuelta)+'. Más de tres minutos'}</div>
     <div class="ruta-cifras"><div><strong>${fmt(b.dist)} m</strong><span>${b.recta?'en línea recta, aprox.':'andando por la calle'}</span></div><div><strong>${mm(andar)}</strong><span>a paso normal</span></div><div><strong>${mm(correr)}</strong><span>corriendo</span></div></div>
-    <dl><dt>Sitio</dt><dd>${tipoTxt(b.d[5])}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Estado</dt><dd>${est}, ${etiquetaT(T).toLowerCase()}</dd>${hor?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
+    <dl><dt>Sitio</dt><dd>${tipoTxt(b.d[5])}, ${nombreBonito(D.munis[b.d[4]])}</dd><dt>Dirección</dt><dd id="dirRuta">buscando…</dd><dt>Estado</dt><dd>${est}, ${etiquetaT(T).toLowerCase()}</dd>${hor?`<dt>Horario</dt><dd>${hor}</dd>`:''}</dl>
     <div class="acciones" style="margin-top:12px"><a class="enlace" href="https://www.google.com/maps/dir/?api=1&origin=${c[1]},${c[0]}&destination=${b.d[1]},${b.d[0]}&travelmode=walking" target="_blank" rel="noopener">Abrir la ruta en Google Maps</a><button class="enlace" id="btnBorrarRuta">Borrar</button></div>
     <p class="aviso-112">Ante una parada cardiaca, llama primero al <b>112</b> y empieza a reanimar. Ellos también te dicen dónde está el aparato más cercano.</p></div>`;
+  ponerDireccion('dirRuta',b.d);
   $('btnBorrarRuta').onclick=()=>{camRuta=null;$('rutaRes').innerHTML='';$('barrio').innerHTML='';pintar()};
   barrio(c);
   let x0=Math.min(...camino.map(p=>p[0])),x1=Math.max(...camino.map(p=>p[0])),y0=Math.min(...camino.map(p=>p[1])),y1=Math.max(...camino.map(p=>p[1]));
@@ -1488,7 +1509,7 @@ const SOS=(()=>{
     const ver=iv<=3?'Da tiempo: ida y vuelta corriendo en '+(iv<1?'menos de 1 min':'unos '+Math.round(iv)+' min'):'Ida y vuelta corriendo: '+mm(iv)+'. Que vaya alguien ya';
     ficha(`<div class="sos-estado">Desfibrilador abierto más cercano${b.recta?' (distancia aproximada)':''}</div>
       <div class="sos-dist"><strong>${fmt(dist)} m</strong><span>${mm(correr)} corriendo, ${mm(andar)} andando</span></div>
-      <div class="sos-donde">${tipoTxt(b.d[5])}, ${nombreBonito(D.munis[b.d[4]])}, ${rumbo(c,hasta)}. ${b.d[2]===0?'Abierto las 24 horas.':'Abierto a esta hora'+(hor?': '+hor:'.')}</div>
+      <div class="sos-donde">${tipoTxt(b.d[5])}, <span id="dirSos">${nombreBonito(D.munis[b.d[4]])}</span>, ${rumbo(c,hasta)}. ${b.d[2]===0?'Abierto las 24 horas.':'Abierto a esta hora'+(hor?': '+hor:'.')}</div>
       <div class="sos-veredicto">${ver}</div>
       ${sig?`<div class="sos-planb"><b>Si está cerrado o no lo encuentras:</b> hay otro a ${fmt(Math.round(sig.dist/10)*10)} m, ${rumbo(c,[sig.d[0],sig.d[1]])}. <button id="sosSig">Llévame a ese</button></div>`:''}
       <div class="sos-acciones">
@@ -1505,6 +1526,7 @@ const SOS=(()=>{
     $('sosVoz').onclick=()=>{voz=!voz;if(!voz)try{speechSynthesis.cancel()}catch(e){};$('sosVoz').textContent=voz?'Silenciar la voz':'Activar la voz'};
     $('sosRepetir').onclick=()=>hablar(frase);
     $('sosOtro').onclick=pedirPunto;
+    direccion(b.d).then(t=>{const el=document.getElementById('dirSos');if(el&&t)el.textContent=t+', '+nombreBonito(D.munis[b.d[4]])});
     if(sig)$('sosSig').onclick=()=>verRes(i+1);
     };verRes(0);
   }
