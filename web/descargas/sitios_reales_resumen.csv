@@ -1,5 +1,8 @@
 ﻿caso;locales;pct_antes;pct_despues;vecinos_nuevos
 Todas las gasolineras 24 h, domingo 3:00;551;10,4;11,4;65234
+Todas las comisarías, cuarteles y parques de bomberos, domingo 3:00;329;10,4;11,6;78068
+Gasolineras 24 h, comisarías, cuarteles y bomberos juntos, domingo 3:00;880;10,4;12,5;140640
 Todas las farmacias, martes 11:00;2954;20,7;50,7;2099121
+Todas las estaciones de metro y tren, martes 11:00;379;20,7;21,6;64216
 Contando centros de salud y hospitales, martes 11:00;481;20,7;23,4;187570
 Contando hospitales, domingo 3:00;60;10,4;10,5;7398
