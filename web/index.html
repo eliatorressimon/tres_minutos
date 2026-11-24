@@ -1349,12 +1349,14 @@ $('btnCerca').onclick=()=>{
 };
 $('btnTocar').onclick=()=>modoTocar('Toca en el mapa el sitio desde el que quieres buscar.');
 function modoTocar(msg){if(poniendo)$('btnPoner').click();buscandoPunto=true;$('deck').classList.add('poniendo');$('rutaRes').innerHTML=`<p class="nota" style="margin-top:10px">${msg}</p>`;if(zoom<11)volar({zoom:11.5})}
+// para el siguiente, solo vale otro sitio: dos aparatos en el mismo edificio (a menos de 40 m) cuentan como uno
+const distintos=(l,n)=>{const r=[];for(const x of l){if(r.every(y=>metros(y.d,x.d)>40))r.push(x);if(r.length===n)break}return r};
 async function buscarCercano(c){
   // los 8 más cercanos en línea recta; se mide andando a todos de una vez y se piden las rutas de los dos mejores
   let cand=cache.dea.map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,8);
   try{const pts=[c,...cand.map(x=>[x.d[0],x.d[1]])].map(p=>(+p[0]).toFixed(5)+','+(+p[1]).toFixed(5)).join(';');
     const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');if(!r.ok)throw 0;const j=await r.json();
-    cand=cand.map((x,k)=>({...x,t:j.distances[0][k+1]??Infinity})).sort((a,b)=>a.t-b.t).slice(0,2)}catch(e){cand=cand.slice(0,3)}
+    cand=distintos(cand.map((x,k)=>({...x,t:j.distances[0][k+1]??Infinity})).sort((a,b)=>a.t-b.t),2)}catch(e){cand=distintos(cand,3)}
   if(!cand.length){$('rutaRes').innerHTML='<p class="nota">No hay ningún aparato abierto a esta hora.</p>';return}
   $('rutaRes').innerHTML='<p class="nota" style="margin-top:10px">Calculando la ruta andando…</p>';
   const pedir=async x=>{try{const r=await fetch(`https://routing.openstreetmap.de/routed-foot/route/v1/driving/${c[0]},${c[1]};${x.d[0]},${x.d[1]}?overview=full&geometries=geojson`);const j=await r.json();
@@ -1550,7 +1552,7 @@ const SOS=(()=>{
     let cand=abiertos.map(d=>({d,m:metros(d,c)})).sort((a,b)=>a.m-b.m).slice(0,8);
     try{const pts=[c,...cand.map(x=>[x.d[0],x.d[1]])].map(p=>(+p[0]).toFixed(5)+','+(+p[1]).toFixed(5)).join(';');
       const r=await fetch('https://routing.openstreetmap.de/routed-foot/table/v1/driving/'+pts+'?sources=0&annotations=distance');if(!r.ok)throw 0;const j=await r.json();
-      cand=cand.map((x,k)=>({...x,t:j.distances[0][k+1]??Infinity})).sort((a,b)=>a.t-b.t).slice(0,3)}catch(e){cand=cand.slice(0,3)}
+      cand=distintos(cand.map((x,k)=>({...x,t:j.distances[0][k+1]??Infinity})).sort((a,b)=>a.t-b.t),3)}catch(e){cand=distintos(cand,3)}
     if(!cand.length){ficha('<div class="sos-estado">Ahora no consta ningún desfibrilador abierto cerca.</div>');return}
     const pedir=async x=>{try{const r=await fetch(`https://routing.openstreetmap.de/routed-foot/route/v1/driving/${c[0]},${c[1]};${x.d[0]},${x.d[1]}?overview=full&geometries=geojson`);const j=await r.json();
       if(j.code!=='Ok')throw 0;const ro=j.routes[0];return {...x,dist:ro.distance,camino:ro.geometry.coordinates}}catch(e){return {...x,dist:x.m*1.4,camino:[c,[x.d[0],x.d[1]]],recta:true}}};
